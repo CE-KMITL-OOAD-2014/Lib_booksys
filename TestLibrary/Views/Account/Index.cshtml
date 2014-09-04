@@ -1,0 +1,13 @@
+﻿
+
+@{
+    ViewBag.Title = Session["LoginUser"];
+}
+
+<h1>Welcome! @Session["LoginUser"]</h1>
+<h2>Admin panel</h2>
+<p>Add book</p>
+<p>Edit book</p>
+<p>Delete book</p>
+<p>Check reserve request</p>
+<a class="changepass-btt" href="/Account/ChangePassword">Change password</a><a class="signout-btt" href="~/Account/Logout">Sign out</a>

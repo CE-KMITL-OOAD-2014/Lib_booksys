@@ -1,0 +1,214 @@
+﻿
+body{
+    margin:0;
+    padding:0;
+    background-image:url(/Content/asphalt.jpg)
+}
+
+div#nav{
+    position:fixed;
+    font-family:Calibri;
+    background-color:black;
+    height:70px;
+    top:0;
+    width:100%;
+}
+div.reg-login-linkzone{
+    color:white;
+    font-size:smaller;
+    margin-left:15%;
+    margin-right:15%;
+    float:right;
+    text-align:right;
+}
+
+div.reg-login-linkzone a:link{
+    color:white;
+    text-decoration:none;
+}
+
+div.reg-login-linkzone a:hover{
+    text-decoration:underline;
+}
+
+div.reg-login-linkzone a:visited{
+    color:white;
+}
+
+div#header{
+    margin-top:4px;
+    margin-left:15%;
+    margin-right:15%;
+    font-size:x-large;
+    color:white;
+}
+
+form.login,form.change-pw{
+    font-family:Single;
+    font-size:xx-large;
+    margin-left:auto;
+    margin-right:auto;
+    width:30%;
+}
+form.login fieldset,form.change-pw fieldset{
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+    
+}
+
+form.login input[type="text"],form.login input[type="password"],
+form.change-pw input[type="text"],
+form.change-pw input[type="password"]{
+    font-family:Single;
+    font-size:x-large;
+    width:100%;
+    -ms-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    
+}
+
+form.login input[type="submit"],form.change-pw input[type="submit"]{
+    font-family:Single;
+    font-size:x-large;
+    background-color:#99CCFF;
+    border:none;
+    width:100%;
+}
+
+a.signout-btt,a.changepass-btt{
+    display:block;
+    text-align:center;
+    font-family:Single;
+    font-size:x-large;
+    background-color:#99CCFF;
+    margin-left:15px;
+    margin-bottom:15px;
+    padding-top:3px;
+    padding-bottom:3px;
+    width:120px
+}
+
+a.signout-btt:link,a.changepass-btt:link{
+    color:black;
+    text-decoration:none;
+}
+
+a.signout-btt:hover,a.changepass-btt:hover{
+    background-color:#6B8FB2
+}
+
+
+a.signout-btt:visited,a.changepass-btt:visited{
+    color:black;
+    text-decoration:none;
+}
+
+
+div#menubar{
+    margin-top:10px;
+    margin-left:15%;
+    margin-right:15%;
+    margin-bottom:0;
+    font-size:large;
+    color:white;
+}
+
+ul.menulist{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+
+ul.menulist li a:link{
+    padding-bottom:3px;
+    text-decoration:none;
+    text-align:center;
+    display:block;
+    width:80px;
+    float:left;
+    color:white;
+
+}
+ul.menulist li a:hover{
+    color:black;
+    background-color:lightgray;
+    text-decoration:underline;
+    
+}
+
+ul.menulist li a:active{
+    background-color:darkgray;
+    text-decoration:underline;
+}
+ul.menulist a:visited{
+    color:white;
+}
+
+div#content{
+    margin-top:70px;
+    margin-left:15%;
+    margin-right:15%;
+    background-color:white;
+    padding-bottom:1px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+}
+
+img.back-to-top-btt{
+    width:40px;
+    height:40px;
+    opacity:0.5;
+    position:fixed;
+    bottom:20px;
+    right:20px
+    
+}
+footer{
+   
+    height:25px;
+    color:white;
+    font-family:Calibri;
+    font-size:18px;
+    text-align:center;
+    padding-top:12.5px;
+    padding-bottom:12.5px;
+}
+
+a.paratab:link{
+    color:white;
+    text-decoration:none;
+}
+
+a.paratab:visited{
+    color:white;
+}
+h1{
+   padding-top:8px;
+   padding-left:15px;
+    font-family:Calibri;  
+}
+
+h2{
+    padding-left:15px;
+    font-family:Calibri; 
+    text-decoration:underline;
+}
+
+p{
+    padding-left:15px;
+    padding-right:15px;
+    text-indent:50px;
+    text-align:justify;
+    font-family:Single;
+    font-size:25px;
+}
+
+
+@font-face{
+    font-family:Single;
+    src:url(/Font/_DS-Single.ttf);
+}

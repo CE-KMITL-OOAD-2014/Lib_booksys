@@ -1,0 +1,83 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/Content/_Style.css" type="text/css" />
+    <script src="~/Script/jquery-1.11.1.js"></script>
+    <script>
+        function resizewindow() {
+            if (window.innerWidth < 400) {
+
+                $("div.reg-login-linkzone").css("margin", 0);
+                $("div#header").css("margin", "4px 0px 0px 0px");
+                $("div#menubar").css("margin", "10px 0px 0px 0px");
+                $("div#content").css("margin", "70px 0px 0px 0px");
+
+            }
+            else {
+                $("div.reg-login-linkzone").css("margin", "0px 15% 0px 15%");
+                $("div#header").css("margin", "4px 15% 0px 15%");
+                $("div#menubar").css("margin", "10px 15% 0px 15%");
+                $("div#content").css("margin", "70px 15% 0px 15%");
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            resizewindow();
+            $(window).resize(resizewindow);
+        });
+       /* $(document).ready(function () {
+            (document).scroll(function(){
+            if (pageYOffset > 30) {
+                $("img.back-to-top-btt").css("opacity", 0.5);
+                //$("img.back-to-top-btt").fadeIn("slow");
+            }
+            else
+                $("img.back-to-top-btt").css("opacity", 0);
+                //$("img.back-to-top-btt").fadeOut("slow");
+           });
+           
+        });*/
+    </script>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div id="nav">
+        <div class="reg-login-linkzone">
+            @if(Session["LoginUser"] != null)
+            {
+                
+            <text>Welcome! @Session["LoginUser"]</text><br />
+            <a href="/Account/">My account</a><text>|</text><a href="/Account/Logout">Sign out</a>
+            }
+            else{
+            <a href="/Account/Register">Register</a><text>|</text><a href="/Account/Login">Login</a>
+            }
+
+
+    </div>
+    <div id="header">
+        <a class="paratab" href="~/">Paratab+</a>
+</div>
+        <div id="menubar">
+            <ul class="menulist">
+                <li><a href="~/">Home</a></li>
+                <li><a href="/Home/About">About Us</a></li>
+                <li><a href="/Home/Contact">Contact</a></li>
+                <li><a href="/Home/ChangeLog">Ch.Log</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="content">
+        @RenderBody()
+    </div>
+    <img class="back-to-top-btt"src="~/Content/upArrow.png"/>
+    <footer>&copy;@DateTime.Now.Year <a class="paratab" href="~/">ParatabPlusSite</a> ห้ามเกรียนคนใดคัดลอกเว็บไซต์นี้เด็ดขาด</footer>
+</body>
+</html>
