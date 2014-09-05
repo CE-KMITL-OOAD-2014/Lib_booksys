@@ -20,7 +20,6 @@ namespace TestLibrary.Models
         public string Email { get; set; }
         public abstract string Identify();
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
     }

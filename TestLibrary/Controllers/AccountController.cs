@@ -23,6 +23,13 @@ namespace TestLibrary.Controllers
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
                     return RedirectToAction("Index");
                 }
+                Admin a = new Admin();
+                /*a.Name = "Paratab";
+                a.UserName = "ParatabAdmin";
+                a.password = "surawit";
+                a.Email = "b@hotmail.com";
+                db.Admins.Add(a);
+                db.SaveChanges();*/
                 return View();
             }
             
@@ -113,6 +120,32 @@ namespace TestLibrary.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddAdmin(Admin admin)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                if (db.Admins.Where(s => s.UserName == admin.UserName).SingleOrDefault() == null)
+                {
+                    db.Entry(admin).State = EntityState.Added;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("UserName","This username is already exists.");
+                return View(admin);
+            }
+            return View(admin);
+        }
+
+        [Authorize]
+        public ActionResult AdminList()
+        {
+            Session["loginUser"] = HttpContext.User.Identity.Name;
+            return View(db.Admins.ToList());
+        }
 
         [Authorize]
         [HttpPost]
