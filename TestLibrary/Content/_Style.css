@@ -43,14 +43,15 @@ div#header{
     color:white;
 }
 
-form.login,form.change-pw{
+form.account-form{
     font-family:Single;
     font-size:xx-large;
     margin-left:auto;
     margin-right:auto;
+    margin-bottom:15px;
     width:30%;
 }
-form.login fieldset,form.change-pw fieldset{
+form.account-form fieldset{
     border-top-left-radius:15px;
     border-top-right-radius:15px;
     border-bottom-left-radius:15px;
@@ -58,9 +59,8 @@ form.login fieldset,form.change-pw fieldset{
     
 }
 
-form.login input[type="text"],form.login input[type="password"],
-form.change-pw input[type="text"],
-form.change-pw input[type="password"]{
+form.account-form input[type="text"],
+form.account-form input[type="password"]{
     font-family:Single;
     font-size:x-large;
     width:100%;
@@ -71,7 +71,7 @@ form.change-pw input[type="password"]{
     
 }
 
-form.login input[type="submit"],form.change-pw input[type="submit"]{
+form.account-form input[type="submit"]{
     font-family:Single;
     font-size:x-large;
     background-color:#99CCFF;
@@ -79,7 +79,7 @@ form.login input[type="submit"],form.change-pw input[type="submit"]{
     width:100%;
 }
 
-a.signout-btt,a.changepass-btt{
+a.account-btt{
     display:block;
     text-align:center;
     font-family:Single;
@@ -92,21 +92,37 @@ a.signout-btt,a.changepass-btt{
     width:120px
 }
 
-a.signout-btt:link,a.changepass-btt:link{
+
+
+a.account-btt:link{
     color:black;
     text-decoration:none;
 }
 
-a.signout-btt:hover,a.changepass-btt:hover{
+a.account-btt:hover{
     background-color:#6B8FB2
 }
 
 
-a.signout-btt:visited,a.changepass-btt:visited{
+a.account-btt:visited{
     color:black;
     text-decoration:none;
 }
 
+div.account-detail{
+    font-family:Single;
+    font-size:x-large;
+    border:1px solid #808080;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+    margin-left:15px;
+    margin-right:15px;
+    margin-bottom:10px;
+    padding:10px;
+
+}
 
 div#menubar{
     margin-top:10px;

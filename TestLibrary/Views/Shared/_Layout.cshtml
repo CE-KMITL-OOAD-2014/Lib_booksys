@@ -53,7 +53,7 @@
             @if(Session["LoginUser"] != null)
             {
                 
-            <text>Welcome! @Session["LoginUser"]</text><br />
+            <text>Welcome! </text><a href="/Account/Detail">@Session["LoginUser"]</a><br />
             <a href="/Account/">My account</a><text>|</text><a href="/Account/Logout">Sign out</a>
             }
             else{

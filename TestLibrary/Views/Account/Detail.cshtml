@@ -1,0 +1,15 @@
+﻿@model TestLibrary.Models.Admin
+
+@{
+    ViewBag.Title = "Account Detail";
+}
+
+<h1>Account detail</h1>
+<div class="account-detail">UserName:@Html.DisplayFor(model => model.UserName)<br />
+Name:@Html.DisplayFor(model => model.Name)<br />
+Email:@Html.DisplayFor(model => model.Email)<br />
+Password:*********<br />
+    <center><a class="account-btt" href="/Account">My account</a>
+    <a class="account-btt" href="/Account/Edit">Edit</a>
+    <a class="account-btt" href="/Account/ChangePassword">Change password</a></center></div>
+

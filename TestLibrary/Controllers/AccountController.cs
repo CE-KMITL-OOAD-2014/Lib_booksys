@@ -7,6 +7,7 @@ using TestLibrary.Models;
 using System.Data.Entity;
 using TestLibrary.DataAccess;
 using System.Web.Security;
+using System.Data.Entity.Validation;
 namespace TestLibrary.Controllers
 {
     public class AccountController : Controller
@@ -22,13 +23,6 @@ namespace TestLibrary.Controllers
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
                     return RedirectToAction("Index");
                 }
-                /*Admin a = new Admin();
-                a.Email = "benchbb01@hotmail.com";
-                a.password = "std22360";
-                a.UserName = "ParatabAdmin";
-                a.Name = "ParatabAdmin";
-                db.Admins.Add(a);
-                db.SaveChanges();*/
                 return View();
             }
             
@@ -77,11 +71,48 @@ namespace TestLibrary.Controllers
         }
 
         [Authorize]
+        public ActionResult Detail()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name).SingleOrDefault();
+            return View(a);
+        }
+
+        [Authorize]
+        public ActionResult Edit()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name).SingleOrDefault();
+            return View(a);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Admin admin)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(admin).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Detail");
+            }
+            return View(admin);
+        }
+        [Authorize]
         public ActionResult ChangePassword()
         {
             Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name).SingleOrDefault();
             return View(a);
         }
+
+        [Authorize]
+        public ActionResult AddAdmin()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            return View();
+        }
+
 
         [Authorize]
         [HttpPost]
