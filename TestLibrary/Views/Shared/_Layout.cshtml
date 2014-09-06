@@ -44,6 +44,12 @@
             $("img.edit-btt").mouseout(function () {
                 $(this).attr("src", "/Content/edit-gray-btt.png");
             });
+            $("img.view-btt").mouseover(function () {
+                $(this).attr("src", "/Content/view-black-btt.png");
+            });
+            $("img.view-btt").mouseout(function(){
+                $(this).attr("src", "/Content/view-gray-btt.png");
+            });
 
             $(window).scroll(function () {
                 if ($(this).scrollTop() > 30)

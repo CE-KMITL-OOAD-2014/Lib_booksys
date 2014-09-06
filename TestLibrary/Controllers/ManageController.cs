@@ -217,6 +217,7 @@ namespace TestLibrary.Controllers
         [HttpPost]
         public ActionResult AddBook(Book bookToAdd)
         {
+            ModelState.Remove("Year");
             if (ModelState.IsValid)
             {
                 db.Entry(bookToAdd).State = EntityState.Added;
@@ -232,6 +233,42 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View(db.Books.ToList());
+        }
+
+        [Authorize]
+        public ActionResult ViewBook([DefaultValue(0)]int id)
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            Book booktoview = db.Books.Find(id);
+            if (booktoview == null)
+                return HttpNotFound();
+            else
+                return View(booktoview);
+        }
+
+        [Authorize]
+        public ActionResult DeleteBook([DefaultValue(0)]int id){
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            Book booktodelete = db.Books.Find(id);
+            if (booktodelete == null)
+                return HttpNotFound();
+            return View(booktodelete);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteBook(int id,string answer)
+        {
+            if (answer == "Yes")
+            {
+                Book booktodelete = db.Books.Find(id);
+                TempData["Notification"] = "Delete " + booktodelete.BookName + " successfully.";
+                db.Entry(booktodelete).State = EntityState.Deleted;
+                db.SaveChanges();
+                return RedirectToAction("BookList");
+            }
+            return RedirectToAction("BookList");
         }
         protected override void Dispose(bool disposing)
         {

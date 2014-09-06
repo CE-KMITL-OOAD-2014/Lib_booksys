@@ -11,6 +11,7 @@
         <th>Book name</th>
         <th>Author</th>
         <th>Publisher</th>
+        <th></th><th></th><th></th>
     </tr>
     @foreach (var book in Model)
     {
@@ -18,6 +19,9 @@
             <td>@book.BookName</td>
             <td>@book.Author</td>
             <td>@book.Publisher</td>
+            <td><a href="/Manage/ViewBook/@book.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
+            <td><a href="/Manage/EditBook/@book.BookID"><img class="edit-btt" src="/Content/edit-gray-btt.png" /></a></td>
+            <td><a href="/Manage/DeleteBook/@book.BookID"><img class="delete-btt" src="/Content/delete-gray-btt.png"/></a></td>
         </tr>
     }
 </table>

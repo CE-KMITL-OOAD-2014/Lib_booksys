@@ -223,7 +223,7 @@ table.list td{
     border:1px solid #808080;
 }
 
-img.delete-btt,img.edit-btt{
+img.delete-btt,img.edit-btt,img.view-btt{
     vertical-align:text-bottom;
 }
 
@@ -277,6 +277,9 @@ h2{
     text-decoration:underline;
 }
 
+h2.book-detail{
+    display:inline;
+}
 p.noti-msg{
  text-indent:20px;
 font-weight:bolder;
@@ -291,6 +294,9 @@ p{
     font-size:25px;
 }
 
+p.book-detail{
+    display:inline;
+}
 
 @font-face{
     font-family:Single;

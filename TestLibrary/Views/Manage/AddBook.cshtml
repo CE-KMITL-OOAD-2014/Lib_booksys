@@ -5,6 +5,7 @@
 <h2>AddBook</h2>
 <form class="account-form" action="/Manage/AddBook" method="post">
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
     <fieldset>
         <legend>Add new book</legend>
         <input type="text" placeholder="Book name" name="BookName"/><br />

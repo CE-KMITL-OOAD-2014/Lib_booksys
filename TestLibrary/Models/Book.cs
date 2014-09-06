@@ -16,6 +16,8 @@ namespace TestLibrary.Models
 
         public string Detail { get; set; }
         public int Year { get; set; }
+
+        [DisplayFormat(NullDisplayText="Unknown publisher")]
         public string Publisher { get; set; }
 
     }
