@@ -8,9 +8,10 @@
 <head>
     <link rel="stylesheet" href="~/Content/_Style.css" type="text/css" />
     <script src="~/Script/jquery-1.11.1.js"></script>
+    <script src="~/Script/jquery-ui.js"></script>
     <script>
         function resizewindow() {
-            if (window.innerWidth < 450) {
+            if (window.outerWidth < 500) {
 
                 $("div.reg-login-linkzone").css("margin", 0);
                 $("div#header").css("margin", "4px 0px 0px 0px");
@@ -45,13 +46,13 @@
             });
 
             $(window).scroll(function () {
-                if (pageYOffset > 30)
-                    $("img.back-to-top-btt").show("fast");
+                if ($(this).scrollTop() > 30)
+                    $("img.back-to-top-btt").fadeIn();
                 else
-                    $("img.back-to-top-btt").hide("fast");
+                    $("img.back-to-top-btt").fadeOut();
             });
             $("img.back-to-top-btt").click(function () {
-                $(window).scrollTop(200);
+                $("html").animate({ scrollTop: 0 }, "500", "easeOutExpo");
             });
 
         });
@@ -61,16 +62,16 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-<div id="nav">
+<a id="top"></a><div id="nav">
         <div class="reg-login-linkzone">
             @if(Session["LoginUser"] != null)
             {
                 
-            <text>Welcome! </text><a href="/Account/Detail">@Session["LoginUser"]</a><br />
-            <a href="/Account/">My account</a><text>|</text><a href="/Account/Logout">Sign out</a>
+            <text>Welcome! </text><a href="/Manage/Detail">@Session["LoginUser"]</a><br />
+            <a href="/Manage/">My account</a><text>|</text><a href="/Manage/Logout">Sign out</a>
             }
             else{
-            <a href="/Account/Register">Register</a><text>|</text><a href="/Account/Login">Login</a>
+            <a href="/Manage/Register">Register</a><text>|</text><a href="/Manage/Login">Login</a>
             }
 
 
@@ -90,7 +91,7 @@
     <div id="content">
         @RenderBody()
     </div>
-    <a href="#"><img class="back-to-top-btt" src="~/Content/upArrow.png" /></a>
+    <a href="#top"><img class="back-to-top-btt" src="~/Content/upArrow.png" /></a>
     <footer>&copy;@DateTime.Now.Year <a class="paratab" href="~/">ParatabPlusSite</a> ห้ามเกรียนคนใดคัดลอกเว็บไซต์นี้เด็ดขาด</footer>
 </body>
 </html>

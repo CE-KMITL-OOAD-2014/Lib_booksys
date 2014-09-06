@@ -1,0 +1,14 @@
+﻿@model TestLibrary.Models.Admin
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<form class="account-form" action="/Manage/Delete/@Html.DisplayFor(model => model.Id)" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Delete admin</legend>
+        Are you sure want to delete @Html.DisplayFor(model => model.UserName)?<br />
+        <input type="submit" value="Yes" name="answer"/><input type="submit" value="No" name="answer" />
+    </fieldset>
+</form>

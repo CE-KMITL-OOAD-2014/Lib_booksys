@@ -15,7 +15,7 @@ namespace TestLibrary.Models
 
         [Required]
         [DataType(DataType.Password)]
-        public string password { get; set; }
+        public string Password { get; set; }
         [Required]
         public string Email { get; set; }
         public abstract string Identify();

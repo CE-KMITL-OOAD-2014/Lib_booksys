@@ -2,7 +2,7 @@
 body{
     margin:0;
     padding:0;
-    background-image:url(/Content/asphalt.jpg)
+    background-image:url(/Content/asphalt.jpg);
 }
 
 div#nav{
@@ -49,7 +49,7 @@ form.account-form{
     margin-left:auto;
     margin-right:auto;
     margin-bottom:15px;
-    width:30%;
+    max-width:30%;
 }
 form.account-form fieldset{
     border-top-left-radius:15px;
@@ -79,7 +79,18 @@ form.account-form input[type="submit"]{
     width:100%
 }
 
+form.account-form textarea{
+    -ms-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    font-family:Single;
+    font-size:x-large;
+    width:100%
+}
+
 a.account-btt{
+    clear:both;
     display:block;
     text-align:center;
     font-family:Single;
@@ -162,6 +173,37 @@ ul.menulist a:visited{
     color:white;
 }
 
+/*---------------------*/
+
+ul.admin-panel{
+    font-family:Single;
+    font-size:x-large;
+    list-style-type:none;
+    margin:15px;
+    padding:0
+}
+
+ul.admin-panel li a:link{
+    text-align:center;
+    color:black;
+    margin:1px;
+    float:left;
+    text-decoration:none;
+    list-style-type:none;
+    background-color:#66FF66;
+    display:block;
+    width:100px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+ul.admin-panel li a:hover{
+    background-color:#3D993D;
+}
+
+ul.admin-panel li a:visited{
+    color:black;
+}
 
 table.list{
     font-family:Single;
@@ -201,7 +243,7 @@ img.back-to-top-btt{
     opacity:0.5;
     position:fixed;
     bottom:20px;
-    right:20px
+    right:20px;
     
 }
 footer{

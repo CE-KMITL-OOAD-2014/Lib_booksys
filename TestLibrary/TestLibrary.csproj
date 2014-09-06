@@ -114,13 +114,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataAccess\LibraryContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -135,14 +136,16 @@
     <Content Include="Content\asphalt.jpg" />
     <Content Include="Content\delete-black-btt.png" />
     <Content Include="Content\delete-gray-btt.png" />
-    <Content Include="Content\edit-black-btt - Copy.png" />
     <Content Include="Content\edit-gray-btt.png" />
+    <Content Include="Script\jquery-ui.js" />
     <Content Include="Content\submit-btt.gif" />
     <Content Include="Content\upArrow.png" />
     <Content Include="Content\_Style.css" />
     <Content Include="Global.asax" />
     <Content Include="Script\jquery-1.11.1.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -176,34 +179,40 @@
     <Content Include="Views\Home\ChangeLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Manage\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Manage\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Detail.cshtml" />
+    <Content Include="Views\Manage\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Manage\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\AddAdmin.cshtml" />
+    <Content Include="Views\Manage\AddAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\AdminList.cshtml" />
+    <Content Include="Views\Manage\AdminList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Manage\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Manage\AddBook.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Manage\BookList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Add admin";
+}
+
+<h2>AddAdmin</h2>
+<form class="account-form" action="/Manage/AddAdmin" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Add new admin</legend>
+        <input type="text" placeholder="Username" name="UserName" />
+        <input type="text" placeholder="Password" name="
+               
+               " />
+        <input type="text" placeholder="Name" name="Name" />
+        <input type="text" placeholder="Email" name="Email" />
+        <input type="submit" value="Add admin" />
+    </fieldset>
+</form>
