@@ -76,7 +76,7 @@ form.account-form input[type="submit"]{
     font-size:x-large;
     background-color:#99CCFF;
     border:none;
-    width:100%;
+    width:100%
 }
 
 a.account-btt{
@@ -91,8 +91,6 @@ a.account-btt{
     padding-bottom:3px;
     width:120px
 }
-
-
 
 a.account-btt:link{
     color:black;
@@ -164,6 +162,29 @@ ul.menulist a:visited{
     color:white;
 }
 
+
+table.list{
+    font-family:Single;
+    font-size:x-large;
+    margin:15px;
+    border-collapse:collapse;
+}
+
+table.list th{
+    background-color:#99CCFF;
+    font-weight:bolder;
+    border:1px solid #808080;
+    padding:5px;
+}
+table.list td{
+    padding:5px;
+    border:1px solid #808080;
+}
+
+img.delete-btt,img.edit-btt{
+    vertical-align:text-bottom;
+}
+
 div#content{
     margin-top:70px;
     margin-left:15%;
@@ -214,6 +235,11 @@ h2{
     text-decoration:underline;
 }
 
+p.noti-msg{
+ text-indent:20px;
+font-weight:bolder;
+color:red;
+}
 p{
     padding-left:15px;
     padding-right:15px;

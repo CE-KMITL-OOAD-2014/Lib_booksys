@@ -8,6 +8,7 @@ using System.Data.Entity;
 using TestLibrary.DataAccess;
 using System.Web.Security;
 using System.Data.Entity.Validation;
+using System.ComponentModel;
 namespace TestLibrary.Controllers
 {
     public class AccountController : Controller
@@ -132,12 +133,38 @@ namespace TestLibrary.Controllers
                 {
                     db.Entry(admin).State = EntityState.Added;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    TempData["Notification"] = "Add admin " + admin.UserName + " successfully.";
+                    return RedirectToAction("AdminList");
                 }
                 ModelState.AddModelError("UserName","This username is already exists.");
-                return View(admin);
             }
             return View(admin);
+        }
+
+        [Authorize]
+        public ActionResult Delete([DefaultValue(0)] int id)
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            Admin target = db.Admins.SingleOrDefault(targetadmin => targetadmin.Id == id);
+            if (target == null)
+                return HttpNotFound();
+            return View(target);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id,string answer)
+        {
+            if (answer == "Yes")
+            {
+                Admin admintodelete = db.Admins.Find(id);
+                TempData["Notification"] = "Delete " + admintodelete.UserName + " successfully.";
+                db.Admins.Remove(admintodelete);
+                db.SaveChanges();
+            }
+                return RedirectToAction("AdminList");
+                
         }
 
         [Authorize]

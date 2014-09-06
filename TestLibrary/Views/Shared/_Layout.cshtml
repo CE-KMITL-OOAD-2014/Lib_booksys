@@ -10,7 +10,7 @@
     <script src="~/Script/jquery-1.11.1.js"></script>
     <script>
         function resizewindow() {
-            if (window.innerWidth < 400) {
+            if (window.innerWidth < 450) {
 
                 $("div.reg-login-linkzone").css("margin", 0);
                 $("div#header").css("margin", "4px 0px 0px 0px");
@@ -29,26 +29,39 @@
     <script>
         $(document).ready(function () {
             resizewindow();
+            $("img.back-to-top-btt").hide();
             $(window).resize(resizewindow);
+            $("img.delete-btt").mouseover(function () {
+                $(this).attr("src", "/Content/delete-black-btt.png");
+            });
+            $("img.delete-btt").mouseout(function () {
+                $(this).attr("src", "/Content/delete-gray-btt.png");
+            });
+            $("img.edit-btt").mouseover(function () {
+                $(this).attr("src", "/Content/edit-black-btt.png");
+            });
+            $("img.edit-btt").mouseout(function () {
+                $(this).attr("src", "/Content/edit-gray-btt.png");
+            });
+
+            $(window).scroll(function () {
+                if (pageYOffset > 30)
+                    $("img.back-to-top-btt").show("fast");
+                else
+                    $("img.back-to-top-btt").hide("fast");
+            });
+            $("img.back-to-top-btt").click(function () {
+                $(window).scrollTop(200);
+            });
+
         });
-       /* $(document).ready(function () {
-            (document).scroll(function(){
-            if (pageYOffset > 30) {
-                $("img.back-to-top-btt").css("opacity", 0.5);
-                //$("img.back-to-top-btt").fadeIn("slow");
-            }
-            else
-                $("img.back-to-top-btt").css("opacity", 0);
-                //$("img.back-to-top-btt").fadeOut("slow");
-           });
-           
-        });*/
+       
     </script>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <div id="nav">
+<div id="nav">
         <div class="reg-login-linkzone">
             @if(Session["LoginUser"] != null)
             {
@@ -77,7 +90,7 @@
     <div id="content">
         @RenderBody()
     </div>
-    <img class="back-to-top-btt"src="~/Content/upArrow.png"/>
+    <a href="#"><img class="back-to-top-btt" src="~/Content/upArrow.png" /></a>
     <footer>&copy;@DateTime.Now.Year <a class="paratab" href="~/">ParatabPlusSite</a> ห้ามเกรียนคนใดคัดลอกเว็บไซต์นี้เด็ดขาด</footer>
 </body>
 </html>

@@ -133,6 +133,10 @@
       <DependentUpon>Database.mdf</DependentUpon>
     </Content>
     <Content Include="Content\asphalt.jpg" />
+    <Content Include="Content\delete-black-btt.png" />
+    <Content Include="Content\delete-gray-btt.png" />
+    <Content Include="Content\edit-black-btt - Copy.png" />
+    <Content Include="Content\edit-gray-btt.png" />
     <Content Include="Content\submit-btt.gif" />
     <Content Include="Content\upArrow.png" />
     <Content Include="Content\_Style.css" />
@@ -197,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\AdminList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Delete.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
