@@ -77,7 +77,43 @@ namespace TestLibrary.Controllers
             else
                 return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdvanceSearch([Bind(Include="BookName,Author,Publisher,Year")]Book booktosearch)
+        {
+            ModelState.Remove("BookName");
+            TempData["BookName"] = booktosearch.BookName;
+            TempData["Author"] = booktosearch.Author;
+            TempData["Publisher"] = booktosearch.Publisher;
+            TempData["Year"] = booktosearch.Year;
+            if(ModelState.IsValid){
 
+                List<Book> targetlist;
+                booktosearch.BookName = (booktosearch.BookName == null) ? "" : booktosearch.BookName;
+                booktosearch.Author = (booktosearch.Author == null) ? "" : booktosearch.Author;
+                booktosearch.Publisher = (booktosearch.Publisher == null) ? "" : booktosearch.Publisher;
+
+                if (booktosearch.Year != null)
+                {
+                    targetlist = db.Books.Where(target => (target.BookName.Contains(booktosearch.BookName)) &&
+                    (target.Author.Contains(booktosearch.Author)) && (target.Publisher.Contains(booktosearch.Publisher)) &&
+                     (target.Year == booktosearch.Year)).ToList();
+                }
+
+                else
+                {
+                    targetlist = db.Books.Where(target => (target.BookName.Contains(booktosearch.BookName)) &&
+                    (target.Author.Contains(booktosearch.Author)) && (target.Publisher.Contains(booktosearch.Publisher))).ToList();
+                }
+                TempData["AdvanceSearch"] = "Advance";
+                if (targetlist.Count == 0)
+                    TempData["Notification"] = "No result book found.";
+                return View("Search", targetlist);
+            }
+            else
+                TempData["Notification"] = "Input string was not in a correct format.";
+            return View("Search");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

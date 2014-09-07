@@ -263,11 +263,12 @@ table.list td{
 img.delete-btt,img.edit-btt,img.view-btt{
     vertical-align:text-bottom;
 }
+/*----------------------------------*/
 img.menu-btt{
     cursor:pointer;
     margin-left:5px;
 }
-/*----------------------------------*/
+
 div.menu-slider{
     font-family:Calibri;
     color:white;

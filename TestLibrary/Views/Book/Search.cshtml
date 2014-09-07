@@ -18,7 +18,7 @@
 </select><br />
     <input type="submit" value="Search" /></fieldset>
 </form>
-@if (Model != null)
+@if (Model != null && TempData["AdvanceSearch"]!="Advance")
 {
     if (Model.Count > 0)
     {
@@ -40,12 +40,35 @@
     }
 }
     <h2>Advance search</h2>
-    <form class="book-search" action="/Book/Search" method="post">
-        <fieldset>
-            <label>Book name</label><input type="text" placeholder="Book name" /><br />
-            <label>Author</label><input type="text" placeholder="Author" /><br />
-            <label>Publisher</label><input type="text" placeholder="Publisher" /><br />
-            <label>Year</label><input type="text" placeholder="Year" /><br />
-            <input type="submit" value="Search" />
-        </fieldset>
-    </form>
+    <form class="book-search" action="/Book/AdvanceSearch" method="post">
+        @Html.AntiForgeryToken()
+    <fieldset>
+        <label>Book name</label><input type="text" placeholder="Book name" name="BookName" value="@TempData["BookName"]"/><br />
+        <label>Author</label><input type="text" placeholder="Author" name="Author" value="@TempData["Author"]" /><br />
+        <label>Publisher</label><input type="text" placeholder="Publisher" name="Publisher" value="@TempData["Publisher"]" /><br />
+        <label>Year</label><input type="text" placeholder="Year" name="Year" value="@TempData["Year"]" /><br />
+        <input type="submit" value="Search" />
+    </fieldset>
+</form>
+
+@if (Model != null && TempData["AdvanceSearch"] == "Advance")
+{
+    if (Model.Count > 0)
+    {
+        <table class="list">
+            <tr>
+                <th>Book name</th>
+                <th>Author</th>
+                <th>Publisher</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BookName</td>
+                    <td>@item.Author</td>
+                    <td>@item.Publisher</td>
+                </tr>
+            }
+        </table>
+    }
+}
