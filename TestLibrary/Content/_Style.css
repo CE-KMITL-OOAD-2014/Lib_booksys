@@ -35,6 +35,20 @@ div.reg-login-linkzone a:visited{
     color:white;
 }
 
+div#quicksearch{
+    color:white;
+    margin-left:15%;
+    margin-right:15%;
+    margin-top:10px;
+    margin-bottom:0px;
+    position:fixed;
+    right:0
+}
+
+form.search-bar input{
+    font-family:Calibri;  
+}
+
 div#header{
     margin-top:4px;
     margin-left:15%;
@@ -42,7 +56,7 @@ div#header{
     font-size:x-large;
     color:white;
 }
-
+/*---account form---*/
 form.account-form{
     font-family:Single;
     font-size:xx-large;
@@ -88,7 +102,29 @@ form.account-form textarea{
     font-size:x-large;
     width:100%
 }
-
+/*--------------------------*/
+/*---booksearch form--------*/
+form.book-search{
+    font-family:Single;
+    font-size:xx-large;
+    margin:15px;
+    width:300px;
+}
+form.book-search input,form.book-search select,form.book-search label{
+    display:table-cell;
+    font-size:x-large;
+    font-family:Single;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    width:100%
+}
+form.book-search input[type="submit"]{
+    font-size:x-large;
+    border:none;
+    background-color:#FFFF00
+}
+/*--------------------------*/
 a.account-btt{
     clear:both;
     display:block;
@@ -140,6 +176,7 @@ div#menubar{
     margin-bottom:0;
     font-size:large;
     color:white;
+    
 }
 
 ul.menulist{
@@ -153,7 +190,7 @@ ul.menulist li a:link{
     text-decoration:none;
     text-align:center;
     display:block;
-    width:80px;
+    width:70px;
     float:left;
     color:white;
 
@@ -226,7 +263,48 @@ table.list td{
 img.delete-btt,img.edit-btt,img.view-btt{
     vertical-align:text-bottom;
 }
+img.menu-btt{
+    cursor:pointer;
+    margin-left:5px;
+}
+/*----------------------------------*/
+div.menu-slider{
+    font-family:Calibri;
+    color:white;
+    margin:0;
+}
 
+div.menu-slider ul{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+
+div.menu-slider li a:link{
+    color:white;
+    background-color:black;
+    border-bottom:1px solid;
+    border-color:white;
+    text-decoration:none;
+    display:block;
+    height:30px;
+}
+div.menu-slider li.last-menu a:link{
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+}
+
+div.menu-slider ul li a:hover{
+    color:black;
+    background-color:lightgray;
+}
+
+div.menu-slider li a:visited{
+    color:white;
+    border:1px solid white;
+}
+
+/*----------------------------------*/
 div#content{
     margin-top:70px;
     margin-left:15%;
@@ -246,6 +324,8 @@ img.back-to-top-btt{
     right:20px;
     
 }
+
+
 footer{
    
     height:25px;
@@ -281,7 +361,7 @@ h2.book-detail{
     display:inline;
 }
 p.noti-msg{
- text-indent:20px;
+    text-indent:0;
 font-weight:bolder;
 color:red;
 }

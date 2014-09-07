@@ -217,7 +217,6 @@ namespace TestLibrary.Controllers
         [HttpPost]
         public ActionResult AddBook(Book bookToAdd)
         {
-            ModelState.Remove("Year");
             if (ModelState.IsValid)
             {
                 db.Entry(bookToAdd).State = EntityState.Added;
@@ -247,6 +246,33 @@ namespace TestLibrary.Controllers
         }
 
         [Authorize]
+        public ActionResult EditBook([DefaultValue(0)]int id)
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            Book booktoedit = db.Books.Find(id);
+            if (booktoedit == null)
+                return HttpNotFound();
+            return View(booktoedit);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Editbook(Book booktoedit)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(booktoedit).State = EntityState.Modified;
+                TempData["Notification"] = "Edit book successfully.";
+                db.SaveChanges();
+                return RedirectToAction("BookList");
+            }
+            return View(booktoedit);
+        }
+
+
+
+        [Authorize]
         public ActionResult DeleteBook([DefaultValue(0)]int id){
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             Book booktodelete = db.Books.Find(id);
@@ -258,11 +284,10 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteBook(int id,string answer)
+        public ActionResult DeleteBook(Book booktodelete,string answer)
         {
             if (answer == "Yes")
             {
-                Book booktodelete = db.Books.Find(id);
                 TempData["Notification"] = "Delete " + booktodelete.BookName + " successfully.";
                 db.Entry(booktodelete).State = EntityState.Deleted;
                 db.SaveChanges();
@@ -270,6 +295,7 @@ namespace TestLibrary.Controllers
             }
             return RedirectToAction("BookList");
         }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

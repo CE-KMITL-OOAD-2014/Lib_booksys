@@ -11,27 +11,35 @@
     <script src="~/Script/jquery-ui.js"></script>
     <script>
         function resizewindow() {
-            if (window.outerWidth < 500) {
+            if (window.innerWidth < 800) {
 
-                $("div.reg-login-linkzone").css("margin", 0);
-                $("div#header").css("margin", "4px 0px 0px 0px");
-                $("div#menubar").css("margin", "10px 0px 0px 0px");
+                $("div.reg-login-linkzone").css("margin", "0px 5px 0px 5px");
+                $("div#header").css("margin", "4px 0px 0px 5px");
+                $("div#menubar").css("margin", "5px 0px 0px 0px");
+                $("div#quicksearch").css("margin", "10px 5px 0px 0px");
                 $("div#content").css("margin", "70px 0px 0px 0px");
-
+                $("ul.menulist").hide();
+                $("img.menu-btt").show();
             }
             else {
                 $("div.reg-login-linkzone").css("margin", "0px 15% 0px 15%");
                 $("div#header").css("margin", "4px 15% 0px 15%");
                 $("div#menubar").css("margin", "10px 15% 0px 15%");
+                $("div#quicksearch").css("margin", "10px 15% 0px 15%");
                 $("div#content").css("margin", "70px 15% 0px 15%");
+                $("img.menu-btt,div.menu-slider").hide();
+                $("ul.menulist").show();
             }
         }
     </script>
     <script>
         $(document).ready(function () {
             resizewindow();
-            $("img.back-to-top-btt").hide();
+            $("img.back-to-top-btt,div.menu-slider").hide();
             $(window).resize(resizewindow);
+            $("img.menu-btt").click(function () {
+                $("div.menu-slider").slideToggle("500");
+            });
             $("img.delete-btt").mouseover(function () {
                 $(this).attr("src", "/Content/delete-black-btt.png");
             });
@@ -85,16 +93,37 @@
     <div id="header">
         <a class="paratab" href="~/">Paratab+</a>
 </div>
+    <div id="quicksearch">
+        <form class="search-bar" action="/Book/SearchResult" method="post">
+            @Html.AntiForgeryToken()
+            <input type="text" placeholder="Quick search" name="BookName" value="@ViewBag.quicksearchkey">
+            <input type="submit" value="Search" />
+        </form>
+
+    </div>
         <div id="menubar">
+            <img class="menu-btt" src="/Content/menu.png"/>
+            <div class="menu-slider">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/Book/Search">Search</a></li>
+                    <li><a href="/Home/About">About Us</a></li>
+                    <li><a href="/Home/Contact">Contact</a></li>
+                    <li class="last-menu"><a href="/Home/ChangeLog">Change log</a></li>
+                </ul>
+            </div>
             <ul class="menulist">
                 <li><a href="~/">Home</a></li>
+                <li><a href="/Book/Search">Search</a></li>
                 <li><a href="/Home/About">About Us</a></li>
                 <li><a href="/Home/Contact">Contact</a></li>
                 <li><a href="/Home/ChangeLog">Ch.Log</a></li>
             </ul>
         </div>
     </div>
+
     <div id="content">
+       
         @RenderBody()
     </div>
     <a href="#top"><img class="back-to-top-btt" src="~/Content/upArrow.png" /></a>

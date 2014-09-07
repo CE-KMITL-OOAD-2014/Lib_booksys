@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "EditBook";
+}
+@model TestLibrary.Models.Book
+<h2>EditBook</h2>
+<form class="account-form" action="/Manage/EditBook/" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Edit book</legend>
+        @Html.HiddenFor(model =>model.BookID)
+        <input type="text" placeholder="Book name" name="BookName" value="@Model.BookName" /><br />
+        <input type="text" placeholder="Author" name="Author" value="@Model.Author" /><br />
+        <input type="text" placeholder="Publisher" name="Publisher" value="@Model.Publisher" /><br />
+        <input type="text" placeholder="Year" name="Year" value="@Model.Year" /><br />
+        <textarea placeholder="Detail" name="Detail">@Model.Detail</textarea><br />
+        <input type="submit" value="Edit book" />
+    </fieldset>
+</form>

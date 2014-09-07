@@ -12,12 +12,16 @@ namespace TestLibrary.Models
         [Required]
         public string BookName { get; set; }
 
+        [DisplayFormat(NullDisplayText="Unknown author.")]
         public string Author { get; set; }
 
+        [DisplayFormat(NullDisplayText="Unknown detail.")]
         public string Detail { get; set; }
-        public int Year { get; set; }
 
-        [DisplayFormat(NullDisplayText="Unknown publisher")]
+        [DisplayFormat(NullDisplayText="Unknown year.")]
+        public int? Year { get; set; }
+
+        [DisplayFormat(NullDisplayText="Unknown publisher.")]
         public string Publisher { get; set; }
 
     }

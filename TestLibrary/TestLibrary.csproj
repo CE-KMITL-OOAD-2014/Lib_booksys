@@ -114,12 +114,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataAccess\LibraryContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409061654153_InitialCreate.cs" />
+    <Compile Include="Migrations\201409061654153_InitialCreate.Designer.cs">
+      <DependentUpon>201409061654153_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409070822090_firstlibdb.cs" />
+    <Compile Include="Migrations\201409070822090_firstlibdb.Designer.cs">
+      <DependentUpon>201409070822090_firstlibdb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Person.cs" />
@@ -129,10 +139,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\asphalt.jpg" />
     <Content Include="Content\delete-black-btt.png" />
     <Content Include="Content\delete-gray-btt.png" />
@@ -191,6 +197,7 @@
     <Content Include="Views\Manage\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +226,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\DeleteBook.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201409061654153_InitialCreate.resx">
+      <DependentUpon>201409061654153_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409070822090_firstlibdb.resx">
+      <DependentUpon>201409070822090_firstlibdb.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Manage\EditBook.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Book\SearchResult.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Book\Search.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
