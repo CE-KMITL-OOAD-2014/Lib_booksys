@@ -9,7 +9,7 @@ namespace TestLibrary.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "TestLibrary.DataAccess.LibraryContext";
         }
 

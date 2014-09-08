@@ -113,6 +113,7 @@ namespace TestLibrary.Controllers
             else
                 TempData["Notification"] = "Input string was not in a correct format.";
             return View("Search");
+            
         }
 
         [HttpPost]

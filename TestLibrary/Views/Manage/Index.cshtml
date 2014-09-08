@@ -4,7 +4,7 @@
     ViewBag.Title = Session["LoginUser"];
 }
 
-<h1>Welcome! @Session["LoginUser"]</h1>
+<h1>Welcome! @Session["LoginUser"].ToString().Substring(2)</h1>
 <h2>Admin panel</h2>
 <ul class="admin-panel">
     <li><a href="/Manage/AddBook">Add book</a></li>

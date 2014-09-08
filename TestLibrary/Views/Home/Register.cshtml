@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+@model TestLibrary.Models.Member
+<h2>Register page</h2>
+<form class="account-form" action="/Home/Register" method="post">
+    @Html.AntiForgeryToken()
+    <p class="noti-msg">@TempData["Notification"]</p>
+    <fieldset>
+        
+        <legend>Register</legend>
+        <input type="text" placeholder="Username" name="UserName" value="@Html.DisplayFor(model => model.UserName)"/><br />
+        <input type="text" placeholder="Name" name="Name" value="@Html.DisplayFor(model => model.Name)" /><br />
+        <input type="text" placeholder="E-mail" name="Email" value="@Html.DisplayFor(model => model.Email)" /><br />
+        <input type="password" placeholder="Password" name="Password"/><br />
+        <input type="password" placeholder="Confirm Password" name="ConfirmPassword" /><br />
+        <input type="submit" value="Register" />
+    </fieldset>
+</form>

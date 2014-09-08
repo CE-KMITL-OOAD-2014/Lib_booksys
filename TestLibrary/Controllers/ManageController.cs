@@ -22,70 +22,11 @@ namespace TestLibrary.Controllers
             return View();
         }
 
-
-        public ActionResult Login()
-        {
-            if (Session["LoginUser"] == null)
-            {
-                if (HttpContext.User.Identity.IsAuthenticated)
-                {
-                    Session["LoginUser"] = HttpContext.User.Identity.Name;
-                    return RedirectToAction("Index");
-                }
-               /* Admin a = new Admin();
-                a.Name = "Paratab";
-                a.UserName = "ParatabAdmin";
-                a.Password = "surawit";
-                a.Email = "b@hotmail.com";
-                db.Admins.Add(a);
-                db.SaveChanges();*/
-                return View();
-            }
-            
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(Admin admin,bool remember)
-        {
-            ModelState.Remove("Name");
-            ModelState.Remove("Email");
-            if(ModelState.IsValid){
-                Admin a = db.Admins.Where(s => s.UserName == admin.UserName).SingleOrDefault();
-            if(a != null)
-            {
-                if (a.Password == admin.Password)
-                {
-                    
-                    FormsAuthentication.SetAuthCookie(a.UserName,remember);
-                    Session["LoginUser"] = a.UserName;
-                    return RedirectToAction("Index");
-                }
-            }
-            }
-            return View(); 
-        }
-        public ActionResult Register()
-        {
-            if (Session["LoginUser"] == null){
-                if(HttpContext.User.Identity.IsAuthenticated){
-                    Session["LoginUser"] = HttpContext.User.Identity.Name;
-                    return RedirectToAction("Index");
-                }
-                return View();
-            }
-            return RedirectToAction("Index");
-        }
-        
-
-        
         [Authorize]
         public ActionResult Detail()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
-            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name).SingleOrDefault();
+            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
 
@@ -93,7 +34,7 @@ namespace TestLibrary.Controllers
         public ActionResult Edit()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
-            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name).SingleOrDefault();
+            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
 
@@ -113,7 +54,7 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
-            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name).SingleOrDefault();
+            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
 
@@ -132,7 +73,8 @@ namespace TestLibrary.Controllers
             
             if (ModelState.IsValid)
             {
-                if (db.Admins.Where(s => s.UserName == admin.UserName).SingleOrDefault() == null)
+                if ((db.Admins.Where(s => s.UserName == admin.UserName).SingleOrDefault() == null)&&
+                    (db.Members.Where(m => m.UserName == admin.UserName).SingleOrDefault() == null))
                 {
                     db.Entry(admin).State = EntityState.Added;
                     db.SaveChanges();
@@ -196,14 +138,7 @@ namespace TestLibrary.Controllers
             }
             return View();
         }
-        public ActionResult Logout()
-        {
-            
-            FormsAuthentication.SignOut();
-            Session["LoginUser"] = null;
-            return RedirectToAction("Login");
-            
-        }
+        
 
         [Authorize]
         public ActionResult AddBook()

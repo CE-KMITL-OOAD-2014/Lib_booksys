@@ -38,7 +38,7 @@
             $("img.back-to-top-btt,div.menu-slider").hide();
             $(window).resize(resizewindow);
             $("img.menu-btt").click(function () {
-                $("div.menu-slider").slideToggle("500");
+                $("div.menu-slider").slideToggle("300");
             });
             $("img.delete-btt").mouseover(function () {
                 $(this).attr("src", "/Content/delete-black-btt.png");
@@ -80,12 +80,19 @@
         <div class="reg-login-linkzone">
             @if(Session["LoginUser"] != null)
             {
-                
-            <text>Welcome! </text><a href="/Manage/Detail">@Session["LoginUser"]</a><br />
-            <a href="/Manage/">My account</a><text>|</text><a href="/Manage/Logout">Sign out</a>
+                if (Session["LoginUser"].ToString().Substring(0, 2) == "M_") { 
+                <text>Welcome! </text><a href="/Member/Detail">@Session["LoginUser"].ToString().Substring(2)</a><br />
+            <a href="/Member/">My account</a><text>|</text>
+            }
+                else
+                {
+                 <text>Welcome! </text><a href="/Manage/Detail">@Session["LoginUser"].ToString().Substring(2)</a><br />
+            <a href="/Manage/">Manage</a><text>|</text>
+                }
+                <a href="/Home/Logout">Sign out</a>
             }
             else{
-            <a href="/Manage/Register">Register</a><text>|</text><a href="/Manage/Login">Login</a>
+            <a href="/Home/Register">Register</a><text>|</text><a href="/Home/Login">Login</a>
             }
 
 

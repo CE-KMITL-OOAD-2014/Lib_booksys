@@ -2,8 +2,8 @@
     ViewBag.Title = "Login";
 
 }
-
-<form class="account-form" action="/Manage/Login" method="post">
+<p class="noti-msg">@TempData["Notification"]</p>
+<form class="account-form" action="/Home/Login" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
         <legend>Login</legend>
