@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "All news";
+}
+@model IEnumerable<TestLibrary.Models.News>
+<h1>All news</h1>
+<center><table class="news-list">
+    @foreach (var news in Model)
+    {
+        <tr>
+            <td><b>@news.PostTime.ToShortDateString()</b></td>
+            <td>@news.Title</td>
+            <td><a href="/News/Detail/@news.NewsID">อ่านต่อ</a></td>
+        </tr>
+    }
+    </table></center>

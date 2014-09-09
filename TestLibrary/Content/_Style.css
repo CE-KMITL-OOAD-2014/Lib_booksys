@@ -49,6 +49,9 @@ form.search-bar input{
     font-family:Calibri;  
 }
 
+form.search-bar input[type="text"]{
+    width:140px  
+}
 div#header{
     margin-top:4px;
     margin-left:15%;
@@ -123,6 +126,39 @@ form.book-search input[type="submit"]{
     font-size:x-large;
     border:none;
     background-color:#FFFF00
+}
+/*--------------------------*/
+form.news-form{
+    font-family:Single;
+    font-size:x-large;
+    margin:15px;
+}
+form.news-form label{
+    font-weight:900
+}
+/*--------------------------*/
+table.news-list{
+    font-family:Single;
+    font-size:x-large;
+    margin:15px;
+    padding:5px;
+    border:1px solid #808080;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+}
+
+table.news-list tr:hover{
+    background-color:#FFFF75;
+}
+/*--------------------------*/
+div.news-area{
+    margin:15px;
+    padding:10px;
+    font-family:Single;
+    font-size:x-large;
+    border:1px solid #808080;
 }
 /*--------------------------*/
 a.account-btt{
@@ -260,9 +296,10 @@ table.list td{
     border:1px solid #808080;
 }
 
-img.delete-btt,img.edit-btt,img.view-btt{
+img.delete-btt,img.edit-btt,img.view-btt,img.paratab{
     vertical-align:text-bottom;
 }
+
 /*----------------------------------*/
 img.menu-btt{
     cursor:pointer;
@@ -274,6 +311,15 @@ div.menu-slider{
     color:white;
     margin:0;
 }
+div.menu-slider li a:link{
+    background-color:black;
+    color:white;
+    border-bottom:1px solid;
+    border-color:white;
+    text-decoration:none;
+    display:block;
+    height:30px;
+}
 
 div.menu-slider ul{
     margin:0;
@@ -281,15 +327,7 @@ div.menu-slider ul{
     list-style-type:none;
 }
 
-div.menu-slider li a:link{
-    color:white;
-    background-color:black;
-    border-bottom:1px solid;
-    border-color:white;
-    text-decoration:none;
-    display:block;
-    height:30px;
-}
+
 div.menu-slider li.last-menu a:link{
     border-bottom-left-radius:10px;
     border-bottom-right-radius:10px;
@@ -302,7 +340,7 @@ div.menu-slider ul li a:hover{
 
 div.menu-slider li a:visited{
     color:white;
-    border:1px solid white;
+    background-color:black;
 }
 
 /*----------------------------------*/
@@ -349,7 +387,7 @@ a.paratab:visited{
 h1{
    padding-top:8px;
    padding-left:15px;
-    font-family:Calibri;  
+    font-family:Calibri;
 }
 
 h2{
@@ -361,12 +399,7 @@ h2{
 h2.book-detail{
     display:inline;
 }
-p.noti-msg{
-    text-indent:0;
-font-weight:bolder;
-color:red;
-}
-p{
+p.real-paragraph,p.noti-msg{
     padding-left:15px;
     padding-right:15px;
     text-indent:50px;
@@ -375,8 +408,20 @@ p{
     font-size:25px;
 }
 
+p.noti-msg{
+text-indent:0;
+font-weight:bolder;
+color:red;
+}
+
 p.book-detail{
     display:inline;
+}
+
+p.post-time{
+    margin:0;
+    padding:0;
+    text-align:right;
 }
 
 @font-face{

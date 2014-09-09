@@ -6,13 +6,20 @@
 
 <h1>Welcome! @Session["LoginUser"].ToString().Substring(2)</h1>
 <h2>Admin panel</h2>
+
 <ul class="admin-panel">
     <li><a href="/Manage/AddBook">Add book</a></li>
     <li><a href="/Manage/BookList">Book list</a></li>
     <li><a href="/Manage/EditBook">Edit book</a></li>
     <li><a href="/Manage/Borrow">Borrow</a></li>
     <li><a href="/Manage/Borrow">Return</a></li>
-</ul><br />
+</ul>
+
+<ul class="admin-panel">
+    <li><a href="/Manage/AddNews">Add news</a></li>
+    <li><a href="/Manage/NewsList">News List</a></li>
+    <li><a href="/Manage/DeleteNews">Delete news</a></li>
+</ul>
 <a class="account-btt" href="/Manage/Detail">View Detail</a>
 <a class="account-btt" href="/Manage/AddAdmin">Add admin</a>
 <a class="account-btt" href="/Manage/AdminList">Admin list</a>

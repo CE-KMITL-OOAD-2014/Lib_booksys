@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "EditNews";
+}
+@model TestLibrary.Models.News
+<h2>EditNews</h2>
+<form class="news-form" action="/Manage/EditNews" method="post">
+    @Html.AntiForgeryToken()
+    <label>Title</label><br />
+    <input type="text" value="@Html.DisplayFor(model => model.Title)" Name="Title" /><br />
+    <label>Detail</label><br />
+    <textarea class="ckeditor" name="Detail">
+        @Html.DisplayFor(model => model.Detail)
+    </textarea>
+    @Html.HiddenFor(model => model.NewsID)
+    @Html.HiddenFor(model => model.PostTime)
+    <input type="submit" value="Edit news" />
+</form>
+<script src="/Script/ckeditor/ckeditor.js" type="text/javascript"></script>

@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "NewsList";
+}
+@model IEnumerable<TestLibrary.Models.News>
+<h2>NewsList</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+<a class="account-btt" href="/Manage/AddNews">Add News</a>
+<table class="list">
+    <tr>
+        <th>Title</th>
+        <th>Post time</th>
+           <th></th><th></th>
+    </tr>
+    @foreach (var news in Model)
+    {
+        <tr>
+            <td>@news.Title</td>
+            <td>@news.PostTime.ToShortDateString()</td>
+            <td><a href="/Manage/EditNews/@news.NewsID"><img class="edit-btt" src="/Content/edit-gray-btt.png"></a></td>
+            <td><a href="/Manage/DeleteNews/@news.NewsID"><img class="delete-btt" src="/Content/delete-gray-btt.png"></a></td>
+        </tr>
+    }
+</table>
+<a class="account-btt" href="/Manage/">Back</a>

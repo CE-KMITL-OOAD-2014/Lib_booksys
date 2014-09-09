@@ -15,7 +15,7 @@ namespace TestLibrary.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
-            return View();
+            return View(db.NewsList.ToList());
         }
 
         public ActionResult About()

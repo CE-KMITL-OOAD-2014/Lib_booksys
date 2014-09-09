@@ -1,8 +1,24 @@
 ﻿@{
     ViewBag.Title = "Home";
 }
-
+@model IEnumerable<TestLibrary.Models.News>
 <h1>Welcome to online library book system</h1>
-<p>ยินดีต้อนรับสู่ Web application อันน่าตื่นตาตื่นใจ คุณจะได้พบกับความสามารถของระบบห้องสมุดออนไลน์ที่สามารถช่วยจัดการปัญหาทุกอย่างที่เกิดขึ้นได้</p>
+<p class="real-paragraph">ยินดีต้อนรับสู่ Web application อันน่าตื่นตาตื่นใจ คุณจะได้พบกับความสามารถของระบบห้องสมุดออนไลน์ที่สามารถช่วยจัดการปัญหาทุกอย่างที่เกิดขึ้นได้</p>
 <h1>News</h1>
+<table class="news-list">
+    @foreach (var news in Model)
+    {
+        <tr>
+            <td><b>@news.PostTime.ToShortDateString()</b></td>
+            <td>@news.Title</td>
+            
+            <td><a href="/News/Detail/@news.NewsID">อ่านต่อ</a></td>
+        </tr>
+    }
+    <tr>
+        <td></td>
+        <td></td>
+        <td><a href="/News/ViewAll">ดูทั้งหมด</a></td>
+    </tr>
+</table>
 
