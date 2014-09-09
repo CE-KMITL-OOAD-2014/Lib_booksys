@@ -134,10 +134,15 @@
     <Compile Include="Migrations\201409081625264_addmember.Designer.cs">
       <DependentUpon>201409081625264_addmember.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409090559018_newslist.cs" />
+    <Compile Include="Migrations\201409090559018_newslist.Designer.cs">
+      <DependentUpon>201409090559018_newslist.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\News.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -242,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409081625264_addmember.resx">
       <DependentUpon>201409081625264_addmember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409090559018_newslist.resx">
+      <DependentUpon>201409090559018_newslist.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

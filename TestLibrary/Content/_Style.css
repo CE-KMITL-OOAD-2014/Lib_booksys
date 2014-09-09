@@ -246,7 +246,7 @@ table.list{
     font-family:Single;
     font-size:x-large;
     margin:15px;
-    border-collapse:collapse;
+    border-collapse:collapse
 }
 
 table.list th{

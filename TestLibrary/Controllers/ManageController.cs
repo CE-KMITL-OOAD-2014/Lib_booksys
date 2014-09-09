@@ -19,6 +19,9 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             return View();
         }
 
@@ -26,6 +29,8 @@ namespace TestLibrary.Controllers
         public ActionResult Detail()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
@@ -34,6 +39,8 @@ namespace TestLibrary.Controllers
         public ActionResult Edit()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
@@ -54,6 +61,9 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
@@ -62,6 +72,8 @@ namespace TestLibrary.Controllers
         public ActionResult AddAdmin()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             return View();
         }
 
@@ -90,6 +102,8 @@ namespace TestLibrary.Controllers
         public ActionResult Delete([DefaultValue(0)] int id)
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Admin target = db.Admins.SingleOrDefault(targetadmin => targetadmin.Id == id);
             if (target == null)
                 return HttpNotFound();
@@ -116,6 +130,8 @@ namespace TestLibrary.Controllers
         public ActionResult AdminList()
         {
             Session["loginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             return View(db.Admins.ToList());
         }
 
@@ -144,6 +160,8 @@ namespace TestLibrary.Controllers
         public ActionResult AddBook()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             return View();
         }
 
@@ -166,6 +184,8 @@ namespace TestLibrary.Controllers
         public ActionResult BookList()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             return View(db.Books.ToList());
         }
 
@@ -173,6 +193,8 @@ namespace TestLibrary.Controllers
         public ActionResult ViewBook([DefaultValue(0)]int id)
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Book booktoview = db.Books.Find(id);
             if (booktoview == null)
                 return HttpNotFound();
@@ -184,6 +206,8 @@ namespace TestLibrary.Controllers
         public ActionResult EditBook([DefaultValue(0)]int id)
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Book booktoedit = db.Books.Find(id);
             if (booktoedit == null)
                 return HttpNotFound();
@@ -210,6 +234,8 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult DeleteBook([DefaultValue(0)]int id){
             Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
             Book booktodelete = db.Books.Find(id);
             if (booktodelete == null)
                 return HttpNotFound();

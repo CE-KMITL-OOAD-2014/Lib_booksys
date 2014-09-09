@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewBag.Title = Session["LoginUser"];
+    ViewBag.Title = Session["LoginUser"].ToString().Substring(2);
 }
 
 <h1>Welcome! @Session["LoginUser"].ToString().Substring(2)</h1>
@@ -17,4 +17,4 @@
 <a class="account-btt" href="/Manage/AddAdmin">Add admin</a>
 <a class="account-btt" href="/Manage/AdminList">Admin list</a>
 <a class="account-btt" href="/Manage/ChangePassword">Change password</a>
-<a class="account-btt" href="~/Manage/Logout">Sign out</a>
+<a class="account-btt" href="~/Home/Logout">Sign out</a>
