@@ -30,8 +30,7 @@ C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\b
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\EntityFramework.SqlServer.dll
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\EntityFramework.xml
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\EntityFramework.SqlServer.xml
-C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.InitialCreate.resources
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csproj.GenerateResource.Cache
-C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.firstlibdb.resources
-C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.addmember.resources
 C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.newslist.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editdb.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.addbookstat.resources

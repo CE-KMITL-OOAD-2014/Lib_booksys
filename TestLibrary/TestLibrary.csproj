@@ -123,25 +123,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409061654153_InitialCreate.cs" />
-    <Compile Include="Migrations\201409061654153_InitialCreate.Designer.cs">
-      <DependentUpon>201409061654153_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409070822090_firstlibdb.cs" />
-    <Compile Include="Migrations\201409070822090_firstlibdb.Designer.cs">
-      <DependentUpon>201409070822090_firstlibdb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409081625264_addmember.cs" />
-    <Compile Include="Migrations\201409081625264_addmember.Designer.cs">
-      <DependentUpon>201409081625264_addmember.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201409090559018_newslist.cs" />
     <Compile Include="Migrations\201409090559018_newslist.Designer.cs">
       <DependentUpon>201409090559018_newslist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409101702433_editdb.cs" />
+    <Compile Include="Migrations\201409101702433_editdb.Designer.cs">
+      <DependentUpon>201409101702433_editdb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409101743001_addbookstat.cs" />
+    <Compile Include="Migrations\201409101743001_addbookstat.Designer.cs">
+      <DependentUpon>201409101743001_addbookstat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\BorrowEntry.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\News.cs" />
     <Compile Include="Models\Person.cs" />
@@ -240,17 +237,14 @@
     <Content Include="Views\Manage\DeleteBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409061654153_InitialCreate.resx">
-      <DependentUpon>201409061654153_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409070822090_firstlibdb.resx">
-      <DependentUpon>201409070822090_firstlibdb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409081625264_addmember.resx">
-      <DependentUpon>201409081625264_addmember.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409090559018_newslist.resx">
       <DependentUpon>201409090559018_newslist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409101702433_editdb.resx">
+      <DependentUpon>201409101702433_editdb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409101743001_addbookstat.resx">
+      <DependentUpon>201409101743001_addbookstat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +276,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\News\ViewAll.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Manage\Borrow.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Manage\Return.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

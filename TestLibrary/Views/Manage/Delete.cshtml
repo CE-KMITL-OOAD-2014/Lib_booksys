@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete";
 }
 
-<form class="account-form" action="/Manage/Delete/@Html.DisplayFor(model => model.Id)" method="post">
+<form class="account-form" action="/Manage/Delete/@Html.DisplayFor(model => model.UserID)" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
         <legend>Delete admin</legend>

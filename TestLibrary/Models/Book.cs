@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace TestLibrary.Models
 {
+    public enum Status
+    {
+        Available,Borrowed
+    }
     public class Book
     {
         [Key]
@@ -24,5 +30,9 @@ namespace TestLibrary.Models
         [DisplayFormat(NullDisplayText="Unknown publisher.")]
         public string Publisher { get; set; }
 
+        [DefaultValue(Status.Available)]
+        [Column("Status")]
+        public Status BookStatus { get; set; }
+        public virtual ICollection<BorrowEntry> BorrowEntries { get; set; }
     }
 }

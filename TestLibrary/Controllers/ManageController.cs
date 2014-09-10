@@ -104,7 +104,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Member");
-            Admin target = db.Admins.SingleOrDefault(targetadmin => targetadmin.Id == id);
+            Admin target = db.Admins.SingleOrDefault(targetadmin => targetadmin.UserID == id);
             if (target == null)
                 return HttpNotFound();
             return View(target);
@@ -142,7 +142,7 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                Admin a = db.Admins.Where(s => s.Id == admin.Id).SingleOrDefault();
+                Admin a = db.Admins.Where(s => s.UserID == admin.UserID).SingleOrDefault();
                if (a.Password == oldpass && admin.Password == confirm)
                 {
                     a.Password = admin.Password;
@@ -256,6 +256,42 @@ namespace TestLibrary.Controllers
             }
             return RedirectToAction("BookList");
         }
+
+        [Authorize]
+        public ActionResult Borrow()
+        {
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Borrow(BorrowEntry newentry)
+        {
+            if (ModelState.IsValid)
+            {
+                TempData["Notification"] = "OK";
+                return View();
+            }
+            else return View();
+        }
+
+        [Authorize]
+        public ActionResult Return()
+        {
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
+            return View();
+        }
+
+
+
+
+
+
+
 
         [Authorize]
         public ActionResult AddNews()

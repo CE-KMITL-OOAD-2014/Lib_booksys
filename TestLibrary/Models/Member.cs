@@ -11,5 +11,7 @@ namespace TestLibrary.Models
         {
             return ("Member");
         }
+
+        public virtual ICollection<BorrowEntry> BorrowEntries { get; set; }
     }
 }

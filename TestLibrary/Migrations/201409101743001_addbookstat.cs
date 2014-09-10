@@ -3,16 +3,16 @@ namespace TestLibrary.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class firstlibdb : DbMigration
+    public partial class addbookstat : DbMigration
     {
         public override void Up()
         {
-            AlterColumn("dbo.Books", "Year", c => c.Int());
+            AddColumn("dbo.Books", "Status", c => c.Int(nullable: false));
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.Books", "Year", c => c.Int(nullable: false));
+            DropColumn("dbo.Books", "Status");
         }
     }
 }

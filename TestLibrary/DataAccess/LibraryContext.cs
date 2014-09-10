@@ -12,6 +12,7 @@ namespace TestLibrary.DataAccess
             public DbSet<Member> Members { get; set; }
             public DbSet<Book> Books { get; set; }
             public DbSet<News> NewsList { get; set; }
+            public DbSet<BorrowEntry> BorrowList { get; set; }
         }
     
 }

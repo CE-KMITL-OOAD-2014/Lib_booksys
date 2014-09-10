@@ -20,7 +20,7 @@ namespace TestLibrary.Models
         public string Email { get; set; }
         public abstract string Identify();
         [Key]
-        public int Id { get; set; }
+        public int UserID { get; set; }
 
     }
 }
