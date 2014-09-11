@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Member Detail";
+}
+@model TestLibrary.Models.Member
+<h2>Member Detail</h2>
+<form class="news-form">
+    <label>UserID:</label>@Html.DisplayFor(model => model.UserID)<br />
+    <label>Username:</label>@Html.DisplayFor(model => model.UserName)<br />
+    <label>Name:</label>@Html.DisplayFor(model => model.Name)<br />
+    <label>Email:</label>@Html.DisplayFor(model => model.Email)<br />
+    <label>Password:</label>*********
+</form>
+<a class="account-btt" href="/Member/">Back</a>

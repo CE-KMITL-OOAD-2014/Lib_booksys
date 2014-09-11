@@ -272,8 +272,42 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempData["Notification"] = "OK";
-                return View();
+                if (db.Members.Find(newentry.UserID) == null)
+                {
+                    TempData["Notification"] = "No member that id's exists.";
+                    return View();
+                }
+
+                if (db.BorrowList.Where(target => target.UserID == newentry.UserID 
+                    && target.ReturnDate == null).ToList().Count == 3)
+                {
+                    TempData["Notification"] = "This member borrow exceed maximum allowed.";
+                    return View();
+                }
+
+                Book booktoborrow = db.Books.Find(newentry.BookID);
+
+                if (booktoborrow == null)
+                {
+                    TempData["Notification"] = "No book was found in database.";
+                    return View();
+                }
+                else if (booktoborrow.BookStatus == Status.Available)
+                {
+                    newentry.BorrowDate = DateTime.Now;
+                    newentry.DueDate = DateTime.Now.AddDays(7);
+                    booktoborrow.BookStatus = Status.Borrowed;
+                    db.Entry(booktoborrow).State = EntityState.Modified;
+                    db.BorrowList.Add(newentry);
+                    db.SaveChanges();
+                    TempData["Notification"] = "OK";
+                    return View();
+                }
+                else
+                {
+                    TempData["Notification"] = "This book is already borrowed.";
+                    return View();
+                }
             }
             else return View();
         }
@@ -281,14 +315,45 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Return()
         {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Member");
             return View();
         }
 
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Return(int? BookID)
+        {
+            ModelState.Remove("UserID");
+
+            
+                BorrowEntry targetentry = db.BorrowList.ToList().LastOrDefault(target => target.BookID == BookID 
+                    && target.ReturnDate == null);
+                if (targetentry == null)
+                {
+                    TempData["Notification"] = "No book to return in database.";
+                    return View();
+                }
+                targetentry.BorrowBook.BookStatus = Status.Available;
+                targetentry.ReturnDate = DateTime.Now;
+                db.Entry(targetentry).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["Notification"] = "Return book success!";
+            return View();
+        }
 
 
 
+        [Authorize]
+        public ActionResult BorrowTracking()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Member");
+            return View(db.BorrowList.Include(list => list.BorrowBook).Include(list => list.Borrower).ToList());
+        }
 
 
 

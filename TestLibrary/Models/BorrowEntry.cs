@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 namespace TestLibrary.Models
 {
     public class BorrowEntry
@@ -17,6 +18,8 @@ namespace TestLibrary.Models
         public DateTime BorrowDate { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime? ReturnDate { get; set; }
+
+        [DefaultValue(0)]
         public short RenewCount { get; set; }
 
         public virtual Book BorrowBook { get; set; }

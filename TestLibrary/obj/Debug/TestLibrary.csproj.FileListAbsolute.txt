@@ -34,3 +34,5 @@ C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\o
 C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.newslist.resources
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editdb.resources
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.addbookstat.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editborrowentry.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editreturndatecol.resources

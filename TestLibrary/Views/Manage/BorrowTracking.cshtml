@@ -1,0 +1,36 @@
+﻿@model List<TestLibrary.Models.BorrowEntry>
+@{
+    ViewBag.Title = "BorrowTracking";
+    int count = 0;
+}
+<h2>BorrowTracking</h2>
+<table class="list">
+    <tr>
+        <th>No.</th>
+        <th>Book name</th>
+        <th>Borrower</th>
+        <th>Due date</th>
+        <th>Return date</th>
+    </tr>
+    @foreach (var record in Model)
+    {
+        <tr>
+            <td>
+            @(++count)
+            </td>
+            <td>
+                @record.BorrowBook.BookName
+            </td>
+            <td>
+                @record.Borrower.UserName
+            </td>
+            <td>
+                @record.DueDate.ToShortDateString()
+            </td>
+            <td>
+                @record.ReturnDate
+            </td>
+        </tr>
+        
+    }
+</table>

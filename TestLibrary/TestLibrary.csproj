@@ -135,6 +135,14 @@
     <Compile Include="Migrations\201409101743001_addbookstat.Designer.cs">
       <DependentUpon>201409101743001_addbookstat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409111452380_editborrowentry.cs" />
+    <Compile Include="Migrations\201409111452380_editborrowentry.Designer.cs">
+      <DependentUpon>201409111452380_editborrowentry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409111621108_editreturndatecol.cs" />
+    <Compile Include="Migrations\201409111621108_editreturndatecol.Designer.cs">
+      <DependentUpon>201409111621108_editreturndatecol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Book.cs" />
@@ -246,6 +254,12 @@
     <EmbeddedResource Include="Migrations\201409101743001_addbookstat.resx">
       <DependentUpon>201409101743001_addbookstat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409111452380_editborrowentry.resx">
+      <DependentUpon>201409111452380_editborrowentry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409111621108_editreturndatecol.resx">
+      <DependentUpon>201409111621108_editreturndatecol.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\EditBook.cshtml" />
@@ -282,6 +296,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\Return.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Manage\BorrowTracking.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Member\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Book\Renew.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

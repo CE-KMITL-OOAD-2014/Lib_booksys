@@ -7,6 +7,7 @@ using System.Web.Security;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
 using System.ComponentModel;
+using System.Data.Entity;
 namespace TestLibrary.Controllers
 {
     public class BookController : Controller
@@ -115,6 +116,55 @@ namespace TestLibrary.Controllers
             return View("Search");
             
         }
+
+        [Authorize]
+        public ActionResult Renew(int id)
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if(HttpContext.User.Identity.Name.ToString().Substring(0,2)!="M_")
+                return RedirectToAction("Index","Manage");
+
+            BorrowEntry renewentry = db.BorrowList.SingleOrDefault(target => target.ID == id &&
+                                        target.ReturnDate == null);
+            if (renewentry == null)
+            {
+                TempData["Notification"] = "Invalid renew book id.";
+                return RedirectToAction("Index","Member");
+            }
+
+            if (renewentry.Borrower.UserName != Session["LoginUser"].ToString().Substring(2))
+            {
+                TempData["Notification"] = "Invalid renew operation.";
+                return RedirectToAction("Index","Member");
+            }
+
+            if (renewentry.RenewCount == 3)
+            {
+                TempData["Notification"] = "Your renew of book ID."+renewentry.BorrowBook.BookID+" is exceed maximum!";
+                return RedirectToAction("Index", "Member");
+            }
+            return View(renewentry);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Renew(BorrowEntry renewentry, string answer)
+        {
+            if (ModelState.IsValid && answer == "Yes")
+            {
+                renewentry.DueDate = DateTime.Now.AddDays(7);
+                renewentry.RenewCount++;
+                db.Entry(renewentry).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["Notification"] = "Renew successful!";
+            }
+            return RedirectToAction("Index", "Member");
+        }
+
+
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
