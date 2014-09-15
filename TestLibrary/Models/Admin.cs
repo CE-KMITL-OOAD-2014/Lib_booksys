@@ -11,7 +11,7 @@ namespace TestLibrary.Models
 
         public override string Identify()
         {
-            return "Administrator";
+            return "Administrator "+this.UserName;
         }
     }
 }

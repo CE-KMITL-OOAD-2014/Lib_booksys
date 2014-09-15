@@ -9,7 +9,7 @@ namespace TestLibrary.Models
 {
     public enum Status
     {
-        Available,Borrowed
+        Available,Borrowed,Reserved,Lost
     }
     public class Book
     {
@@ -34,5 +34,6 @@ namespace TestLibrary.Models
         [Column("Status")]
         public Status BookStatus { get; set; }
         public virtual ICollection<BorrowEntry> BorrowEntries { get; set; }
+        public virtual ICollection<RequestEntry> RequestEntries { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
+using TestLibrary.ViewModels;
 namespace TestLibrary.Controllers
 {
     public class MemberController : Controller
@@ -16,9 +17,16 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) == "M_")
-               return View(db.BorrowList.ToList().Where((target => target.Borrower.UserName == 
-                    Session["LoginUser"].ToString().Substring(2) &&
-                    target.ReturnDate == null)).ToList());
+            {
+                MemberTransactionViewer viewer = new MemberTransactionViewer();
+                viewer.SetBorrowEntryViews(db.BorrowList.Where(target => target.Borrower.UserName ==
+                                           HttpContext.User.Identity.Name.ToString().Substring(2) &&
+                                           target.ReturnDate == null).ToList());
+                viewer.SetRequestEntryViews(db.RequestList.Where(target => target.RequestUser.UserName ==
+                                           HttpContext.User.Identity.Name.ToString().Substring(2) &&
+                                           target.ExpireDate == null).ToList());
+                return View(viewer);
+            }
             else
                 return RedirectToAction("Index", "Manage");
         }

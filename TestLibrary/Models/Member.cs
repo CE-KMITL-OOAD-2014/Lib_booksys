@@ -9,9 +9,10 @@ namespace TestLibrary.Models
     {
         public override string Identify()
         {
-            return ("Member");
+            return ("Member "+this.UserName);
         }
 
         public virtual ICollection<BorrowEntry> BorrowEntries { get; set; }
+        public virtual ICollection<RequestEntry> RequestEntries { get; set; }
     }
 }

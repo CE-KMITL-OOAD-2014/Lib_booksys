@@ -14,10 +14,6 @@ namespace TestLibrary.Controllers
     {
         LibraryContext db = new LibraryContext();
 
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         public ActionResult Search()
         {
@@ -153,11 +149,18 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid && answer == "Yes")
             {
-                renewentry.DueDate = DateTime.Now.AddDays(7);
-                renewentry.RenewCount++;
-                db.Entry(renewentry).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["Notification"] = "Renew successful!";
+                if (db.RequestList.ToList().LastOrDefault(target => target.BookID == renewentry.BookID && target.ExpireDate == null) != null)
+                {
+                    TempData["Notification"] = "This book is ON HOLD.";
+                }
+                else
+                {
+                    renewentry.DueDate = DateTime.Now.AddDays(7);
+                    renewentry.RenewCount++;
+                    db.Entry(renewentry).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["Notification"] = "Renew successful!";
+                }
             }
             return RedirectToAction("Index", "Member");
         }
@@ -173,6 +176,63 @@ namespace TestLibrary.Controllers
             ViewBag.quicksearchkey = BookName;
              IQueryable<Book> booklist = db.Books.Where(target => target.BookName.Contains(BookName));
             return View(booklist.ToList());
+        }
+
+
+        [Authorize]
+        public ActionResult Request()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
+                return RedirectToAction("Index", "Manage");
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Request(RequestEntry newentry)
+        {
+            if (ModelState.IsValid)
+            {
+                Book booktorequest;
+                if ((booktorequest = db.Books.Find(newentry.BookID)) == null)
+                {
+                    TempData["Notification"] = "No book with prefer ID exists.";
+                    return View();
+                }
+                if (booktorequest.BookStatus != Status.Borrowed)
+                {
+                    TempData["Notification"] = "Can't request this book due to it is "
+                        + booktorequest.BookStatus.ToString() + ".";
+                    return View();
+                }
+
+                if (db.RequestList.ToList().LastOrDefault(target => target.BookID == booktorequest.BookID && target.ExpireDate == null) != null)
+                {
+                    TempData["Notification"] = "This book is already requested.";
+                    return View();
+                }
+
+                Member request_member = db.Members.Where(target => target.UserName ==
+                                                HttpContext.User.Identity.Name.ToString().Substring(2)).Single();
+
+                if(db.BorrowList.ToList().LastOrDefault(target => target.BookID == newentry.BookID &&
+                                                        target.Borrower == request_member && target.ReturnDate == null) != null)
+                {
+                    TempData["Notification"] = "Can't request your current borrowed book.";
+                    return View();
+                }
+
+                newentry.UserID = request_member.UserID;
+                newentry.RequestDate = DateTime.Now;
+                db.RequestList.Add(newentry);
+                db.SaveChanges();
+                TempData["Notification"] = "Request book successfully.";
+                return RedirectToAction("Index","Member");
+            }
+            else
+                return View();
         }
 
     }
