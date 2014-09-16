@@ -155,7 +155,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    renewentry.DueDate = DateTime.Now.AddDays(7);
+                    renewentry.DueDate = DateTime.Now.Date.AddDays(7);
                     renewentry.RenewCount++;
                     db.Entry(renewentry).State = EntityState.Modified;
                     db.SaveChanges();
@@ -201,14 +201,15 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "No book with prefer ID exists.";
                     return View();
                 }
-                if (booktorequest.BookStatus != Status.Borrowed)
+                if (booktorequest.BookStatus != Status.Borrowed && booktorequest.BookStatus != Status.Reserved)
                 {
                     TempData["Notification"] = "Can't request this book due to it is "
                         + booktorequest.BookStatus.ToString() + ".";
                     return View();
                 }
 
-                if (db.RequestList.ToList().LastOrDefault(target => target.BookID == booktorequest.BookID && target.ExpireDate == null) != null)
+                if (db.RequestList.ToList().LastOrDefault(target => target.BookID == booktorequest.BookID 
+                                && target.ExpireDate == null) != null || booktorequest.BookStatus == Status.Reserved)
                 {
                     TempData["Notification"] = "This book is already requested.";
                     return View();

@@ -53,10 +53,10 @@ else{
                 @record.RequestBook.BookName
             </td>
             <td>
-                @record.RequestDate
+                @record.RequestDate.ToShortDateString()
             </td>
             <td>
-                @record.ExpireDate
+                @record.ExpireDate.Value.ToShortDateString()
             </td>
                 <td>Cancel</td>
                 </tr>

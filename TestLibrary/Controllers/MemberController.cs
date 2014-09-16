@@ -22,9 +22,20 @@ namespace TestLibrary.Controllers
                 viewer.SetBorrowEntryViews(db.BorrowList.Where(target => target.Borrower.UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2) &&
                                            target.ReturnDate == null).ToList());
-                viewer.SetRequestEntryViews(db.RequestList.Where(target => target.RequestUser.UserName ==
-                                           HttpContext.User.Identity.Name.ToString().Substring(2) &&
-                                           target.ExpireDate == null).ToList());
+                viewer.SetRequestEntryViews((db.RequestList.Where(target => target.RequestUser.UserName ==
+                                           HttpContext.User.Identity.Name.ToString().Substring(2)).ToList()));
+                List<RequestEntry> temp = viewer.GetRequestEntryViews();
+
+                foreach (var item in temp)
+                {
+                    if (item.ExpireDate != null)
+                    {
+                        if (DateTime.Now.Date > item.ExpireDate.Value.Date)
+                        {
+                            viewer.GetRequestEntryViews().Remove(item);
+                        }
+                    }
+                }
                 return View(viewer);
             }
             else

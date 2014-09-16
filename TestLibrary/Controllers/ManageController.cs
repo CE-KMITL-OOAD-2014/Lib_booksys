@@ -257,6 +257,9 @@ namespace TestLibrary.Controllers
             return RedirectToAction("BookList");
         }
 
+
+        //Show viewtable if user click 'Check'
+        //To decide whether prefer request is OK?
         [Authorize]
         public ActionResult Borrow()
         {
@@ -294,8 +297,8 @@ namespace TestLibrary.Controllers
                 }
                 else if (booktoborrow.BookStatus == Status.Available)
                 {
-                    newentry.BorrowDate = DateTime.Now;
-                    newentry.DueDate = DateTime.Now.AddDays(7);
+                    newentry.BorrowDate = DateTime.Now.Date;
+                    newentry.DueDate = DateTime.Now.Date.AddDays(7);
                     booktoborrow.BookStatus = Status.Borrowed;
                     db.Entry(booktoborrow).State = EntityState.Modified;
                     db.BorrowList.Add(newentry);
@@ -303,6 +306,43 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "OK";
                     return View();
                 }
+                else if (booktoborrow.BookStatus == Status.Lost)
+                {
+                    TempData["Notification"] = "This book is lost.";
+                    return View();
+                }
+
+                else if (booktoborrow.BookStatus == Status.Reserved)
+                {
+                    RequestEntry reqentry = db.RequestList.ToList().LastOrDefault(target => target.RequestBook == booktoborrow);
+                        if(reqentry.ExpireDate.Value.Date < DateTime.Now.Date){
+                            db.Entry(reqentry).State = EntityState.Deleted;
+                            booktoborrow.BookStatus = Status.Borrowed;
+                            db.Entry(booktoborrow).State = EntityState.Modified;
+                            newentry.BorrowDate = DateTime.Now.Date;
+                            newentry.DueDate = DateTime.Now.Date.AddDays(7);
+                            db.BorrowList.Add(newentry);
+                            db.SaveChanges();
+                            TempData["Notification"] = "Delete expire req.//OK.";
+                            return View();
+                        }
+                        else if(reqentry.UserID != newentry.UserID){
+                            TempData["Notification"] = "This user has no permission to borrow the requested book by others.";
+                            return View();
+                        }
+                        else{
+                            db.Entry(reqentry).State = EntityState.Deleted;
+                            booktoborrow.BookStatus = Status.Borrowed;
+                            newentry.BorrowDate = DateTime.Now.Date;
+                            newentry.DueDate = DateTime.Now.Date.AddDays(7);
+                            db.Entry(booktoborrow).State = EntityState.Modified;
+                            db.BorrowList.Add(newentry);
+                            db.SaveChanges();
+                            TempData["Notification"] = "User accept reserved book//OK";
+                            return View();
+                        }
+                }
+                   
                 else
                 {
                     TempData["Notification"] = "This book is already borrowed.";
@@ -312,6 +352,9 @@ namespace TestLibrary.Controllers
             else return View();
         }
 
+
+
+        //Input UserID and wait for return value op.from viewtable
         [Authorize]
         public ActionResult Return()
         {
@@ -326,7 +369,6 @@ namespace TestLibrary.Controllers
         [HttpPost]
         public ActionResult Return(int? BookID)
         {
-            ModelState.Remove("UserID");
 
             
                 BorrowEntry targetentry = db.BorrowList.ToList().LastOrDefault(target => target.BookID == BookID 
@@ -336,14 +378,22 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "No book to return in database.";
                     return View();
                 }
-                targetentry.BorrowBook.BookStatus = Status.Available;
+
+                RequestEntry reqentry = db.RequestList.ToList().LastOrDefault(target => target.BookID == BookID && target.ExpireDate == null);
+                if (reqentry != null)
+                {
+                    targetentry.BorrowBook.BookStatus = Status.Reserved;
+                    reqentry.ExpireDate = DateTime.Now.Date.AddDays(3);
+                }
+                else
+                    targetentry.BorrowBook.BookStatus = Status.Available;
+
                 targetentry.ReturnDate = DateTime.Now;
                 db.Entry(targetentry).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Notification"] = "Return book success!";
             return View();
         }
-
 
 
         [Authorize]

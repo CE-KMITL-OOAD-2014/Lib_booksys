@@ -15,7 +15,7 @@ namespace TestLibrary.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
-            return View(db.NewsList.ToList());
+            return View(db.NewsList.ToList().OrderByDescending(news => news.PostTime));
         }
 
         public ActionResult About()
