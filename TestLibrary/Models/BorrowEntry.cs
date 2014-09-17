@@ -15,8 +15,15 @@ namespace TestLibrary.Models
         public int UserID { get; set; }
         [ForeignKey("BorrowBook")]
         public int BookID { get; set; }
+
+        [Column(TypeName="date")]
         public DateTime BorrowDate { get; set; }
+
+        [Column(TypeName="date")]
         public DateTime DueDate { get; set; }
+
+        [Column(TypeName="date")]
+        [DisplayFormat(NullDisplayText="Not return")]
         public DateTime? ReturnDate { get; set; }
 
         [DefaultValue(0)]

@@ -23,7 +23,6 @@ c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\b
 c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\System.Web.WebPages.xml
 c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\System.Web.WebPages.Deployment.xml
 c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\System.Web.WebPages.Razor.xml
-c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csprojResolveAssemblyReference.cache
 c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.dll
 c:\users\ce-benz\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.pdb
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\EntityFramework.dll
@@ -35,3 +34,6 @@ C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\o
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editreturndatecol.resources
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.requestentry.resources
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.requestentry1.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editborrowdb.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editborrowdb2.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.editdb3.resources

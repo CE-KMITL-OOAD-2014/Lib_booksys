@@ -8,6 +8,14 @@
     <fieldset>
         <legend>Edit book</legend>
         @Html.HiddenFor(model =>model.BookID)
+        <label>Book Status:</label>
+        <select name="BookStatus">
+            <option value="">Select...</option>
+            <option value="0" selected="@((Model.BookStatus.ToString()=="Available")?"selected":null)">Available</option>
+            <option value="1" selected="@((Model.BookStatus.ToString() == "Borrowed") ? "selected" :null)">Borrowed</option>
+            <option value="2" selected="@((Model.BookStatus.ToString() == "Reserved") ? "selected" : null)">Reserved</option>
+            <option value="3" selected="@((Model.BookStatus.ToString() == "Lost") ? "selected" : null)">Lost</option>
+        </select>
         <input type="text" placeholder="Book name" name="BookName" value="@Model.BookName" /><br />
         <input type="text" placeholder="Author" name="Author" value="@Model.Author" /><br />
         <input type="text" placeholder="Publisher" name="Publisher" value="@Model.Publisher" /><br />

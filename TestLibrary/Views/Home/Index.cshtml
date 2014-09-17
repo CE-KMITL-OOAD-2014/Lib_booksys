@@ -12,13 +12,14 @@
             <td><b>@news.PostTime.ToShortDateString()</b></td>
             <td>@news.Title</td>
             
-            <td><a href="/News/Detail/@news.NewsID">อ่านต่อ</a></td>
+            <td><a class="operation-link" href="/News/Detail/@news.NewsID">อ่านต่อ</a></td>
         </tr>
     }
+
     <tr>
         <td></td>
         <td></td>
-        <td><a href="/News/ViewAll">ดูทั้งหมด</a></td>
+        <td><a class="operation-link" href="/News/ViewAll">ดูทั้งหมด</a></td>
     </tr>
 </table>
 

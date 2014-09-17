@@ -16,7 +16,10 @@ namespace TestLibrary.Models
         [ForeignKey("RequestBook")]
         public int BookID { get; set; }
 
+        [Column(TypeName="date")]
         public DateTime RequestDate { get; set; }
+
+        [Column(TypeName="date")]
         public DateTime? ExpireDate { get; set; }
 
         public virtual Book RequestBook { get; set; }

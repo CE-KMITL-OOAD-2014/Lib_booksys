@@ -1,6 +1,6 @@
 ﻿@model List<TestLibrary.Models.BorrowEntry>
 @{
-    ViewBag.Title = "BorrowTracking";
+    ViewBag.Title = "Borrow tracking";
     int count = 0;
 }
 <h2>BorrowTracking</h2>
@@ -28,7 +28,13 @@
                 @record.DueDate.ToShortDateString()
             </td>
             <td>
-                @record.ReturnDate
+                @if (record.ReturnDate != null) { 
+                @record.ReturnDate.Value.ToShortDateString()
+                }
+                else
+                {
+                @Html.DisplayFor(model => model.Where(target => target.ID == record.ID).Single().ReturnDate)
+                }
             </td>
         </tr>
         

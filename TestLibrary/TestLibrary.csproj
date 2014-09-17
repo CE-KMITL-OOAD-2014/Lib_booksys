@@ -139,6 +139,18 @@
     <Compile Include="Migrations\201409151701554_requestentry1.Designer.cs">
       <DependentUpon>201409151701554_requestentry1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409171525409_editborrowdb.cs" />
+    <Compile Include="Migrations\201409171525409_editborrowdb.Designer.cs">
+      <DependentUpon>201409171525409_editborrowdb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409171528159_editborrowdb2.cs" />
+    <Compile Include="Migrations\201409171528159_editborrowdb2.Designer.cs">
+      <DependentUpon>201409171528159_editborrowdb2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409171530519_editdb3.cs" />
+    <Compile Include="Migrations\201409171530519_editdb3.Designer.cs">
+      <DependentUpon>201409171530519_editdb3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Book.cs" />
@@ -254,6 +266,15 @@
     <EmbeddedResource Include="Migrations\201409151701554_requestentry1.resx">
       <DependentUpon>201409151701554_requestentry1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409171525409_editborrowdb.resx">
+      <DependentUpon>201409171525409_editborrowdb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409171528159_editborrowdb2.resx">
+      <DependentUpon>201409171528159_editborrowdb2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409171530519_editdb3.resx">
+      <DependentUpon>201409171530519_editdb3.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\EditBook.cshtml" />
@@ -302,6 +323,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Book\Request.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Book\CancelRequest.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

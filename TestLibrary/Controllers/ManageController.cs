@@ -250,6 +250,10 @@ namespace TestLibrary.Controllers
             if (answer == "Yes")
             {
                 TempData["Notification"] = "Delete " + booktodelete.BookName + " successfully.";
+                List<RequestEntry> removeEntry = db.RequestList.Where(target => target.RequestBook.BookID == booktodelete.BookID).ToList();
+                List<BorrowEntry> removeBorrowEntry = db.BorrowList.Where(target => target.BorrowBook.BookID == booktodelete.BookID).ToList();
+                db.RequestList.RemoveRange(removeEntry);
+                db.BorrowList.RemoveRange(removeBorrowEntry);
                 db.Entry(booktodelete).State = EntityState.Deleted;
                 db.SaveChanges();
                 return RedirectToAction("BookList");

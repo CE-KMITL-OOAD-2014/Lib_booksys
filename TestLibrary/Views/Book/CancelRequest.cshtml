@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Cancel request";
+}
+@model TestLibrary.Models.RequestEntry
+<h2>Cancel request</h2>
+<form class="account-form" action="/Book/CancelRequest" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>
+            Cancel Req.
+        </legend>Do you want to cancel this book request?<br />[
+        @Html.DisplayFor(model =>model.RequestBook.BookName)]
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.BookID)
+        @Html.HiddenFor(model => model.RequestDate)
+        @Html.HiddenFor(model => model.ExpireDate)
+        <input type="submit" value="Yes" name="answer" />
+        <input type="submit" value="No" name="answer" />
+    </fieldset>
+</form>

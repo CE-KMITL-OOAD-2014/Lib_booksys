@@ -157,5 +157,10 @@ namespace TestLibrary.Controllers
             else
                 return View(regist);
         }
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

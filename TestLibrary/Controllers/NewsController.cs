@@ -27,8 +27,12 @@ namespace TestLibrary.Controllers
             {
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
             }
-            return View(db.NewsList.ToList());
+            return View(db.NewsList.ToList().OrderByDescending(target => target.PostTime));
         }
-
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

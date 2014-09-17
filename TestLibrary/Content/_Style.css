@@ -3,6 +3,7 @@ body{
     margin:0;
     padding:0;
     background-image:url(/Content/asphalt.jpg);
+
 }
 
 div#nav{
@@ -87,7 +88,11 @@ form.account-form input[type="password"]{
     -webkit-box-sizing:border-box;
     
 }
-
+form.account-form select{
+    font-family:Single;
+    font-size:x-large;
+    display:inline-block;
+}
 form.account-form input[type="submit"]{
     font-family:Single;
     font-size:x-large;
@@ -385,10 +390,19 @@ a.paratab:link{
 a.paratab:visited{
     color:white;
 }
+
+a.operation-link:link{
+    color:black
+}
+
+a.operation-link:visited{
+    color:black
+}
+
 h1{
    padding-top:8px;
    padding-left:15px;
-    font-family:Calibri;
+   font-family:supermarket
 }
 
 h2{
