@@ -105,12 +105,7 @@ namespace TestLibrary.Controllers
             return View();
         }
 
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            Session["LoginUser"] = null;
-            return RedirectToAction("Index");
-        }
+        
 
         public ActionResult Register()
         {

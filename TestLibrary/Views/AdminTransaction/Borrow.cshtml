@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Borrow transaction";
+}
+
+<h2>Borrow transaction</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+
+<form class="news-form" action="/AdminTransaction/Borrow" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <label>MemberID</label><br />
+    <input type="text" placeholder="MemberID" name="UserID" /><br />
+    <label>BookID</label><br />
+    <input type="text" placeholder="BookID" name="BookID" /><br />
+    <label>Book name:</label> book name will add later.<br />
+    <input type="submit" value="Submit" />
+</form>

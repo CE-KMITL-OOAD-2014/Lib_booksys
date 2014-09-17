@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Renew book";
+}
+@model TestLibrary.Models.BorrowEntry
+<h2>Renew book</h2>
+<form class="account-form" action="/MemberTransaction/Renew/" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Renew book</legend>
+        Are you sure want to renew this book?<br />
+        <input type="submit" value="Yes" name="answer" /><br />
+        <input type="submit" value="No" name="answer" />
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.BookID)
+        @Html.HiddenFor(model => model.BorrowDate)
+        @Html.HiddenFor(model => model.DueDate)
+        @Html.HiddenFor(model => model.RenewCount)
+    </fieldset>
+</form>

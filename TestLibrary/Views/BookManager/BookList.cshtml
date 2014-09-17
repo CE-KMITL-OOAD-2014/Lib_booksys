@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "BookList";
+}
+@model List<TestLibrary.Models.Book>
+
+<h2>BookList</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+<a class="account-btt" href="/BookManager/AddBook">Add book</a>
+<table class="list">
+    <tr>
+        <th>Book name</th>
+        <th>Author</th>
+        <th>Publisher</th>
+        <th></th><th></th><th></th>
+    </tr>
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.BookName</td>
+            <td>@book.Author</td>
+            <td>@book.Publisher</td>
+            <td><a href="/BookManager/ViewBook/@book.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
+            <td><a href="/BookManager/EditBook/@book.BookID"><img class="edit-btt" src="/Content/edit-gray-btt.png" /></a></td>
+            <td><a href="/BookManager/DeleteBook/@book.BookID"><img class="delete-btt" src="/Content/delete-gray-btt.png" /></a></td>
+        </tr>
+    }
+</table>
+<a class="account-btt" href="/Manage/">Back</a>
+

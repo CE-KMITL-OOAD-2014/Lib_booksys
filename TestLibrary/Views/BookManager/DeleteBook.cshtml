@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "DeleteBook";
+}
+@model TestLibrary.Models.Book
+<h2>DeleteBook</h2>
+<form class="account-form" action="/BookManager/DeleteBook/" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Delete book</legend>
+        @Html.HiddenFor(model => model.BookID)
+        @Html.HiddenFor(model => model.BookName)
+        Are you sure want to delete @Html.DisplayFor(model => model.BookName)?
+        <input type="submit" value="Yes" name="answer"/>
+        <input type="submit" value="No" name="answer"/>
+    </fieldset>
+</form>

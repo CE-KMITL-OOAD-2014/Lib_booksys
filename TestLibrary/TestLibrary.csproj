@@ -114,34 +114,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminTransactionController.cs" />
+    <Compile Include="Controllers\AuthenticateController.cs" />
     <Compile Include="Controllers\BookController.cs" />
+    <Compile Include="Controllers\BookManagerController.cs" />
+    <Compile Include="Controllers\BookSearchController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Controllers\MemberTransactionController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NewsManagerController.cs" />
     <Compile Include="DataAccess\LibraryContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409111452380_editborrowentry.cs" />
-    <Compile Include="Migrations\201409111452380_editborrowentry.Designer.cs">
-      <DependentUpon>201409111452380_editborrowentry.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409111621108_editreturndatecol.cs" />
-    <Compile Include="Migrations\201409111621108_editreturndatecol.Designer.cs">
-      <DependentUpon>201409111621108_editreturndatecol.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409151618140_requestentry.cs" />
-    <Compile Include="Migrations\201409151618140_requestentry.Designer.cs">
-      <DependentUpon>201409151618140_requestentry.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409151701554_requestentry1.cs" />
-    <Compile Include="Migrations\201409151701554_requestentry1.Designer.cs">
-      <DependentUpon>201409151701554_requestentry1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409171525409_editborrowdb.cs" />
-    <Compile Include="Migrations\201409171525409_editborrowdb.Designer.cs">
-      <DependentUpon>201409171525409_editborrowdb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201409171528159_editborrowdb2.cs" />
     <Compile Include="Migrations\201409171528159_editborrowdb2.Designer.cs">
@@ -150,6 +136,14 @@
     <Compile Include="Migrations\201409171530519_editdb3.cs" />
     <Compile Include="Migrations\201409171530519_editdb3.Designer.cs">
       <DependentUpon>201409171530519_editdb3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409171750303_editnewsdb.cs" />
+    <Compile Include="Migrations\201409171750303_editnewsdb.Designer.cs">
+      <DependentUpon>201409171750303_editnewsdb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409171751366_editnewsdb1.cs" />
+    <Compile Include="Migrations\201409171751366_editnewsdb1.Designer.cs">
+      <DependentUpon>201409171751366_editnewsdb1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -242,75 +236,66 @@
     <Content Include="Views\Manage\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\AddBook.cshtml" />
+    <Content Include="Views\BookManager\AddBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\BookList.cshtml" />
+    <Content Include="Views\BookManager\BookList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\ViewBook.cshtml" />
+    <Content Include="Views\BookManager\ViewBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\DeleteBook.cshtml" />
+    <Content Include="Views\BookManager\DeleteBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409111452380_editborrowentry.resx">
-      <DependentUpon>201409111452380_editborrowentry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409111621108_editreturndatecol.resx">
-      <DependentUpon>201409111621108_editreturndatecol.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409151618140_requestentry.resx">
-      <DependentUpon>201409151618140_requestentry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409151701554_requestentry1.resx">
-      <DependentUpon>201409151701554_requestentry1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409171525409_editborrowdb.resx">
-      <DependentUpon>201409171525409_editborrowdb.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409171528159_editborrowdb2.resx">
       <DependentUpon>201409171528159_editborrowdb2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409171530519_editdb3.resx">
       <DependentUpon>201409171530519_editdb3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409171750303_editnewsdb.resx">
+      <DependentUpon>201409171750303_editnewsdb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409171751366_editnewsdb1.resx">
+      <DependentUpon>201409171751366_editnewsdb1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\EditBook.cshtml" />
+    <Content Include="Views\BookManager\EditBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Book\SearchResult.cshtml" />
+    <Content Include="Views\BookSearch\QuickSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Book\Search.cshtml" />
+    <Content Include="Views\BookSearch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Member\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\AddNews.cshtml" />
+    <Content Include="Views\NewsManager\AddNews.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\NewsList.cshtml" />
+    <Content Include="Views\NewsManager\NewsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\News\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\DeleteNews.cshtml" />
+    <Content Include="Views\NewsManager\DeleteNews.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\EditNews.cshtml" />
+    <Content Include="Views\NewsManager\EditNews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\News\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\Borrow.cshtml" />
+    <Content Include="Views\AdminTransaction\Borrow.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manage\Return.cshtml" />
+    <Content Include="Views\AdminTransaction\Return.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\BorrowTracking.cshtml" />
@@ -319,13 +304,13 @@
     <Content Include="Views\Member\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Book\Renew.cshtml" />
+    <Content Include="Views\MemberTransaction\Renew.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Book\Request.cshtml" />
+    <Content Include="Views\MemberTransaction\Request.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Book\CancelRequest.cshtml" />
+    <Content Include="Views\MemberTransaction\CancelRequest.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
