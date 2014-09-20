@@ -418,7 +418,7 @@ p.real-paragraph,p.noti-msg{
     padding-left:15px;
     padding-right:15px;
     text-indent:50px;
-    text-align:justify;
+    text-align:left;
     font-family:Single;
     font-size:25px;
 }
@@ -442,4 +442,9 @@ p.post-time{
 @font-face{
     font-family:Single;
     src:url(/Font/_DS-Single.ttf);
+}
+
+@font-face{
+    font-family:Calibri;
+    src:url(/Font/CALIBRI.TTF);
 }

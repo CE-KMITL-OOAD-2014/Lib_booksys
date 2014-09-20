@@ -11,6 +11,7 @@ namespace TestLibrary.Controllers
     public class HomeController : Controller
     {
         LibraryContext db = new LibraryContext();
+        [RequireHttps]
         public ActionResult Index()
         {
             if (HttpContext.User.Identity.IsAuthenticated)

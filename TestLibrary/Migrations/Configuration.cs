@@ -9,8 +9,7 @@ namespace TestLibrary.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            ContextKey = "TestLibrary.DataAccess.LibraryContext";
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(TestLibrary.DataAccess.LibraryContext context)

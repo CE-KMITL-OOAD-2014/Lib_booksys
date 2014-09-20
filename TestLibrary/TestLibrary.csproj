@@ -16,7 +16,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -29,6 +29,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -129,21 +133,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409171528159_editborrowdb2.cs" />
-    <Compile Include="Migrations\201409171528159_editborrowdb2.Designer.cs">
-      <DependentUpon>201409171528159_editborrowdb2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409171530519_editdb3.cs" />
-    <Compile Include="Migrations\201409171530519_editdb3.Designer.cs">
-      <DependentUpon>201409171530519_editdb3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409171750303_editnewsdb.cs" />
-    <Compile Include="Migrations\201409171750303_editnewsdb.Designer.cs">
-      <DependentUpon>201409171750303_editnewsdb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409171751366_editnewsdb1.cs" />
-    <Compile Include="Migrations\201409171751366_editnewsdb1.Designer.cs">
-      <DependentUpon>201409171751366_editnewsdb1.cs</DependentUpon>
+    <Compile Include="Migrations\201409192026034_revised-db.cs" />
+    <Compile Include="Migrations\201409192026034_revised-db.Designer.cs">
+      <DependentUpon>201409192026034_revised-db.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -160,10 +152,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\Library.mdf" />
+    <Content Include="App_Data\Library_log.ldf">
+      <DependentUpon>Library.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\asphalt.jpg" />
     <Content Include="Content\delete-black-btt.png" />
     <Content Include="Content\delete-gray-btt.png" />
     <Content Include="Content\edit-gray-btt.png" />
+    <Content Include="Content\menu.png" />
+    <Content Include="Content\paratabplus.png" />
     <Content Include="Script\jquery-ui.js" />
     <Content Include="Content\submit-btt.gif" />
     <Content Include="Content\upArrow.png" />
@@ -218,9 +216,6 @@
     <Content Include="Views\Manage\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Manage\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -246,20 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\BookManager\DeleteBook.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409171528159_editborrowdb2.resx">
-      <DependentUpon>201409171528159_editborrowdb2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409171530519_editdb3.resx">
-      <DependentUpon>201409171530519_editdb3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409171750303_editnewsdb.resx">
-      <DependentUpon>201409171750303_editnewsdb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409171751366_editnewsdb1.resx">
-      <DependentUpon>201409171751366_editnewsdb1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\BookManager\EditBook.cshtml" />
@@ -311,6 +292,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\MemberTransaction\CancelRequest.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Font\CALIBRI.TTF" />
+    <None Include="Properties\PublishProfiles\Default Settings %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\paratabplus %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\paratabplus %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\paratabplus.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201409192026034_revised-db.resx">
+      <DependentUpon>201409192026034_revised-db.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
