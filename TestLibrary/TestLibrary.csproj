@@ -135,13 +135,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409201924100_initial.cs" />
-    <Compile Include="Migrations\201409201924100_initial.Designer.cs">
-      <DependentUpon>201409201924100_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201409211632101_initial.cs" />
+    <Compile Include="Migrations\201409211632101_initial.Designer.cs">
+      <DependentUpon>201409211632101_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409201930359_ver2.cs" />
-    <Compile Include="Migrations\201409201930359_ver2.Designer.cs">
-      <DependentUpon>201409201930359_ver2.cs</DependentUpon>
+    <Compile Include="Migrations\201409211633150_ver2.cs" />
+    <Compile Include="Migrations\201409211633150_ver2.Designer.cs">
+      <DependentUpon>201409211633150_ver2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409211634234_ver3.cs" />
+    <Compile Include="Migrations\201409211634234_ver3.Designer.cs">
+      <DependentUpon>201409211634234_ver3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409211636527_ver4.cs" />
+    <Compile Include="Migrations\201409211636527_ver4.Designer.cs">
+      <DependentUpon>201409211636527_ver4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -268,7 +276,7 @@
     <Content Include="Views\BookManager\AddBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\BookManager\BookList.cshtml" />
+    <Content Include="Views\BookManager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\BookManager\ViewBook.cshtml" />
@@ -292,7 +300,7 @@
     <Content Include="Views\NewsManager\AddNews.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\NewsManager\NewsList.cshtml" />
+    <Content Include="Views\NewsManager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\News\Detail.cshtml" />
@@ -308,9 +316,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AdminTransaction\Borrow.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AdminTransaction\Return.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AdminTransaction\Index.cshtml" />
@@ -347,14 +352,19 @@
     <Content Include="Views\MemberListManager\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409201924100_initial.resx">
-      <DependentUpon>201409201924100_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409211632101_initial.resx">
+      <DependentUpon>201409211632101_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409201930359_ver2.resx">
-      <DependentUpon>201409201930359_ver2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409211633150_ver2.resx">
+      <DependentUpon>201409211633150_ver2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409211634234_ver3.resx">
+      <DependentUpon>201409211634234_ver3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409211636527_ver4.resx">
+      <DependentUpon>201409211636527_ver4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

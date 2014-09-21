@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Borrow transaction";
+}
+@model TestLibrary.ViewModels.MemberTransactionViewer
+<h2>Borrow transaction</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+
+<form class="news-form" action="/AdminTransaction/Borrow" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <label>MemberID</label><br />
+    <input type="text" placeholder="MemberID" name="UserID" value="@TempData["UserID"]"/>
+    <input type="submit" value="Check" name="operation" />
+    <br />
+    <label>BookID</label><br />
+    <input type="text" placeholder="BookID" name="BookID" /><br />
+    <label>Book name:</label> book name will add later.<br />
+    <input type="submit" value="Submit" name="operation" />
+</form>
+
+@if (Model != null) { 
+<h2>Current borrow list</h2>
+   if (Model.GetBorrowEntryViews().Count != 0) { 
+<table class="list">
+    <tr>
+        <th>
+            Book ID
+        </th>
+        <th>
+            Book name
+        </th>
+        <th>
+            Due date
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.GetBorrowEntryViews())
+    {
+        <tr>
+            <td>@item.BookID</td>
+            <td>@item.BorrowBook.BookName</td>
+            <td>@item.DueDate.ToShortDateString()</td>
+            <td>
+            <form action="/AdminTransaction/Return/@item.ID" method="post">
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Return" />
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+   }
+   else
+   {
+       <p class="noti-msg">No book that this member borrowed now.</p>
+   }
+   
+<h2>Current request list</h2>
+    if (Model.GetRequestEntryViews().Count != 0)
+    {
+        <table class="list">
+    <tr>
+        <th>
+            Book ID
+        </th>
+        <th>
+            Book name
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Expire date
+        </th>
+    </tr>
+    @foreach (var item in Model.GetRequestEntryViews())
+    {
+        <tr>
+            <td>@item.BookID</td>
+            <td>@item.RequestBook.BookName</td>
+            
+            @if(item.ExpireDate != null){
+                <td>
+                    Available
+                </td>
+                <td>
+                   @item.ExpireDate.Value.ToShortDateString()
+                </td>
+                
+            }
+            else
+            {
+                <td>
+                    Not Available
+                </td>
+                <td>
+                @item.ExpireDate
+                </td>
+            }
+        </tr>
+    }
+</table>
+    }
+    else
+    {
+        <p class="noti-msg">No book that this member requested now.</p>
+    }
+}
+
+<form action="/AdminTransaction/test" method="post">
+    <input type="submit" />
+</form>

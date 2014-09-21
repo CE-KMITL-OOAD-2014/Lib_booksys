@@ -7,13 +7,13 @@ namespace TestLibrary.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class initial : IMigrationMetadata
+    public sealed partial class ver4 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ver4));
         
         string IMigrationMetadata.Id
         {
-            get { return "201409201924100_initial"; }
+            get { return "201409211636527_ver4"; }
         }
         
         string IMigrationMetadata.Source

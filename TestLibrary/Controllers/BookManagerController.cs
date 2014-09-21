@@ -14,7 +14,7 @@ namespace TestLibrary.Controllers
         LibraryContext db = new LibraryContext();
 
         [Authorize]
-        public ActionResult BookList()
+        public ActionResult Index()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
@@ -57,7 +57,7 @@ namespace TestLibrary.Controllers
                 db.Entry(bookToAdd).State = EntityState.Added;
                 db.SaveChanges();
                 TempData["Notification"] = "Add new book successfully.";
-                return RedirectToAction("BookList");
+                return RedirectToAction("Index");
             }
             return View(bookToAdd);
         }
@@ -86,7 +86,7 @@ namespace TestLibrary.Controllers
                 db.Entry(booktoedit).State = EntityState.Modified;
                 TempData["Notification"] = "Edit book successfully.";
                 db.SaveChanges();
-                return RedirectToAction("BookList");
+                return RedirectToAction("Index");
             }
             return View(booktoedit);
         }
@@ -113,15 +113,14 @@ namespace TestLibrary.Controllers
             if (answer == "Yes")
             {
                 TempData["Notification"] = "Delete " + booktodelete.BookName + " successfully.";
-                List<RequestEntry> removeEntry = db.RequestList.Where(target => target.RequestBook.BookID == booktodelete.BookID).ToList();
                 List<BorrowEntry> removeBorrowEntry = db.BorrowList.Where(target => target.BorrowBook.BookID == booktodelete.BookID).ToList();
-                db.RequestList.RemoveRange(removeEntry);
+                db.RequestList.Remove(db.RequestList.Find(booktodelete.BookID));
                 db.BorrowList.RemoveRange(removeBorrowEntry);
                 db.Entry(booktodelete).State = EntityState.Deleted;
                 db.SaveChanges();
-                return RedirectToAction("BookList");
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("BookList");
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

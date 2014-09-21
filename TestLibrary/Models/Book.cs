@@ -33,8 +33,7 @@ namespace TestLibrary.Models
         [DefaultValue(Status.Available)]
         [Column("Status")]
         public Status BookStatus { get; set; }
-
         public virtual ICollection<BorrowEntry> BorrowEntries { get; set; }
-        public virtual ICollection<RequestEntry> RequestEntries { get; set; }
+        public virtual RequestEntry RequestRecord { get; set; }
     }
 }

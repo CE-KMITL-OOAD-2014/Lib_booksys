@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "NewsList";
+    ViewBag.Title = "News manager";
 }
 @model IEnumerable<TestLibrary.Models.News>
-<h2>NewsList</h2>
+<h2>News manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
 <a class="account-btt" href="/NewsManager/AddNews">Add News</a>
 <table class="list">
@@ -21,4 +21,4 @@
         </tr>
     }
 </table>
-<a class="account-btt" href="/Manage/">Back</a>
+<a class="account-btt" href="/Account/AdminPortal">Back</a>

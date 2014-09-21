@@ -15,7 +15,7 @@ namespace TestLibrary.Controllers
         LibraryContext db = new LibraryContext();
 
         [Authorize]
-        public ActionResult NewsList()
+        public ActionResult Index()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
@@ -43,7 +43,7 @@ namespace TestLibrary.Controllers
                 db.Entry(newstoadd).State = EntityState.Added;
                 db.SaveChanges();
                 TempData["Notification"] = "Add news successfully.";
-                return RedirectToAction("NewsList");
+                return RedirectToAction("Index");
             }
             return View(newstoadd);
         }
@@ -72,7 +72,7 @@ namespace TestLibrary.Controllers
                 db.Entry(newstoedit).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Notification"] = "Edit news successfully.";
-                return RedirectToAction("NewsList");
+                return RedirectToAction("Index");
             }
             return View(newstoedit);
         }
@@ -100,9 +100,8 @@ namespace TestLibrary.Controllers
                 db.Entry(newstodelete).State = EntityState.Deleted;
                 TempData["Notification"] = "Delete news successfully.";
                 db.SaveChanges();
-                return RedirectToAction("NewsList");
             }
-            return RedirectToAction("NewsList");
+            return RedirectToAction("Index");
         }
 
 

@@ -30,6 +30,8 @@ C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\b
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\EntityFramework.xml
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\bin\EntityFramework.SqlServer.xml
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csprojResolveAssemblyReference.cache
-C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.initial.resources
-C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csproj.GenerateResource.Cache
-C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.ver2.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.initial.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csproj.GenerateResource.Cache
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.ver2.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.ver3.resources
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.ver4.resources

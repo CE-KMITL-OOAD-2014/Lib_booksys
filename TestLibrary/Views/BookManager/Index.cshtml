@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "BookList";
+    ViewBag.Title = "Book manager";
 }
 @model List<TestLibrary.Models.Book>
 
-<h2>BookList</h2>
+<h2>Book manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
 <a class="account-btt" href="/BookManager/AddBook">Add book</a>
 <table class="list">
@@ -25,5 +25,5 @@
         </tr>
     }
 </table>
-<a class="account-btt" href="/Manage/">Back</a>
+<a class="account-btt" href="/Account/AdminPortal">Back</a>
 

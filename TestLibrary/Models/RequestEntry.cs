@@ -9,12 +9,11 @@ namespace TestLibrary.Models
     public class RequestEntry
     {
         [Key]
-        public int ID { get; set; }
+        [ForeignKey("RequestBook")]
+        public int BookID { get; set; }
 
         [ForeignKey("RequestUser")]
         public int UserID { get; set; }
-        [ForeignKey("RequestBook")]
-        public int BookID { get; set; }
 
         [Column(TypeName="date")]
         public DateTime RequestDate { get; set; }
