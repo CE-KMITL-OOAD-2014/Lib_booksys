@@ -12,6 +12,16 @@ namespace TestLibrary.Controllers
     {
 
         LibraryContext db = new LibraryContext();
+
+        [Authorize]
+        public ActionResult Index()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index", "Account");
+            return View(db.BorrowList.ToList());
+        }
+
         //Show viewtable if user click 'Check'
         //To decide whether prefer request is OK?
         [Authorize]

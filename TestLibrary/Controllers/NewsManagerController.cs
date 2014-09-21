@@ -20,7 +20,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(db.NewsList.ToList());
+            return View(db.NewsList.OrderByDescending(news => news.PostTime).ToList());
         }
         
         [Authorize]

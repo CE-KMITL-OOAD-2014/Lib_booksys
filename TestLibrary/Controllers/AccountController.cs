@@ -103,6 +103,16 @@ namespace TestLibrary.Controllers
             return View(editor);
         }
 
+        [Authorize]
+        public ActionResult AdminPortal()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                return RedirectToAction("Index");
+            return View();
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

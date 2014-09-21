@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Member list manager";
+}
+@model List<TestLibrary.Models.Member>
+<h2>Member list manager</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+<table class="list">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            UserName
+        </th>
+        <th>
+            Name
+        </th>
+        <th></th><th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.UserID
+            </td>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                <a href="/MemberListManager/View/@item.UserID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a>
+            </td>
+            <td>
+                <a href="/MemberListManager/Delete/@item.UserID"><img class="delete-btt" src="/Content/delete-gray-btt.png" /></a>
+            </td>
+        </tr>
+    }
+</table>
+<a class="account-btt" href="/Account/AdminPortal">Portal</a>

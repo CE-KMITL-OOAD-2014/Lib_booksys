@@ -352,8 +352,8 @@ div.menu-slider li a:visited{
 /*----------------------------------*/
 div#content{
     margin-top:70px;
-    margin-left:15%;
-    margin-right:15%;
+    margin-left:auto;
+    margin-right:auto;
     background-color:white;
     padding-bottom:1px;
     border-bottom-left-radius:15px;
