@@ -315,7 +315,7 @@
     <Content Include="Views\News\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\AdminTransaction\Borrow.cshtml" />
+    <Content Include="Views\AdminTransaction\Transaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AdminTransaction\Index.cshtml" />

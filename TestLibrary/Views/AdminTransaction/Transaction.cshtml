@@ -5,7 +5,7 @@
 <h2>Borrow transaction</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
 
-<form class="news-form" action="/AdminTransaction/Borrow" method="post">
+<form class="news-form" action="/AdminTransaction/Transaction" method="post">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
     <label>MemberID</label><br />
@@ -13,7 +13,7 @@
     <input type="submit" value="Check" name="operation" />
     <br />
     <label>BookID</label><br />
-    <input type="text" placeholder="BookID" name="BookID" /><br />
+    <input type="text" placeholder="BookID" name="BookID" value="@TempData["BookID"]"/><br />
     <label>Book name:</label> book name will add later.<br />
     <input type="submit" value="Submit" name="operation" />
 </form>
@@ -41,9 +41,11 @@
             <td>@item.BorrowBook.BookName</td>
             <td>@item.DueDate.ToShortDateString()</td>
             <td>
-            <form action="/AdminTransaction/Return/@item.ID" method="post">
+            <form action="/AdminTransaction/Transaction" method="post">
                 @Html.AntiForgeryToken()
-                <input type="submit" value="Return" />
+                <input type="submit" value="Return" name="Operation"/>
+                <input type="hidden" name="ID" value="@item.ID" />
+                <input type="hidden" name="UserID" value="@item.UserID" />
                 </form>
             </td>
         </tr>
@@ -106,7 +108,3 @@
         <p class="noti-msg">No book that this member requested now.</p>
     }
 }
-
-<form action="/AdminTransaction/test" method="post">
-    <input type="submit" />
-</form>
