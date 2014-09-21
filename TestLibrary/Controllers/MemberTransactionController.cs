@@ -17,26 +17,26 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction("Index", "Account");
 
             BorrowEntry renewentry = db.BorrowList.SingleOrDefault(target => target.ID == id &&
                                         target.ReturnDate == null);
             if (renewentry == null)
             {
                 TempData["Notification"] = "Invalid renew book id.";
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
 
             if (renewentry.Borrower.UserName != Session["LoginUser"].ToString().Substring(2))
             {
                 TempData["Notification"] = "Invalid renew operation.";
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
 
             if (renewentry.RenewCount == 3)
             {
                 TempData["Notification"] = "Your renew of book ID." + renewentry.BorrowBook.BookID + " is exceed maximum!";
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
             return View(renewentry);
         }
@@ -62,7 +62,7 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "Renew successful!";
                 }
             }
-            return RedirectToAction("Index", "Member");
+            return RedirectToAction("Index", "Account");
         }
 
 
@@ -71,7 +71,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -117,7 +117,7 @@ namespace TestLibrary.Controllers
                 db.RequestList.Add(newentry);
                 db.SaveChanges();
                 TempData["Notification"] = "Request book successfully.";
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
             else
                 return View();
@@ -128,18 +128,18 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction("Index", "Account");
             RequestEntry wantedEntry = db.RequestList.Find(id);
             if (wantedEntry == null)
             {
                 TempData["Notification"] = "No book with prefered id exists.";
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
             Member preferMember = db.Members.SingleOrDefault(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2));
             if (wantedEntry.RequestUser != preferMember)
             {
                 TempData["Notification"] = "Can't cancel other member's book request.";
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
             return View(wantedEntry);
         }
@@ -157,7 +157,7 @@ namespace TestLibrary.Controllers
                     if (bookToCheck == null)
                     {
                         TempData["Notification"] = "Something went wrong,please try again.";
-                        return RedirectToAction("Index", "Member");
+                        return RedirectToAction("Index", "Account");
                     }
                     else
                     {
@@ -172,10 +172,10 @@ namespace TestLibrary.Controllers
                     db.SaveChanges();
                     TempData["Notification"] = "Cancel request successfully.";
                 }
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             }
             TempData["Notification"] = "Something went wrong,please try again.";
-            return RedirectToAction("Index", "Member");
+            return RedirectToAction("Index", "Account");
         }
         protected override void Dispose(bool disposing)
         {

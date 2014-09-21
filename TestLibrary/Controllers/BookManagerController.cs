@@ -18,7 +18,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View(db.Books.ToList());
         }
 
@@ -29,7 +29,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             Book booktoview = db.Books.Find(id);
             if (booktoview == null)
                 return HttpNotFound();
@@ -43,7 +43,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             Book booktoedit = db.Books.Find(id);
             if (booktoedit == null)
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             Book booktodelete = db.Books.Find(id);
             if (booktodelete == null)
                 return HttpNotFound();

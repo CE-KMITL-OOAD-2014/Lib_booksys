@@ -18,7 +18,7 @@ namespace TestLibrary.Controllers
         public ActionResult Borrow()
         {
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -116,7 +116,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 

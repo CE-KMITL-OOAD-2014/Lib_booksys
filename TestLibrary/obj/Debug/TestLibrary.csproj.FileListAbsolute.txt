@@ -32,3 +32,4 @@ C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\b
 C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csprojResolveAssemblyReference.cache
 C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.reviseddb.resources
 C:\Users\CE-BENZ\Documents\Visual Studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.csproj.GenerateResource.Cache
+C:\Users\CE-BENZ\documents\visual studio 2013\Projects\TestLibrary\TestLibrary\obj\Debug\TestLibrary.Migrations.reviseddb3.resources

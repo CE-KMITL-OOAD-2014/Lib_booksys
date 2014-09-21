@@ -19,7 +19,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View(db.NewsList.ToList());
         }
         
@@ -28,7 +28,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -54,7 +54,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             News newstoedit = db.NewsList.Find(id);
             if (newstoedit != null)
                 return View(newstoedit);
@@ -83,7 +83,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             News newstodelete = db.NewsList.Find(id);
             if (newstodelete != null)
                 return View(newstodelete);

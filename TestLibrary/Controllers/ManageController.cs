@@ -22,7 +22,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -31,7 +31,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
@@ -41,7 +41,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             return View(a);
         }
@@ -59,22 +59,14 @@ namespace TestLibrary.Controllers
             }
             return View(admin);
         }
-        [Authorize]
-        public ActionResult ChangePassword()
-        {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
-            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
-            return View(a);
-        }
+        
 
         [Authorize]
         public ActionResult AddAdmin()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -104,7 +96,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             Admin target = db.Admins.SingleOrDefault(targetadmin => targetadmin.UserID == id);
             if (target == null)
                 return HttpNotFound();
@@ -132,29 +124,11 @@ namespace TestLibrary.Controllers
         {
             Session["loginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View(db.Admins.ToList());
         }
 
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(Admin admin,string oldpass,string confirm)
-        {
-            if (ModelState.IsValid)
-            {
-                Admin a = db.Admins.Where(s => s.UserID == admin.UserID).SingleOrDefault();
-               if (a.Password == oldpass && admin.Password == confirm)
-                {
-                    a.Password = admin.Password;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                    return View();
-            }
-            return View();
-        }
+       
         
 
         [Authorize]
@@ -162,7 +136,7 @@ namespace TestLibrary.Controllers
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Member");
+                return RedirectToAction("Index", "Account");
             return View(db.BorrowList.Include(list => list.BorrowBook).Include(list => list.Borrower).ToList());
         }
 

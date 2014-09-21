@@ -11,7 +11,6 @@ namespace TestLibrary.Controllers
     public class HomeController : Controller
     {
         LibraryContext db = new LibraryContext();
-        [RequireHttps]
         public ActionResult Index()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -49,13 +48,6 @@ namespace TestLibrary.Controllers
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
                     return RedirectToAction("Index");
                 }
-                /* Admin a = new Admin();
-                 a.Name = "Paratab";
-                 a.UserName = "ParatabAdmin";
-                 a.Password = "surawit";
-                 a.Email = "b@hotmail.com";
-                 db.Admins.Add(a);
-                 db.SaveChanges();*/
                 return View();
             }
 
@@ -63,47 +55,25 @@ namespace TestLibrary.Controllers
             return RedirectToAction("Index");
         }
 
-       /* [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(Admin admin, bool remember)
-        {
-            ModelState.Remove("Name");
-            ModelState.Remove("Email");
-            if (ModelState.IsValid)
-            {
-                Admin a = db.Admins.Where(s => s.UserName == admin.UserName).SingleOrDefault();
-                if (a != null)
-                {
-                    if (a.Password == admin.Password)
-                    {
-                        FormsAuthentication.SetAuthCookie(a.UserName, remember);
-                        Session["LoginUser"] = a.UserName;
-                        return RedirectToAction("Index");
-                    }
-                }
-            }
-            return View();
-        }*/
+      
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string UserName,string Password, bool remember)
         {
-            Member loginmember;
-            Admin loginadmin;
-            if((loginmember = db.Members.Where(target => target.UserName == UserName && target.Password == Password).SingleOrDefault())!=null){
+            Person loginUser;
+            loginUser = db.Members.SingleOrDefault(target => target.UserName == UserName && target.Password == Password);
+                if(loginUser != null){
                 FormsAuthentication.SetAuthCookie("M_" + UserName, remember);
                 Session["LoginUser"] = "M_" + UserName;
-                return RedirectToAction("Index", "Member");
-            }
-            else if ((loginadmin = db.Admins.Where(target => target.UserName == UserName && target.Password == Password).SingleOrDefault()) != null)
-            {
+                }
+                else { 
+                loginUser = db.Admins.SingleOrDefault(target => target.UserName == UserName && target.Password == Password);
                 FormsAuthentication.SetAuthCookie("A_" + UserName, remember);
                 Session["LoginUser"] = "A_" + UserName;
-                return RedirectToAction("Index", "Manage");
             }
-            return View();
+                return RedirectToAction("Index", "Account");
         }
 
         

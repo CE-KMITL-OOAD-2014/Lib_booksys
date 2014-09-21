@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="LibraryContext-Web.config Connection String" description="LibraryContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDB)\v11.0; AttachDbFilename=|DataDirectory|\Library.mdf;Initial Catalog=Library;Integrated Security=True;TrustServerCertificate=False" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\CE-BENZ\\documents\\visual\ studio\ 2013\\Projects\\TestLibrary\\TestLibrary\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='LibraryContext']/@connectionString" />
+  </parameter>
+  <parameter name="LibraryContext_DatabasePublish-Web.config Connection String" description="LibraryContext_DatabasePublish Connection String used in web.config by the application to access the database." defaultValue="LibraryContext_DatabasePublish.ConnetionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\CE-BENZ\\documents\\visual\ studio\ 2013\\Projects\\TestLibrary\\TestLibrary\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='LibraryContext_DatabasePublish']/@connectionString" />
+  </parameter>
+</parameters>

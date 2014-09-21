@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "EditAccount";
+}
+@model TestLibrary.ViewModels.AccountEditor
+<h2>Edit Account for @Session["LoginUser"].ToString().Substring(2)</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+<form class="news-form" action="/Account/EditAccount" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <fieldset>
+        <label>UserName:</label>
+        <input type="text" disabled="disabled" value="@Session["LoginUser"].ToString().Substring(2)"/><br />
+        <label>Name:</label>
+        <input type="text" value="@Html.DisplayFor(model => model.Name)" placeholder="Account Name" name="Name"/><br />
+        <label>Email:</label>
+        <input type="text" value="@Html.DisplayFor(model => model.Email)" placeholder="E-mail" name="Email"/><br />
+        <input type="submit" value="Edit"/>
+
+    </fieldset>
+</form>

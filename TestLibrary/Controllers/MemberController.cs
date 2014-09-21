@@ -39,7 +39,7 @@ namespace TestLibrary.Controllers
                 return View(viewer);
             }
             else
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction("Index", "Account");
         }
 
         [Authorize]
@@ -53,7 +53,7 @@ namespace TestLibrary.Controllers
                 return View(loginmember);
             }
             else
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction("Index", "Account");
         }
 
 

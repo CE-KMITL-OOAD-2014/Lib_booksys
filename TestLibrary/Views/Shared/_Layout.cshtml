@@ -81,12 +81,12 @@
             @if(Session["LoginUser"] != null)
             {
                 if (Session["LoginUser"].ToString().Substring(0, 2) == "M_") { 
-                <text>Welcome! </text><a href="/Member/Detail">@Session["LoginUser"].ToString().Substring(2)</a><br />
-            <a href="/Member/">My account</a><text>|</text>
+                <text>Welcome! </text><a href="/Account/">@Session["LoginUser"].ToString().Substring(2)</a><br />
+            <a href="/Account/">My account</a><text>|</text>
             }
                 else
                 {
-                 <text>Welcome! </text><a href="/Manage/Detail">@Session["LoginUser"].ToString().Substring(2)</a><br />
+                 <text>Welcome! </text><a href="/Account/">@Session["LoginUser"].ToString().Substring(2)</a><br />
             <a href="/Manage/">Manage</a><text>|</text>
                 }
                 <a href="/Authenticate/Logout">Sign out</a>

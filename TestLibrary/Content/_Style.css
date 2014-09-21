@@ -414,7 +414,8 @@ h2{
 h2.book-detail{
     display:inline;
 }
-p.real-paragraph,p.noti-msg{
+
+p.real-paragraph,p.noti-msg,p.account-detail{
     padding-left:15px;
     padding-right:15px;
     text-indent:50px;
@@ -428,7 +429,9 @@ text-indent:0;
 font-weight:bolder;
 color:red;
 }
-
+p.account-detail{
+    text-indent:0
+}
 p.book-detail{
     display:inline;
 }
