@@ -40,7 +40,7 @@ div#quicksearch{
     color:white;
     margin-left:15%;
     margin-right:15%;
-    margin-top:10px;
+    margin-top:5px;
     margin-bottom:0px;
     position:fixed;
     right:0
@@ -67,7 +67,7 @@ form.account-form{
     margin-left:auto;
     margin-right:auto;
     margin-bottom:15px;
-    max-width:30%;
+    max-width:260px
 }
 form.account-form fieldset{
     border-top-left-radius:15px;

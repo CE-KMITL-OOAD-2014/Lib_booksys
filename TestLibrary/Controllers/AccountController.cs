@@ -49,7 +49,7 @@ namespace TestLibrary.Controllers
                         db.Entry(target).State = EntityState.Modified;
                         db.SaveChanges();
                         TempData["Notification"] = "Change password successfully.";
-                        return View();
+                        return RedirectToAction("Index");
                     }
                     else
                     {
@@ -98,9 +98,15 @@ namespace TestLibrary.Controllers
                 db.Entry(target).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Notification"] = "Edit account successfully.";
-                return View(editor);
+                return RedirectToAction("Index");
             }
             return View(editor);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
         }
 
         

@@ -127,7 +127,6 @@
     <Compile Include="Controllers\BookSearchController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\MemberTransactionController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\NewsManagerController.cs" />
@@ -135,13 +134,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409192026034_revised-db.cs" />
-    <Compile Include="Migrations\201409192026034_revised-db.Designer.cs">
-      <DependentUpon>201409192026034_revised-db.cs</DependentUpon>
+    <Compile Include="Migrations\201409201924100_initial.cs" />
+    <Compile Include="Migrations\201409201924100_initial.Designer.cs">
+      <DependentUpon>201409201924100_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409201158155_revised-db3.cs" />
-    <Compile Include="Migrations\201409201158155_revised-db3.Designer.cs">
-      <DependentUpon>201409201158155_revised-db3.cs</DependentUpon>
+    <Compile Include="Migrations\201409201930359_ver2.cs" />
+    <Compile Include="Migrations\201409201930359_ver2.Designer.cs">
+      <DependentUpon>201409201930359_ver2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -167,11 +166,53 @@
     <Content Include="Content\asphalt.jpg" />
     <Content Include="Content\delete-black-btt.png" />
     <Content Include="Content\delete-gray-btt.png" />
+    <Content Include="Content\edit-black-btt.png" />
     <Content Include="Content\edit-gray-btt.png" />
     <Content Include="Content\menu.png" />
     <Content Include="Content\paratabplus.png" />
     <Content Include="Content\view-black-btt.png" />
     <Content Include="Content\view-gray-btt.png" />
+    <Content Include="Script\ckeditor\adapters\jquery.js" />
+    <Content Include="Script\ckeditor\build-config.js" />
+    <Content Include="Script\ckeditor\ckeditor.js" />
+    <Content Include="Script\ckeditor\config.js" />
+    <Content Include="Script\ckeditor\contents.css" />
+    <Content Include="Script\ckeditor\lang\en.js" />
+    <Content Include="Script\ckeditor\lang\th.js" />
+    <Content Include="Script\ckeditor\plugins\about\dialogs\about.js" />
+    <Content Include="Script\ckeditor\plugins\about\dialogs\hidpi\logo_ckeditor.png" />
+    <Content Include="Script\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
+    <Content Include="Script\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <Content Include="Script\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <Content Include="Script\ckeditor\plugins\icons.png" />
+    <Content Include="Script\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="Script\ckeditor\plugins\link\dialogs\anchor.js" />
+    <Content Include="Script\ckeditor\plugins\link\dialogs\link.js" />
+    <Content Include="Script\ckeditor\plugins\link\images\anchor.png" />
+    <Content Include="Script\ckeditor\plugins\link\images\hidpi\anchor.png" />
+    <Content Include="Script\ckeditor\skins\moono\dialog.css" />
+    <Content Include="Script\ckeditor\skins\moono\dialog_ie.css" />
+    <Content Include="Script\ckeditor\skins\moono\dialog_ie7.css" />
+    <Content Include="Script\ckeditor\skins\moono\dialog_ie8.css" />
+    <Content Include="Script\ckeditor\skins\moono\dialog_iequirks.css" />
+    <Content Include="Script\ckeditor\skins\moono\editor.css" />
+    <Content Include="Script\ckeditor\skins\moono\editor_gecko.css" />
+    <Content Include="Script\ckeditor\skins\moono\editor_ie.css" />
+    <Content Include="Script\ckeditor\skins\moono\editor_ie7.css" />
+    <Content Include="Script\ckeditor\skins\moono\editor_ie8.css" />
+    <Content Include="Script\ckeditor\skins\moono\editor_iequirks.css" />
+    <Content Include="Script\ckeditor\skins\moono\icons.png" />
+    <Content Include="Script\ckeditor\skins\moono\icons_hidpi.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\arrow.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\close.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\hidpi\close.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\hidpi\lock-open.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\hidpi\lock.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\hidpi\refresh.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\lock-open.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\lock.png" />
+    <Content Include="Script\ckeditor\skins\moono\images\refresh.png" />
+    <Content Include="Script\ckeditor\styles.js" />
     <Content Include="Script\jquery-ui.js" />
     <Content Include="Content\submit-btt.gif" />
     <Content Include="Content\upArrow.png" />
@@ -214,10 +255,10 @@
     <Content Include="Views\Home\ChangeLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Authenticate\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Authenticate\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\Index.cshtml" />
@@ -256,7 +297,7 @@
     <Content Include="Views\BookSearch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Member\Index.cshtml" />
+    <Content Include="Views\MemberTransaction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\NewsManager\AddNews.cshtml" />
@@ -286,9 +327,6 @@
     <Content Include="Views\Manage\BorrowTracking.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Member\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\MemberTransaction\Renew.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -306,13 +344,17 @@
     <None Include="Properties\PublishProfiles\paratabplus.pubxml" />
     <Content Include="Views\Account\EditAccount.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Script\ckeditor\CHANGES.md" />
+    <Content Include="Script\ckeditor\LICENSE.md" />
+    <Content Include="Script\ckeditor\README.md" />
+    <Content Include="Script\ckeditor\skins\moono\readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409192026034_revised-db.resx">
-      <DependentUpon>201409192026034_revised-db.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409201924100_initial.resx">
+      <DependentUpon>201409201924100_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409201158155_revised-db3.resx">
-      <DependentUpon>201409201158155_revised-db3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409201930359_ver2.resx">
+      <DependentUpon>201409201930359_ver2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

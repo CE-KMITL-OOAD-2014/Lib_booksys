@@ -6,11 +6,42 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
+using TestLibrary.ViewModels;
 namespace TestLibrary.Controllers
 {
     public class MemberTransactionController : Controller
     {
         LibraryContext db = new LibraryContext();
+        [Authorize]
+        public ActionResult Index()
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) == "M_")
+            {
+                MemberTransactionViewer viewer = new MemberTransactionViewer();
+                viewer.SetBorrowEntryViews(db.BorrowList.Where(target => target.Borrower.UserName ==
+                                           HttpContext.User.Identity.Name.ToString().Substring(2) &&
+                                           target.ReturnDate == null).ToList());
+                viewer.SetRequestEntryViews((db.RequestList.Where(target => target.RequestUser.UserName ==
+                                           HttpContext.User.Identity.Name.ToString().Substring(2)).ToList()));
+                List<RequestEntry> temp = viewer.GetRequestEntryViews();
+
+                foreach (var item in temp)
+                {
+                    if (item.ExpireDate != null)
+                    {
+                        if (DateTime.Now.Date > item.ExpireDate.Value.Date)
+                        {
+                            viewer.GetRequestEntryViews().Remove(item);
+                        }
+                    }
+                }
+                return View(viewer);
+            }
+            else
+                return RedirectToAction("Index", "Account");
+        }
+
 
         [Authorize]
         public ActionResult Renew(int id)
@@ -24,19 +55,19 @@ namespace TestLibrary.Controllers
             if (renewentry == null)
             {
                 TempData["Notification"] = "Invalid renew book id.";
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
 
             if (renewentry.Borrower.UserName != Session["LoginUser"].ToString().Substring(2))
             {
                 TempData["Notification"] = "Invalid renew operation.";
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
 
             if (renewentry.RenewCount == 3)
             {
                 TempData["Notification"] = "Your renew of book ID." + renewentry.BorrowBook.BookID + " is exceed maximum!";
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
             return View(renewentry);
         }
@@ -62,7 +93,7 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "Renew successful!";
                 }
             }
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Index");
         }
 
 
@@ -117,7 +148,7 @@ namespace TestLibrary.Controllers
                 db.RequestList.Add(newentry);
                 db.SaveChanges();
                 TempData["Notification"] = "Request book successfully.";
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
             else
                 return View();
@@ -132,14 +163,14 @@ namespace TestLibrary.Controllers
             RequestEntry wantedEntry = db.RequestList.Find(id);
             if (wantedEntry == null)
             {
-                TempData["Notification"] = "No book with prefered id exists.";
-                return RedirectToAction("Index", "Account");
+                TempData["Notification"] = "No cancel request with prefered id exists.";
+                return RedirectToAction("Index");
             }
             Member preferMember = db.Members.SingleOrDefault(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2));
             if (wantedEntry.RequestUser != preferMember)
             {
                 TempData["Notification"] = "Can't cancel other member's book request.";
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
             return View(wantedEntry);
         }
@@ -157,25 +188,22 @@ namespace TestLibrary.Controllers
                     if (bookToCheck == null)
                     {
                         TempData["Notification"] = "Something went wrong,please try again.";
-                        return RedirectToAction("Index", "Account");
+                        return RedirectToAction("Index");
                     }
-                    else
+                    if (bookToCheck.BookStatus == Status.Reserved)
                     {
-                        if (bookToCheck.BookStatus == Status.Reserved)
-                        {
                             bookToCheck.BookStatus = Status.Available;
                             db.Entry(bookToCheck).State = EntityState.Modified;
-                        }
                     }
                     db.Entry(cancelEntry).State = EntityState.Deleted;
 
                     db.SaveChanges();
                     TempData["Notification"] = "Cancel request successfully.";
                 }
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
             TempData["Notification"] = "Something went wrong,please try again.";
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
         {

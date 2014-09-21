@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Member Index";
+    ViewBag.Title = "Member transaction viewer";
 }
 @model TestLibrary.ViewModels.MemberTransactionViewer
-<h1>Welcome! @Session["LoginUser"].ToString().Substring(2)</h1>
+<h1>Member transaction</h1>
 <p class="noti-msg">@TempData["Notification"]</p>
 <h2>Book that you borrowed</h2>
 @if (Model.GetBorrowEntryViews().Count != 0) { 

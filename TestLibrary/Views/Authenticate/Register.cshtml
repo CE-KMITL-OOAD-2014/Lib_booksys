@@ -3,7 +3,7 @@
 }
 @model TestLibrary.Models.Member
 <h2>Register page</h2>
-<form class="account-form" action="/Home/Register" method="post">
+<form class="account-form" action="/Authenticate/Register" method="post">
     @Html.AntiForgeryToken()
     <p class="noti-msg">@TempData["Notification"]</p>
     <fieldset>

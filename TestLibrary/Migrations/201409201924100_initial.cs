@@ -3,16 +3,18 @@ namespace TestLibrary.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class reviseddb3 : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
-            DropColumn("dbo.Books", "testapi");
+            AddColumn("dbo.Books", "status2", c => c.String());
+           
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Books", "testapi", c => c.String(maxLength: 8000, unicode: false));
+            
+            DropColumn("dbo.Books", "status2");
         }
     }
 }

@@ -26,15 +26,7 @@ namespace TestLibrary.Controllers
             return View();
         }
 
-        [Authorize]
-        public ActionResult Detail()
-        {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
-            Admin a = db.Admins.Where(s => s.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
-            return View(a);
-        }
+        
 
         [Authorize]
         public ActionResult Edit()
