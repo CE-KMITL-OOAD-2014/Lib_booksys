@@ -28,6 +28,7 @@
             <th>Author</th>
             <th>Publisher</th>
             <th>Status</th>
+            <th></th>
         </tr>
         @foreach (var item in Model)
         {
@@ -36,6 +37,7 @@
                 <td>@item.Author</td>
                 <td>@item.Publisher</td>
                 <td>@item.BookStatus</td>
+                <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png"/></a></td>
             </tr>
         }
     </table>
@@ -63,6 +65,7 @@
                 <th>Author</th>
                 <th>Publisher</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             @foreach (var item in Model)
             {
@@ -71,6 +74,7 @@
                     <td>@item.Author</td>
                     <td>@item.Publisher</td>
                     <td>@item.BookStatus</td>
+                    <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
                 </tr>
             }
         </table>

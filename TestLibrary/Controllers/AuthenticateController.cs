@@ -97,6 +97,17 @@ namespace TestLibrary.Controllers
                 return View(regist);
         }
 
+        public ActionResult ForgotPassword()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                return RedirectToAction("Index", "Home");
+            }
+            else
+                return View();
+        }
+
 
         protected override void Dispose(bool disposing)
         {

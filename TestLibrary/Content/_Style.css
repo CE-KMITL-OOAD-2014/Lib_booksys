@@ -16,7 +16,7 @@ div#nav{
 }
 div.reg-login-linkzone{
     color:white;
-    font-size:smaller;
+    font-size:14px;
     margin-left:15%;
     margin-right:15%;
     float:right;
@@ -115,7 +115,7 @@ form.account-form textarea{
 form.book-search{
     font-family:Single;
     font-size:xx-large;
-    margin:15px;
+    margin:15px 0px 15px 0px;
     width:300px;
 }
 form.book-search input,form.book-search select,form.book-search label{
@@ -136,7 +136,7 @@ form.book-search input[type="submit"]{
 form.news-form{
     font-family:Single;
     font-size:x-large;
-    margin:15px;
+    margin:15px 0 15px 0;
 }
 form.news-form label{
     font-weight:900
@@ -145,7 +145,7 @@ form.news-form label{
 table.news-list{
     font-family:Single;
     font-size:x-large;
-    margin:15px;
+    margin:15px 0 15px 0;
     padding:5px;
     border:1px solid #808080;
     border-top-left-radius:15px;
@@ -160,7 +160,7 @@ table.news-list tr:hover{
 
 /*--------------------------*/
 div.news-area{
-    margin:15px;
+    margin:15px 0 15px 0;
     padding:10px;
     font-family:Single;
     font-size:x-large;
@@ -174,7 +174,6 @@ a.account-btt{
     font-family:Single;
     font-size:x-large;
     background-color:#99CCFF;
-    margin-left:15px;
     margin-bottom:15px;
     padding-top:3px;
     padding-bottom:3px;
@@ -204,8 +203,6 @@ div.account-detail{
     border-top-right-radius:15px;
     border-bottom-left-radius:15px;
     border-bottom-right-radius:15px;
-    margin-left:15px;
-    margin-right:15px;
     margin-bottom:10px;
     padding:10px;
 
@@ -258,7 +255,7 @@ ul.admin-panel{
     font-family:Single;
     font-size:x-large;
     list-style-type:none;
-    margin:15px;
+    margin:15px 0 15px 0;
     padding:0
 }
 
@@ -287,7 +284,7 @@ ul.admin-panel li a:visited{
 table.list{
     font-family:Single;
     font-size:x-large;
-    margin:15px;
+    margin:15px 0 15px 0;
     border-collapse:collapse
 }
 
@@ -355,6 +352,8 @@ div#content{
     margin-left:auto;
     margin-right:auto;
     background-color:white;
+    padding-left:15px;
+    padding-right:15px;
     padding-bottom:1px;
     border-bottom-left-radius:15px;
     border-bottom-right-radius:15px;
@@ -401,27 +400,21 @@ a.operation-link:visited{
 
 h1{
    padding-top:8px;
-   padding-left:15px;
    font-family:supermarket
 }
 
 h2{
-    padding-left:15px;
     font-family:Calibri; 
     text-decoration:underline;
 }
 
-h2.book-detail{
-    display:inline;
-}
+
 
 p.real-paragraph,p.noti-msg,p.account-detail{
-    padding-left:15px;
-    padding-right:15px;
     text-indent:50px;
     text-align:left;
     font-family:Single;
-    font-size:25px;
+    font-size:x-large
 }
 
 p.noti-msg{
@@ -432,14 +425,27 @@ color:red;
 p.account-detail{
     text-indent:0
 }
+
 p.book-detail{
-    display:inline;
+    font-family:Single;
+    font-size:x-large;
+    text-indent:0
 }
 
 p.post-time{
     margin:0;
     padding:0;
     text-align:right;
+}
+
+a.news-link:link,a.book-link:link{
+    font-family:Single;
+    color:black;
+    font-size:x-large;
+}
+
+a.news-link:visited,a.book-link:visited{
+    color:black
 }
 
 @font-face{

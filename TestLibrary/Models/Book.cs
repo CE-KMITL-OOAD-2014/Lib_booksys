@@ -15,6 +15,7 @@ namespace TestLibrary.Models
     {
         [Key]
         public int BookID { get; set; }
+        //Add call number
         [Required]
         public string BookName { get; set; }
 

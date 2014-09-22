@@ -11,6 +11,12 @@
     <script src="~/Script/jquery-ui.js"></script>
     <script>
         function resizewindow() {
+            if ((screen.width / screen.height) >= (16 / 9)) {
+                $("div#content").css("width", screen.width * 0.7 - 30);
+            }
+            else {
+                $("div#content").css("width", screen.width - 30);
+            }
             if (window.innerWidth < 800) {
 
                 /*$("div.reg-login-linkzone").css("margin", "0px 5px 0px 5px");
@@ -34,8 +40,8 @@
     </script>
     <script>
         $(document).ready(function () {
-            var width = screen.availWidth * 0.7;
-            $("div#content").css("max-width", width);
+            /*var width = screen.availWidth * 0.7;
+            $("div#content").css("max-width", width-30);*/
             resizewindow();
             $("img.back-to-top-btt,div.menu-slider").hide();
             $(window).resize(resizewindow);

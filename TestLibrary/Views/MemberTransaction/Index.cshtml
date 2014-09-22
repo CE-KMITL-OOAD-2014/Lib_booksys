@@ -44,6 +44,7 @@ else{
         <tr>
             <th>Book name</th>
             <th>Request Date</th>
+            <th>Status</th>
             <th>Expire Date</th>
             <th></th>
         </tr>
@@ -56,15 +57,21 @@ else{
             <td>
                 @record.RequestDate.ToShortDateString()
             </td>
-            <td>
                 @if (record.ExpireDate != null) { 
+                <td>
+                    Available
+                </td>
+                    <td>
                 @record.ExpireDate.Value.ToShortDateString()
+                        </td>
                 }
                 else
                 {
-                    @Html.DisplayFor(target => target.GetRequestEntryViews().Single(rec => rec == record).ExpireDate)
+                    <td>
+                    Not Available
+                    </td>
+                    <td>@Html.DisplayFor(target => target.GetRequestEntryViews().Single(rec => rec == record).ExpireDate)</td>
                 }
-            </td>
                 <td>
                     <a class="operation-link" href="/MemberTransaction/CancelRequest/@record.BookID">Cancel</a>
                         </td>

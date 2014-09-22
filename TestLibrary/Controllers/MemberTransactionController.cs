@@ -24,9 +24,10 @@ namespace TestLibrary.Controllers
                                            target.ReturnDate == null).ToList());
                 viewer.SetRequestEntryViews((db.RequestList.Where(target => target.RequestUser.UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2)).ToList()));
-                List<RequestEntry> temp = viewer.GetRequestEntryViews();
 
-                foreach (var item in temp)
+                List<RequestEntry> temp = new List<RequestEntry>();
+                temp.AddRange(viewer.GetRequestEntryViews());
+                foreach (RequestEntry item in temp)
                 {
                     if (item.ExpireDate != null)
                     {

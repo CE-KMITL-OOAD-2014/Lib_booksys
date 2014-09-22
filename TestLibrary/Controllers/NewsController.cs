@@ -10,7 +10,7 @@ namespace TestLibrary.Controllers
     public class NewsController : Controller
     {
         LibraryContext db = new LibraryContext();
-        public ActionResult Detail(int id)
+        public ActionResult View(int id)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             Session["LoginUser"] = HttpContext.User.Identity.Name;

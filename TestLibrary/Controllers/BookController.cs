@@ -14,6 +14,14 @@ namespace TestLibrary.Controllers
     {
         LibraryContext db = new LibraryContext();
 
+        public ActionResult View([DefaultValue(0)]int id)
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+            }
+            return View(db.Books.Find(id));
+        }
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
