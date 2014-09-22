@@ -13,7 +13,7 @@ namespace TestLibrary.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201409211632101_initial"; }
+            get { return "201409221557429_initial"; }
         }
         
         string IMigrationMetadata.Source

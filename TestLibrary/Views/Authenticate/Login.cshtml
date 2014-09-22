@@ -2,16 +2,17 @@
     ViewBag.Title = "Login";
 
 }
+@model TestLibrary.ViewModels.LoginEditor
 <p class="noti-msg">@TempData["Notification"]</p>
 
     <form class="account-form" action="/Authenticate/Login" method="post">
         @Html.AntiForgeryToken()
         <fieldset>
             <legend>Login</legend>
-            <input type="text" placeholder="Username" name="UserName" />
-            <input type="password" placeholder="Password" name="password" /><br />
+            <input type="text" placeholder="Username" name="UserName" value="@Html.DisplayFor(model => model.UserName)"/>
+            <input type="password" placeholder="Password" name="Password" /><br />
             <input type="Submit" value="Login" /><br />
-            @Html.CheckBox("remember")Remember me<br />
+            @Html.CheckBox("Remember")Remember me<br />
             <a href="#">Forgot password?</a>
         </fieldset>
     </form>

@@ -114,7 +114,9 @@ namespace TestLibrary.Controllers
             {
                 TempData["Notification"] = "Delete " + booktodelete.BookName + " successfully.";
                 List<BorrowEntry> removeBorrowEntry = db.BorrowList.Where(target => target.BorrowBook.BookID == booktodelete.BookID).ToList();
-                db.RequestList.Remove(db.RequestList.Find(booktodelete.BookID));
+                RequestEntry entryToRemove = db.RequestList.Find(booktodelete.BookID);
+                if (entryToRemove != null)
+                db.RequestList.Remove(entryToRemove);
                 db.BorrowList.RemoveRange(removeBorrowEntry);
                 db.Entry(booktodelete).State = EntityState.Deleted;
                 db.SaveChanges();

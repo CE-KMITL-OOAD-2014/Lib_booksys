@@ -8,20 +8,28 @@ namespace TestLibrary.Models
 {
     public class RequestEntry
     {
+
+        private int _BookID;
         [Key]
         [ForeignKey("RequestBook")]
-        public int BookID { get; set; }
+        public int BookID { get { return _BookID; } set { _BookID = value; } }
 
+        private int _UserID;
         [ForeignKey("RequestUser")]
-        public int UserID { get; set; }
+        public int UserID { get { return _UserID; } set { _UserID = value; } }
 
+        private DateTime _RequestDate;
         [Column(TypeName="date")]
-        public DateTime RequestDate { get; set; }
+        public DateTime RequestDate { get { return _RequestDate; } set { _RequestDate = value; } }
 
+        private DateTime? _ExpireDate;
         [Column(TypeName="date")]
-        public DateTime? ExpireDate { get; set; }
+        public DateTime? ExpireDate { get { return _ExpireDate; } set { _ExpireDate = value; } }
 
-        public virtual Book RequestBook { get; set; }
-        public virtual Member RequestUser {get; set; }
+        private Book _RequestBook;
+        public virtual Book RequestBook { get { return _RequestBook; } set { _RequestBook = value; } }
+
+        private Member _RequestUser;
+        public virtual Member RequestUser { get { return _RequestUser; } set { _RequestUser = value; } }
     }
 }

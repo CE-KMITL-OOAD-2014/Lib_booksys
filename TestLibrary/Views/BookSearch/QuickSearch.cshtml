@@ -10,6 +10,7 @@
 else { 
 <table class="list">
     <tr>
+        <th>ID</th>
         <th>Book name</th>
         <th>Author</th>
         <th>Publisher</th>
@@ -19,6 +20,7 @@ else {
     @foreach (var book in Model)
     {
         <tr>
+            <th>@book.BookID</th>
             <td>@book.BookName</td>
             <td>@book.Author</td>
             <td>@book.Publisher</td>

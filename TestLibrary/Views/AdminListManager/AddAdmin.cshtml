@@ -10,8 +10,8 @@
         <legend>Add new admin</legend>
         <input type="text" placeholder="UserName" name="UserName" value="@Html.DisplayFor(model => model.UserName)" />
         <input type="text" placeholder="Name" name="Name" value="@Html.DisplayFor(model => model.Name)" />
-        <input type="text" placeholder="E-mail" name="Email" value="@Html.DisplayFor(model => model.Email)" />
-        <input type="password" placeholder="Password" name="Password" value="@Html.DisplayFor(model => model.Password)" />
+        <input type="text" placeholder="E-mail" name="Email" value="@Html.DisplayTextFor(model => model.Email)" />
+        <input type="password" placeholder="Password" name="Password"/>
         <input type="submit" value="Add admin"/>
     </fieldset>
 </form>

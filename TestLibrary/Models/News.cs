@@ -10,16 +10,19 @@ namespace TestLibrary.Models
 {
     public class News
     {
+        private int _NewsID;
+        public int NewsID { get { return _NewsID; } set { _NewsID = value; } }
 
-        public int NewsID { get; set; }
+        private string _Title;
         [Required]
-        public string Title { get; set; }
+        public string Title { get { return _Title; } set { _Title = value; } }
 
+        private string _Detail;
         [Required]
         [AllowHtml]
-        public string Detail { get; set; }
+        public string Detail { get { return _Detail; } set { _Detail = value; } }
 
-        
-        public DateTime PostTime{get; set;}
+        private DateTime _PostTime;
+        public DateTime PostTime { get { return _PostTime; } set { _PostTime = value; } }
     }
 }

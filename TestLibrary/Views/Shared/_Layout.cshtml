@@ -11,11 +11,11 @@
     <script src="~/Script/jquery-ui.js"></script>
     <script>
         function resizewindow() {
-            if ((screen.width / screen.height) >= (16 / 9)) {
-                $("div#content").css("width", screen.width * 0.7 - 30);
+            if ((window.outerWidth / window.outerHeight) >= (16 / 9)) {
+                $("div#content").css("width", window.outerWidth * 0.7 - 30);
             }
             else {
-                $("div#content").css("width", screen.width - 30);
+                $("div#content").css("width", window.outerWidth - 30);
             }
             if (window.innerWidth < 800) {
 

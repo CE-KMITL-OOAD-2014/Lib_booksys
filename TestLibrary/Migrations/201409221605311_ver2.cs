@@ -2,17 +2,15 @@ namespace TestLibrary.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-
-    public partial class ver3 : DbMigration
+    
+    public partial class ver2 : DbMigration
     {
         public override void Up()
         {
-            
         }
-
+        
         public override void Down()
         {
-            
         }
     }
 }

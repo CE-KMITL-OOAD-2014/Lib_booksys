@@ -5,14 +5,15 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 namespace TestLibrary.ViewModels
 {
-    public class AccountEditor
+    public class LoginEditor
     {
-            
         [Required]
-        public string Name { get; set; }
-        
-        [EmailAddress]
+        public string UserName { get; set; }
+
         [Required]
-        public string Email { get; set; }
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        public bool Remember { get; set; }
     }
 }

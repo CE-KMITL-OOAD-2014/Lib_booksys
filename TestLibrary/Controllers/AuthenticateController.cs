@@ -7,6 +7,7 @@ using System.Web.Security;
 using System.Data.Common;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
+using TestLibrary.ViewModels;
 namespace TestLibrary.Controllers
 {
     public class AuthenticateController : Controller
@@ -24,28 +25,32 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string UserName, string Password, bool remember)
+        public ActionResult Login(LoginEditor submitData)
         {
-            
+            if (ModelState.IsValid)
+            {
                 Person loginUser;
-                loginUser = db.Members.SingleOrDefault(target => target.UserName == UserName && target.Password == Password);
+                loginUser = db.Members.SingleOrDefault(target => target.UserName == submitData.UserName && target.Password == submitData.Password);
                 if (loginUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie("M_" + UserName, remember);
-                    Session["LoginUser"] = "M_" + UserName;
+                    FormsAuthentication.SetAuthCookie("M_" + submitData.UserName, submitData.Remember);
+                    Session["LoginUser"] = "M_" + submitData.UserName;
                     return RedirectToAction("Index", "Account");
                 }
                 else
                 {
-                    loginUser = db.Admins.SingleOrDefault(target => target.UserName == UserName && target.Password == Password);
+                    loginUser = db.Admins.SingleOrDefault(target => target.UserName == submitData.UserName && target.Password == submitData.Password);
                     if (loginUser != null)
                     {
-                        FormsAuthentication.SetAuthCookie("A_" + UserName, remember);
-                        Session["LoginUser"] = "A_" + UserName;
+                        FormsAuthentication.SetAuthCookie("A_" + submitData.UserName, submitData.Remember);
+                        Session["LoginUser"] = "A_" + submitData.UserName;
                         return RedirectToAction("Index", "Account");
                     }
+                    TempData["Notification"] = "Login info is incorrect.";
+                    return View(submitData);
                 }
-                return View();
+            }
+                return View(submitData);
         }
 
         public ActionResult Logout()

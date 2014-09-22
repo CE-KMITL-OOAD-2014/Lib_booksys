@@ -37,7 +37,7 @@
     @foreach (var item in Model.GetBorrowEntryViews())
     {
         <tr>
-            <td>@item.BookID</td>
+            <th>@item.BookID</th>
             <td>@item.BorrowBook.BookName</td>
             <td>@item.DueDate.ToShortDateString()</td>
             <td>
@@ -78,7 +78,7 @@
     @foreach (var item in Model.GetRequestEntryViews())
     {
         <tr>
-            <td>@item.BookID</td>
+            <th>@item.BookID</th>
             <td>@item.RequestBook.BookName</td>
             
             @if(item.ExpireDate != null){
@@ -108,3 +108,4 @@
         <p class="noti-msg">No book that this member requested now.</p>
     }
 }
+<a class="account-btt" href="/AdminTransaction/">Back</a>
