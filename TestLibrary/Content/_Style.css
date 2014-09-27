@@ -14,13 +14,20 @@ div#nav{
     top:0;
     width:100%
 }
+div#header{
+    margin-top:1px;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:x-large;
+    color:white;
+}
 div.reg-login-linkzone{
     color:white;
     font-size:14px;
-    margin-left:15%;
-    margin-right:15%;
-    float:right;
     text-align:right;
+    display:inline-block;
+    float:right;
+    
 }
 
 div.reg-login-linkzone a:link{
@@ -38,12 +45,9 @@ div.reg-login-linkzone a:visited{
 
 div#quicksearch{
     color:white;
-    margin-left:15%;
-    margin-right:15%;
-    margin-top:5px;
+    margin-top:0px;
     margin-bottom:0px;
-    position:fixed;
-    right:0
+    float:right;
 }
 
 form.search-bar input{
@@ -53,13 +57,7 @@ form.search-bar input{
 form.search-bar input[type="text"]{
     width:140px  
 }
-div#header{
-    margin-top:4px;
-    margin-left:15%;
-    margin-right:15%;
-    font-size:x-large;
-    color:white;
-}
+
 /*---account form---*/
 form.account-form{
     font-family:Single;
@@ -209,9 +207,9 @@ div.account-detail{
 }
 
 div#menubar{
-    margin-top:10px;
-    margin-left:15%;
-    margin-right:15%;
+    margin-top:8px;
+    margin-left:auto;
+    margin-right:auto;
     margin-bottom:0;
     font-size:large;
     color:white;
@@ -225,6 +223,7 @@ ul.menulist{
 }
 
 ul.menulist li a:link{
+    margin-top:5px;
     padding-bottom:3px;
     text-decoration:none;
     text-align:center;
@@ -303,6 +302,9 @@ img.delete-btt,img.edit-btt,img.view-btt,img.paratab{
     vertical-align:text-bottom;
 }
 
+img.paratab{
+    display:inline;
+}
 /*----------------------------------*/
 img.menu-btt{
     cursor:pointer;
@@ -386,6 +388,7 @@ a.paratab:link{
     text-decoration:none;
 }
 
+
 a.paratab:visited{
     color:white;
 }
@@ -452,8 +455,9 @@ a.news-link:visited,a.book-link:visited{
     font-family:Single;
     src:url(/Font/_DS-Single.ttf);
 }
-
 @font-face{
-    font-family:Calibri;
-    src:url(/Font/CALIBRI.TTF);
+    font-family:CalibriFont;
+    src:url(/Font/CALIBRI.ttf);
 }
+
+

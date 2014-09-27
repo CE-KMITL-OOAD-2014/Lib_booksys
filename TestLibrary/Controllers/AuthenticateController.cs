@@ -72,14 +72,14 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(Member regist, string ConfirmPassword)
+        public ActionResult Register(Member regist, string confirmPwd)
         {
             if (ModelState.IsValid)
             {
                 if ((libRepo.MemberRepo.ListWhere(target => target.UserName == (regist.UserName)).SingleOrDefault() == null) &&
                     (libRepo.LibrarianRepo.ListWhere(target => target.UserName == (regist.UserName)).SingleOrDefault() == null))
                 {
-                    if (regist.Password == ConfirmPassword)
+                    if (regist.Password == confirmPwd)
                     {
                         regist.Password = Crypto.HashPassword(regist.Password);
                         libRepo.MemberRepo.Add(regist);

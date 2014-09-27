@@ -11,28 +11,11 @@
     <script src="~/Script/jquery-ui.js"></script>
     <script>
         function resizewindow() {
-            if ((window.outerWidth / window.outerHeight) >= (16 / 9)) {
-                $("div#content").css("width", window.outerWidth * 0.7 - 30);
-            }
-            else {
-                $("div#content").css("width", window.outerWidth - 30);
-            }
-            if (window.innerWidth < 800) {
-
-                /*$("div.reg-login-linkzone").css("margin", "0px 5px 0px 5px");
-                $("div#header").css("margin", "4px 0px 0px 5px");
-                $("div#menubar").css("margin", "5px 0px 0px 0px");
-                $("div#quicksearch").css("margin", "2px 5px 0px 0px");
-                $("div#content").css("margin", "70px 0px 0px 0px");*/
+            if (window.innerWidth < 585) {
                 $("ul.menulist").hide();
                 $("img.menu-btt").show();
             }
             else {
-                /*$("div.reg-login-linkzone").css("margin", "0px 15% 0px 15%");
-                $("div#header").css("margin", "4px 15% 0px 15%");
-                $("div#menubar").css("margin", "10px 15% 0px 15%");
-                $("div#quicksearch").css("margin", "2px 15% 0px 15%");
-                $("div#content").css("margin", "70px 15% 0px 15%");*/
                 $("img.menu-btt,div.menu-slider").hide();
                 $("ul.menulist").show();
             }
@@ -40,8 +23,8 @@
     </script>
     <script>
         $(document).ready(function () {
-            /*var width = screen.availWidth * 0.7;
-            $("div#content").css("max-width", width-30);*/
+            $("div#content").css("max-width", 930);
+            $("div#header,div#menubar").css("max-width", 960);
             resizewindow();
             $("img.back-to-top-btt,div.menu-slider").hide();
             $(window).resize(resizewindow);
@@ -85,17 +68,21 @@
 </head>
 <body>
 <a id="top"></a><div id="nav">
+       
+    <div id="header">
+        <a class="paratab" href="~/"><img class="paratab" src="~/Content/paratabplus.png" /></a>
         <div class="reg-login-linkzone">
-            @if(Session["LoginUser"] != null)
+            @if (Session["LoginUser"] != null)
             {
-                if (Session["LoginUser"].ToString().Substring(0, 2) == "M_") { 
-                <text>Welcome! </text><a href="/Account/">@Session["LoginUser"].ToString().Substring(2)</a><br />
-            <a href="/Account/">My account</a><text>|</text>
-            }
+                if (Session["LoginUser"].ToString().Substring(0, 2) == "M_")
+                {
+                    <text>Welcome! </text><a href="/Account/">@Session["LoginUser"].ToString().Substring(2)</a><br />
+                    <a href="/Account/">My account</a><text>|</text>
+                }
                 else
                 {
-                 <text>Welcome! </text><a href="/Account/">@Session["LoginUser"].ToString().Substring(2)</a><br />
-            <a href="/Account/LibrarianPortal">Librarian portal</a><text>|</text>
+                    <text>Welcome! </text><a href="/Account/">@Session["LoginUser"].ToString().Substring(2)</a><br />
+                    <a href="/Account/LibrarianPortal">Librarian portal</a><text>|</text>
                 }
                 <a href="/Authenticate/Logout">Sign out</a>
             }
@@ -105,20 +92,18 @@
             }
 
 
-    </div>
-    <div id="header">
-        <a class="paratab" href="~/"><img class="paratab" src="~/Content/paratabplus.png" /></a>
+        </div>
 </div>
-    <div id="quicksearch">
-        <form class="search-bar" action="/BookSearch/QuickSearch" method="post">
-            @Html.AntiForgeryToken()
-            <input type="text" placeholder="Quick search" name="BookName" value="@ViewBag.quicksearchkey">
-            <input type="submit" value="Search" />
-        </form>
-
-    </div>
         <div id="menubar">
             <img class="menu-btt" src="/Content/menu.png"/>
+            <div id="quicksearch">
+                <form class="search-bar" action="/BookSearch/QuickSearch" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="text" placeholder="Quick search" name="BookName" value="@ViewBag.quicksearchkey">
+                    <input type="submit" value="Search" />
+                </form>
+
+            </div>
             <div class="menu-slider">
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -135,6 +120,7 @@
                 <li><a href="/Home/Contact">Contact</a></li>
                 <li><a href="/Home/ChangeLog">Ch.Log</a></li>
             </ul>
+            
         </div>
     </div>
 

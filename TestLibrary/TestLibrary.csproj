@@ -319,7 +319,7 @@
     <Content Include="Views\MemberTransaction\CancelRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Font\CALIBRI.TTF" />
+    <Content Include="Font\CALIBRI.ttf" />
     <None Include="Properties\PublishProfiles\Default Settings %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\paratabplus %282%29.pubxml" />
