@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "View";
 }
-@model TestLibrary.Models.Admin
+@model TestLibrary.Models.Librarian
 <h2>Detail of @Model.Identify()</h2>
 <p class="account-detail">
     <b>UserID:</b>@Model.UserID<br />
@@ -9,4 +9,4 @@
     <b>Name:</b>@Model.Name<br />
     <b>Email:</b>@Html.DisplayTextFor(model => model.Email)
 </p>
-<a class="account-btt" href="/AdminListManager/">Back</a>
+<a class="account-btt" href="/LibrarianListManager/">Back</a>

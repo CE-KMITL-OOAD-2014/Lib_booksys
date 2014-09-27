@@ -10,12 +10,12 @@ namespace TestLibrary.Controllers
 {
     public class HomeController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         public ActionResult Index()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
-            return View(db.NewsList.ToList().OrderByDescending(news => news.PostTime));
+            return View(libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime));
         }
 
         public ActionResult About()
@@ -36,15 +36,6 @@ namespace TestLibrary.Controllers
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
-        }
-
-        
-
-        
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

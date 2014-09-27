@@ -12,20 +12,14 @@ namespace TestLibrary.Controllers
 {
     public class BookController : Controller
     {
-        LibraryContext db = new LibraryContext();
-
+        LibraryRepository libRepo = new LibraryRepository();
         public ActionResult View([DefaultValue(0)]int id)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
             }
-            return View(db.Books.Find(id));
-        }
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
+            return View(libRepo.BookRepo.Find(id));
         }
     }
 }

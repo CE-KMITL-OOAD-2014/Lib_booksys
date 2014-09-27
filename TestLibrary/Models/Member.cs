@@ -12,7 +12,9 @@ namespace TestLibrary.Models
             return ("Member "+this.UserName);
         }
 
-        public virtual ICollection<BorrowEntry> BorrowEntries { get; set; }
-        public virtual ICollection<RequestEntry> RequestEntries { get; set; }
+        private ICollection<BorrowEntry> _BorrowEntries;
+        private ICollection<RequestEntry> _RequestEntries;
+        public virtual ICollection<BorrowEntry> BorrowEntries { get{return _BorrowEntries;} set{ _BorrowEntries = value; } }
+        public virtual ICollection<RequestEntry> RequestEntries { get { return _RequestEntries; } set { _RequestEntries = value; } }
     }
 }

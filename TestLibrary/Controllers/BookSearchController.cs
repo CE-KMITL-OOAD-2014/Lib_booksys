@@ -9,7 +9,7 @@ namespace TestLibrary.Controllers
 {
     public class BookSearchController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         public ActionResult Index()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -19,43 +19,43 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Basic(string Keyword, string SearchType)
+        public ActionResult Basic(string keyword, string searchType)
         {
-            ViewBag.Keyword = Keyword;
-            ViewBag.SearchType = SearchType;
-            if (SearchType == "")
+            ViewBag.Keyword = keyword;
+            ViewBag.SearchType = searchType;
+            if (searchType == "")
             {
                 TempData["Notification"] = "Please select search type.";
                 return View("Index");
             }
-            else if (SearchType == "BookName")
+            else if (searchType == "BookName")
             {
-                List<Book> targetlist = db.Books.Where(target => target.BookName.Contains(Keyword)).OrderBy(booksort => booksort.BookName).ToList();
+                List<Book> targetlist = libRepo.BookRepo.ListWhere(target => target.BookName.Contains(keyword)).OrderBy(booksort => booksort.BookName).ToList();
                 if (targetlist.Count == 0)
                     TempData["Notification"] = "No book result found.";
                 return View("Index", targetlist);
             }
-            else if (SearchType == "Author")
+            else if (searchType == "Author")
             {
-                List<Book> targetlist = db.Books.Where(target => target.Author.Contains(Keyword)).OrderBy(booksort => booksort.BookName).ToList();
+                List<Book> targetlist = libRepo.BookRepo.ListWhere(target => target.Author.Contains(keyword)).OrderBy(booksort => booksort.BookName).ToList();
                 if (targetlist.Count == 0)
                     TempData["Notification"] = "No book result found.";
                 return View("Index", targetlist);
             }
-            else if (SearchType == "Publisher")
+            else if (searchType == "Publisher")
             {
-                List<Book> targetlist = db.Books.Where(target => target.Publisher.Contains(Keyword)).OrderBy(booksort => booksort.BookName).ToList();
+                List<Book> targetlist = libRepo.BookRepo.ListWhere(target => target.Publisher.Contains(keyword)).OrderBy(booksort => booksort.BookName).ToList();
                 if (targetlist.Count == 0)
                     TempData["Notification"] = "No book result found.";
                 return View("Index", targetlist);
             }
 
-            else if (SearchType == "Year")
+            else if (searchType == "Year")
             {
                 try
                 {
-                    int year = int.Parse(Keyword);
-                    List<Book> targetlist = db.Books.Where(target => target.Year == year).OrderBy(booksort => booksort.BookName).ToList();
+                    int year = int.Parse(keyword);
+                    List<Book> targetlist = libRepo.BookRepo.ListWhere(target => target.Year == year).OrderBy(booksort => booksort.BookName).ToList();
                     if (targetlist.Count == 0)
                         TempData["Notification"] = "No book result found.";
                     return View("Index", targetlist);
@@ -73,32 +73,32 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year")]Book booktosearch)
+        public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year")]Book bookToSearch)
         {
             ModelState.Remove("BookName");
-            TempData["BookName"] = booktosearch.BookName;
-            TempData["Author"] = booktosearch.Author;
-            TempData["Publisher"] = booktosearch.Publisher;
-            TempData["Year"] = booktosearch.Year;
+            TempData["BookName"] = bookToSearch.BookName;
+            TempData["Author"] = bookToSearch.Author;
+            TempData["Publisher"] = bookToSearch.Publisher;
+            TempData["Year"] = bookToSearch.Year;
             if (ModelState.IsValid)
             {
 
                 List<Book> targetlist;
-                booktosearch.BookName = (booktosearch.BookName == null) ? "" : booktosearch.BookName;
-                booktosearch.Author = (booktosearch.Author == null) ? "" : booktosearch.Author;
-                booktosearch.Publisher = (booktosearch.Publisher == null) ? "" : booktosearch.Publisher;
+                bookToSearch.BookName = (bookToSearch.BookName == null) ? "" : bookToSearch.BookName;
+                bookToSearch.Author = (bookToSearch.Author == null) ? "" : bookToSearch.Author;
+                bookToSearch.Publisher = (bookToSearch.Publisher == null) ? "" : bookToSearch.Publisher;
 
-                if (booktosearch.Year != null)
+                if (bookToSearch.Year != null)
                 {
-                    targetlist = db.Books.Where(target => (target.BookName.Contains(booktosearch.BookName)) &&
-                    (target.Author.Contains(booktosearch.Author)) && (target.Publisher.Contains(booktosearch.Publisher)) &&
-                     (target.Year == booktosearch.Year)).ToList();
+                    targetlist = libRepo.BookRepo.ListWhere(target => (target.BookName.Contains(bookToSearch.BookName)) &&
+                    (target.Author.Contains(bookToSearch.Author)) && (target.Publisher.Contains(bookToSearch.Publisher)) &&
+                     (target.Year == bookToSearch.Year)).ToList();
                 }
 
                 else
                 {
-                    targetlist = db.Books.Where(target => (target.BookName.Contains(booktosearch.BookName)) &&
-                    (target.Author.Contains(booktosearch.Author)) && (target.Publisher.Contains(booktosearch.Publisher))).ToList();
+                    targetlist = libRepo.BookRepo.ListWhere(target => (target.BookName.Contains(bookToSearch.BookName)) &&
+                    (target.Author.Contains(bookToSearch.Author)) && (target.Publisher.Contains(bookToSearch.Publisher))).ToList();
                 }
                 TempData["AdvanceSearch"] = "Advance";
                 if (targetlist.Count == 0)
@@ -113,17 +113,11 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult QuickSearch(string BookName)
+        public ActionResult QuickSearch(string bookName)
         {
-            ViewBag.quicksearchkey = BookName;
-            IQueryable<Book> booklist = db.Books.Where(target => target.BookName.Contains(BookName));
-            return View(booklist.ToList());
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
+            ViewBag.quicksearchkey = bookName;
+            List<Book> booklist = libRepo.BookRepo.ListWhere(target => target.BookName.Contains(bookName));
+            return View(booklist);
         }
     }
 }

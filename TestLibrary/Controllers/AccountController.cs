@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers;
 using System.Data.Entity;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
@@ -11,7 +12,7 @@ namespace TestLibrary.Controllers
 {
     public class AccountController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
 
         [Authorize]
         public ActionResult Index()
@@ -19,9 +20,9 @@ namespace TestLibrary.Controllers
             string userName;
             Session["LoginUser"] = userName = HttpContext.User.Identity.Name;
             userName = userName.Substring(2);
-            Person CurrentLoginUser = db.Admins.SingleOrDefault(target => target.UserName == userName);
+            Person CurrentLoginUser = libRepo.LibrarianRepo.ListWhere(target => target.UserName == userName).SingleOrDefault();
             if (CurrentLoginUser == null)
-                CurrentLoginUser = db.Members.SingleOrDefault(target => target.UserName == userName);
+                CurrentLoginUser = libRepo.MemberRepo.ListWhere(target => target.UserName == userName).SingleOrDefault();
             return View(CurrentLoginUser);
         }
         [Authorize]
@@ -38,16 +39,19 @@ namespace TestLibrary.Controllers
             if (ModelState.IsValid)
             {
                 string userName = HttpContext.User.Identity.Name.ToString().Substring(2);
-                Person target = db.Admins.Where(admin => admin.UserName == userName).SingleOrDefault();
+                Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == userName).SingleOrDefault();
                 if (target == null)
-                    target = db.Members.Where(member => member.UserName == userName).SingleOrDefault();
-                if (target.Password == pwdToChange.oldPassword)
+                    target = libRepo.MemberRepo.ListWhere(member => member.UserName == userName).SingleOrDefault();
+                if (Crypto.VerifyHashedPassword(target.Password, pwdToChange.oldPassword))
                 {
                     if (pwdToChange.isEqualPassword())
                     {
-                        target.Password = pwdToChange.newPassword;
-                        db.Entry(target).State = EntityState.Modified;
-                        db.SaveChanges();
+                        target.Password = Crypto.HashPassword(pwdToChange.newPassword);
+                        if (target.Identify().StartsWith("Librarian"))
+                            libRepo.LibrarianRepo.Update((Librarian)target);
+                        else
+                            libRepo.MemberRepo.Update((Member)target);
+                        libRepo.Save();
                         TempData["Notification"] = "Change password successfully.";
                         return RedirectToAction("Index");
                     }
@@ -70,9 +74,9 @@ namespace TestLibrary.Controllers
         public ActionResult EditAccount()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
-            Person target = db.Admins.Where(admin => admin.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
+            Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             if (target == null)
-                target = db.Members.Where(member => member.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
+                target = libRepo.MemberRepo.ListWhere(member => member.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             AccountEditor editor = new AccountEditor();
             editor.Name = target.Name;
             editor.Email = target.Email;
@@ -88,15 +92,18 @@ namespace TestLibrary.Controllers
             if (ModelState.IsValid)
             {
                 string userName = HttpContext.User.Identity.Name.ToString().Substring(2);
-                Person target = db.Admins.Where(admin => admin.UserName == userName).SingleOrDefault();
+                Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == userName).SingleOrDefault();
                 if (target == null)
                 {
-                    target = db.Members.Where(member => member.UserName == userName).SingleOrDefault();
+                    target = libRepo.MemberRepo.ListWhere(member => member.UserName == userName).SingleOrDefault();
                 }
                 target.Name = editor.Name;
                 target.Email = editor.Email;
-                db.Entry(target).State = EntityState.Modified;
-                db.SaveChanges();
+                if (target.Identify().StartsWith("Librarian"))
+                    libRepo.LibrarianRepo.Update((Librarian)target);
+                else
+                    libRepo.MemberRepo.Update((Member)target);
+                libRepo.Save();
                 TempData["Notification"] = "Edit account successfully.";
                 return RedirectToAction("Index");
             }
@@ -104,22 +111,13 @@ namespace TestLibrary.Controllers
         }
 
         [Authorize]
-        public ActionResult AdminPortal()
+        public ActionResult LibrarianPortal()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index");
             return View();
-        }
-
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-
-        
+        }        
     }
 
 }

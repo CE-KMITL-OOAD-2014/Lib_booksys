@@ -1,17 +1,17 @@
 ﻿@{
-    ViewBag.Title = "AddAdmin";
+    ViewBag.Title = "Add Librarian";
 }
-@model TestLibrary.Models.Admin
-<form class="account-form" action="/AdminListManager/AddAdmin" method="post">
+@model TestLibrary.Models.Librarian
+<form class="account-form" action="/LibrarianListManager/AddLibrarian" method="post">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
     @TempData["Notification"]
     <fieldset>
-        <legend>Add new admin</legend>
+        <legend>Add new librarian</legend>
         <input type="text" placeholder="UserName" name="UserName" value="@Html.DisplayFor(model => model.UserName)" />
         <input type="text" placeholder="Name" name="Name" value="@Html.DisplayFor(model => model.Name)" />
         <input type="text" placeholder="E-mail" name="Email" value="@Html.DisplayTextFor(model => model.Email)" />
         <input type="password" placeholder="Password" name="Password"/>
-        <input type="submit" value="Add admin"/>
+        <input type="submit" value="Add librarian"/>
     </fieldset>
 </form>

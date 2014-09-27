@@ -11,7 +11,7 @@ namespace TestLibrary.Controllers
 {
     public class MemberTransactionController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         [Authorize]
         public ActionResult Index()
         {
@@ -19,11 +19,11 @@ namespace TestLibrary.Controllers
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) == "M_")
             {
                 MemberTransactionViewer viewer = new MemberTransactionViewer();
-                viewer.SetBorrowEntryViews(db.BorrowList.Where(target => target.Borrower.UserName ==
+                viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(target => target.Borrower.UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2) &&
-                                           target.ReturnDate == null).ToList());
-                viewer.SetRequestEntryViews((db.RequestList.Where(target => target.RequestUser.UserName ==
-                                           HttpContext.User.Identity.Name.ToString().Substring(2)).ToList()));
+                                           target.ReturnDate == null));
+                viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.RequestUser.UserName ==
+                                           HttpContext.User.Identity.Name.ToString().Substring(2))));
 
                 List<RequestEntry> temp = new List<RequestEntry>();
                 temp.AddRange(viewer.GetRequestEntryViews());
@@ -51,8 +51,8 @@ namespace TestLibrary.Controllers
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
                 return RedirectToAction("Index", "Account");
 
-            BorrowEntry renewentry = db.BorrowList.SingleOrDefault(target => target.ID == id &&
-                                        target.ReturnDate == null);
+            BorrowEntry renewentry = libRepo.BorrowEntryRepo.ListWhere(target => target.ID == id &&
+                                        target.ReturnDate == null).SingleOrDefault();
             if (renewentry == null)
             {
                 TempData["Notification"] = "Invalid renew book id.";
@@ -77,20 +77,20 @@ namespace TestLibrary.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Renew(BorrowEntry renewentry, string answer)
+        public ActionResult Renew(BorrowEntry entry, string answer)
         {
             if (ModelState.IsValid && answer == "Yes")
             {
-                if (db.RequestList.ToList().LastOrDefault(target => target.BookID == renewentry.BookID && target.ExpireDate == null) != null)
+                if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID && target.ExpireDate == null) != null)
                 {
                     TempData["Notification"] = "This book is ON HOLD.";
                 }
                 else
                 {
-                    renewentry.DueDate = DateTime.Now.Date.AddDays(7);
-                    renewentry.RenewCount++;
-                    db.Entry(renewentry).State = EntityState.Modified;
-                    db.SaveChanges();
+                    entry.DueDate = DateTime.Now.Date.AddDays(7);
+                    entry.RenewCount++;
+                    libRepo.BorrowEntryRepo.Update(entry);
+                    libRepo.Save();
                     TempData["Notification"] = "Renew successful!";
                 }
             }
@@ -110,12 +110,12 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Request(RequestEntry newentry)
+        public ActionResult Request(RequestEntry entry)
         {
             if (ModelState.IsValid)
             {
                 Book booktorequest;
-                if ((booktorequest = db.Books.Find(newentry.BookID)) == null)
+                if ((booktorequest = libRepo.BookRepo.Find(entry.BookID)) == null)
                 {
                     TempData["Notification"] = "No book with prefer ID exists.";
                     return View();
@@ -127,27 +127,27 @@ namespace TestLibrary.Controllers
                     return View();
                 }
 
-                if (db.RequestList.ToList().LastOrDefault(target => target.BookID == booktorequest.BookID
+                if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == booktorequest.BookID
                                 && target.ExpireDate == null) != null || booktorequest.BookStatus == Status.Reserved)
                 {
                     TempData["Notification"] = "This book is already requested.";
                     return View();
                 }
 
-                Member request_member = db.Members.Where(target => target.UserName ==
+                Member request_member = libRepo.MemberRepo.ListWhere(target => target.UserName ==
                                                 HttpContext.User.Identity.Name.ToString().Substring(2)).Single();
 
-                if (db.BorrowList.ToList().LastOrDefault(target => target.BookID == newentry.BookID &&
+                if (libRepo.BorrowEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID &&
                                                         target.Borrower == request_member && target.ReturnDate == null) != null)
                 {
                     TempData["Notification"] = "Can't request your current borrowed book.";
                     return View();
                 }
 
-                newentry.UserID = request_member.UserID;
-                newentry.RequestDate = DateTime.Now;
-                db.RequestList.Add(newentry);
-                db.SaveChanges();
+                entry.UserID = request_member.UserID;
+                entry.RequestDate = DateTime.Now;
+                libRepo.RequestEntryRepo.Add(entry);
+                libRepo.Save();
                 TempData["Notification"] = "Request book successfully.";
                 return RedirectToAction("Index");
             }
@@ -161,13 +161,13 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
                 return RedirectToAction("Index", "Account");
-            RequestEntry wantedEntry = db.RequestList.Find(id);
+            RequestEntry wantedEntry = libRepo.RequestEntryRepo.Find(id);
             if (wantedEntry == null)
             {
                 TempData["Notification"] = "No cancel request with prefered id exists.";
                 return RedirectToAction("Index");
             }
-            Member preferMember = db.Members.SingleOrDefault(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2));
+            Member preferMember = libRepo.MemberRepo.ListWhere(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             if (wantedEntry.RequestUser != preferMember)
             {
                 TempData["Notification"] = "Can't cancel other member's book request.";
@@ -179,13 +179,13 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelRequest(RequestEntry cancelEntry, string answer)
+        public ActionResult CancelRequest(RequestEntry entry, string answer)
         {
             if (ModelState.IsValid)
             {
                 if (answer == "Yes")
                 {
-                    Book bookToCheck = db.Books.Find(cancelEntry.BookID);
+                    Book bookToCheck = libRepo.BookRepo.Find(entry.BookID);
                     if (bookToCheck == null)
                     {
                         TempData["Notification"] = "Something went wrong,please try again.";
@@ -194,11 +194,10 @@ namespace TestLibrary.Controllers
                     if (bookToCheck.BookStatus == Status.Reserved)
                     {
                             bookToCheck.BookStatus = Status.Available;
-                            db.Entry(bookToCheck).State = EntityState.Modified;
+                            libRepo.BookRepo.Update(bookToCheck);
                     }
-                    db.Entry(cancelEntry).State = EntityState.Deleted;
-
-                    db.SaveChanges();
+                    libRepo.RequestEntryRepo.Remove(entry);
+                    libRepo.Save();
                     TempData["Notification"] = "Cancel request successfully.";
                 }
                 return RedirectToAction("Index");
@@ -206,11 +205,5 @@ namespace TestLibrary.Controllers
             TempData["Notification"] = "Something went wrong,please try again.";
             return RedirectToAction("Index");
         }
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-
     }
 }

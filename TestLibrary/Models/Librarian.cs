@@ -6,12 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace TestLibrary.Models
 {
-    public class Admin:Person
+    public class Librarian:Person
     {
 
         public override string Identify()
         {
-            return "Administrator "+this.UserName;
+            return "Librarian "+this.UserName;
         }
     }
 }

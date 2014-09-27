@@ -5,7 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 namespace TestLibrary.ViewModels
 {
-    public class LoginEditor
+    public class LoginForm
     {
         [Required]
         public string UserName { get; set; }

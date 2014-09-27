@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Data.Common;
+using System.Web.Helpers;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using TestLibrary.ViewModels;
@@ -12,7 +12,7 @@ namespace TestLibrary.Controllers
 {
     public class AuthenticateController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         public ActionResult Login()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -25,12 +25,12 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginEditor submitData)
+        public ActionResult Login(LoginForm submitData)
         {
             if (ModelState.IsValid)
             {
                 Person loginUser;
-                loginUser = db.Members.SingleOrDefault(target => target.UserName == submitData.UserName && target.Password == submitData.Password);
+                loginUser = libRepo.MemberRepo.ListWhere(target => target.UserName == submitData.UserName && Crypto.VerifyHashedPassword(target.Password,submitData.Password)).SingleOrDefault();
                 if (loginUser != null)
                 {
                     FormsAuthentication.SetAuthCookie("M_" + submitData.UserName, submitData.Remember);
@@ -39,7 +39,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    loginUser = db.Admins.SingleOrDefault(target => target.UserName == submitData.UserName && target.Password == submitData.Password);
+                    loginUser = libRepo.LibrarianRepo.ListWhere(target => target.UserName == submitData.UserName && Crypto.VerifyHashedPassword(target.Password, submitData.Password)).SingleOrDefault();
                     if (loginUser != null)
                     {
                         FormsAuthentication.SetAuthCookie("A_" + submitData.UserName, submitData.Remember);
@@ -76,13 +76,14 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((db.Members.Where(target => target.UserName == (regist.UserName)).SingleOrDefault() == null) &&
-                    (db.Admins.Where(target => target.UserName == (regist.UserName)).SingleOrDefault() == null))
+                if ((libRepo.MemberRepo.ListWhere(target => target.UserName == (regist.UserName)).SingleOrDefault() == null) &&
+                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName == (regist.UserName)).SingleOrDefault() == null))
                 {
                     if (regist.Password == ConfirmPassword)
                     {
-                        db.Members.Add(regist);
-                        db.SaveChanges();
+                        regist.Password = Crypto.HashPassword(regist.Password);
+                        libRepo.MemberRepo.Add(regist);
+                        libRepo.Save();
                         TempData["Notification"] = "Register successful,please login for first use.";
                         return RedirectToAction("Login");
                     }
@@ -113,11 +114,5 @@ namespace TestLibrary.Controllers
                 return View();
         }
 
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
     }
 }

@@ -11,7 +11,7 @@ namespace TestLibrary.Controllers
 {
     public class BookManagerController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
 
         [Authorize]
         public ActionResult Index()
@@ -19,7 +19,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(db.Books.ToList());
+            return View(libRepo.BookRepo.List());
         }
 
 
@@ -30,7 +30,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            Book booktoview = db.Books.Find(id);
+            Book booktoview = libRepo.BookRepo.Find(id);
             if (booktoview == null)
                 return HttpNotFound();
             else
@@ -54,8 +54,8 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(bookToAdd).State = EntityState.Added;
-                db.SaveChanges();
+                libRepo.BookRepo.Add(bookToAdd);
+                libRepo.Save();
                 TempData["Notification"] = "Add new book successfully.";
                 return RedirectToAction("Index");
             }
@@ -69,7 +69,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            Book booktoedit = db.Books.Find(id);
+            Book booktoedit = libRepo.BookRepo.Find(id);
             if (booktoedit == null)
                 return HttpNotFound();
             return View(booktoedit);
@@ -79,16 +79,16 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editbook(Book booktoedit)
+        public ActionResult Editbook(Book bookToEdit)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(booktoedit).State = EntityState.Modified;
+                libRepo.BookRepo.Update(bookToEdit);
                 TempData["Notification"] = "Edit book successfully.";
-                db.SaveChanges();
+                libRepo.Save();
                 return RedirectToAction("Index");
             }
-            return View(booktoedit);
+            return View(bookToEdit);
         }
 
 
@@ -98,7 +98,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            Book booktodelete = db.Books.Find(id);
+            Book booktodelete = libRepo.BookRepo.Find(id);
             if (booktodelete == null)
                 return HttpNotFound();
             return View(booktodelete);
@@ -108,27 +108,21 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteBook(Book booktodelete, string answer)
+        public ActionResult DeleteBook(Book bookToDelete, string answer)
         {
             if (answer == "Yes")
             {
-                TempData["Notification"] = "Delete " + booktodelete.BookName + " successfully.";
-                List<BorrowEntry> removeBorrowEntry = db.BorrowList.Where(target => target.BorrowBook.BookID == booktodelete.BookID).ToList();
-                RequestEntry entryToRemove = db.RequestList.Find(booktodelete.BookID);
+                TempData["Notification"] = "Delete " + bookToDelete.BookName + " successfully.";
+                List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BorrowBook.BookID == bookToDelete.BookID).ToList();
+                RequestEntry entryToRemove = libRepo.RequestEntryRepo.Find(bookToDelete.BookID);
                 if (entryToRemove != null)
-                db.RequestList.Remove(entryToRemove);
-                db.BorrowList.RemoveRange(removeBorrowEntry);
-                db.Entry(booktodelete).State = EntityState.Deleted;
-                db.SaveChanges();
+                    libRepo.RequestEntryRepo.Remove(entryToRemove);
+                libRepo.BorrowEntryRepo.Remove(removeBorrowEntry);
+                libRepo.BookRepo.Remove(bookToDelete);
+                libRepo.Save();
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
 
     }

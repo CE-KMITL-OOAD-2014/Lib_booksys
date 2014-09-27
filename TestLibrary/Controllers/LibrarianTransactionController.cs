@@ -9,157 +9,156 @@ using TestLibrary.ViewModels;
 using System.Data.Entity;
 namespace TestLibrary.Controllers
 {
-    public class AdminTransactionController : Controller
+    public class LibrarianTransactionController : Controller
     {
 
-        LibraryContext db = new LibraryContext();
-        private MemberTransactionViewer Check(BorrowEntry newentry)
+        LibraryRepository libRepo = new LibraryRepository();
+        private MemberTransactionViewer Check(BorrowEntry entry)
         {
-            if (db.Members.Find(newentry.UserID) == null)
+            if (libRepo.MemberRepo.Find(entry.UserID) == null)
             {
                 TempData["Notification"] = "No member that id's exists.";
                 return null;
             }
 
             MemberTransactionViewer viewer = new MemberTransactionViewer();
-            viewer.SetBorrowEntryViews(db.BorrowList.Where(entry => entry.UserID == newentry.UserID
-                && entry.ReturnDate == null).ToList());
+            viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(targetEntry => targetEntry.UserID == entry.UserID
+                && targetEntry.ReturnDate == null).ToList());
 
-            List<RequestEntry> ReqList = db.RequestList.ToList();
-            List<RequestEntry> expireList = ReqList.Where(entry => entry.ExpireDate != null).ToList();
+            List<RequestEntry> ReqList = libRepo.RequestEntryRepo.List();
+            List<RequestEntry> expireList = ReqList.Where(targetEntry => targetEntry.ExpireDate != null).ToList();
 
             //Call list of requestlist of preferred member that expiredate field is null.
-            List<RequestEntry> WantedList = ReqList.Where(entry => entry.UserID == newentry.UserID
-                                            && entry.ExpireDate == null).ToList();
+            List<RequestEntry> WantedList = ReqList.Where(targetEntry => targetEntry.UserID == entry.UserID
+                                            && targetEntry.ExpireDate == null).ToList();
             //Append wantedList with expiredate in range
-            WantedList.AddRange(expireList.Where(entry => entry.UserID == newentry.UserID
-                                                && entry.ExpireDate >= DateTime.Now.Date).ToList());
+            WantedList.AddRange(expireList.Where(targetEntry => targetEntry.UserID == entry.UserID
+                                                && targetEntry.ExpireDate >= DateTime.Now.Date).ToList());
 
             //Fetch requestList up-to-date by delete expire list.
-            expireList = expireList.Where(entry => entry.ExpireDate < DateTime.Now.Date).ToList();
+            expireList = expireList.Where(targetEntry => targetEntry.ExpireDate < DateTime.Now.Date).ToList();
             if (expireList != null)
             {
                 foreach (var item in expireList)
                     item.RequestBook.BookStatus = Status.Available;
 
-                db.RequestList.RemoveRange(expireList);
+                libRepo.RequestEntryRepo.Remove(expireList);
             }
-            db.SaveChanges();
+            libRepo.Save();
             viewer.SetRequestEntryViews(WantedList);
             return viewer;
         }
 
-
-        private MemberTransactionViewer Borrow(BorrowEntry newentry)
+        private MemberTransactionViewer Borrow(BorrowEntry entry)
         {
-            if (db.Members.Find(newentry.UserID) == null)
+            if (libRepo.MemberRepo.Find(entry.UserID) == null)
                     {
                         TempData["Notification"] = "No member that id's exists.";
                         return null;
                     }
 
-                    if (db.BorrowList.Where(target => target.UserID == newentry.UserID
+                    if (libRepo.BorrowEntryRepo.ListWhere(target => target.UserID == entry.UserID
                         && target.ReturnDate == null).ToList().Count == 3)
                     {
                         TempData["Notification"] = "This member borrow exceed maximum allowed.";
-                        return Check(newentry);
+                        return Check(entry);
                     }
 
-                    Book booktoborrow = db.Books.Find(newentry.BookID);
+                    Book booktoborrow = libRepo.BookRepo.Find(entry.BookID);
 
                     if (booktoborrow == null)
                     {
                         TempData["Notification"] = "No book was found in database.";
-                        return Check(newentry);
+                        return Check(entry);
                     }
                     else if (booktoborrow.BookStatus == Status.Available)
                     {
-                        newentry.BorrowDate = DateTime.Now.Date;
-                        newentry.DueDate = DateTime.Now.Date.AddDays(7);
+                        entry.BorrowDate = DateTime.Now.Date;
+                        entry.DueDate = DateTime.Now.Date.AddDays(7);
                         booktoborrow.BookStatus = Status.Borrowed;
-                        db.Entry(booktoborrow).State = EntityState.Modified;
-                        db.BorrowList.Add(newentry);
-                        db.SaveChanges();
+                        libRepo.BookRepo.Update(booktoborrow);
+                        libRepo.BorrowEntryRepo.Add(entry);
+                        libRepo.Save();
                         TempData["Notification"] = "OK";
-                        return Check(newentry);
+                        return Check(entry);
                     }
                     else if (booktoborrow.BookStatus == Status.Lost)
                     {
                         TempData["Notification"] = "This book is lost.";
-                        return Check(newentry);
+                        return Check(entry);
                     }
 
                     else if (booktoborrow.BookStatus == Status.Reserved)
                     {
-                        RequestEntry reqentry = db.RequestList.ToList().LastOrDefault(target => target.RequestBook == booktoborrow);
+                        RequestEntry reqentry = libRepo.RequestEntryRepo.List().LastOrDefault(target => target.RequestBook == booktoborrow);
                         if (reqentry.ExpireDate.Value.Date < DateTime.Now.Date)
                         {
-                            db.Entry(reqentry).State = EntityState.Deleted;
+                            libRepo.RequestEntryRepo.Remove(reqentry);
                             booktoborrow.BookStatus = Status.Borrowed;
-                            db.Entry(booktoborrow).State = EntityState.Modified;
-                            newentry.BorrowDate = DateTime.Now.Date;
-                            newentry.DueDate = DateTime.Now.Date.AddDays(7);
-                            db.BorrowList.Add(newentry);
-                            db.SaveChanges();
+                            libRepo.BookRepo.Update(booktoborrow);
+                            entry.BorrowDate = DateTime.Now.Date;
+                            entry.DueDate = DateTime.Now.Date.AddDays(7);
+                            libRepo.BorrowEntryRepo.Add(entry);
+                            libRepo.Save();
                             TempData["Notification"] = "Delete expire req.//OK.";
-                            return Check(newentry);
+                            return Check(entry);
                         }
-                        else if (reqentry.UserID != newentry.UserID)
+                        else if (reqentry.UserID != entry.UserID)
                         {
                             TempData["Notification"] = "This user has no permission to borrow the requested book by others.";
-                            return Check(newentry);
+                            return Check(entry);
                         }
                         else
                         {
-                            db.Entry(reqentry).State = EntityState.Deleted;
+                            libRepo.RequestEntryRepo.Remove(reqentry);
                             booktoborrow.BookStatus = Status.Borrowed;
-                            newentry.BorrowDate = DateTime.Now.Date;
-                            newentry.DueDate = DateTime.Now.Date.AddDays(7);
-                            db.Entry(booktoborrow).State = EntityState.Modified;
-                            db.BorrowList.Add(newentry);
-                            db.SaveChanges();
+                            entry.BorrowDate = DateTime.Now.Date;
+                            entry.DueDate = DateTime.Now.Date.AddDays(7);
+                            libRepo.BookRepo.Update(booktoborrow);
+                            libRepo.BorrowEntryRepo.Add(entry);
+                            libRepo.Save();
                             TempData["Notification"] = "User accept reserved book//OK";
-                            return Check(newentry);
+                            return Check(entry);
                         }
                     }
 
                     else
                     {
                         TempData["Notification"] = "This book is already borrowed.";
-                        return Check(newentry);
+                        return Check(entry);
                     }
                
         }
 
-        private MemberTransactionViewer Return(BorrowEntry returnentry)
+        private MemberTransactionViewer Return(BorrowEntry entry)
         {
-            BorrowEntry entry = db.BorrowList.Find(returnentry.ID);
-            if (entry == null)
+            BorrowEntry returnentry = libRepo.BorrowEntryRepo.Find(entry.ID);
+            if (returnentry == null)
             {
                 TempData["Notification"] = "No borrow record found to do return.";
                 return null;
             }
-            else if (entry.ReturnDate != null)
+            else if (returnentry.ReturnDate != null)
             {
                 TempData["Notification"] = "This book is already returned.";
-                return Check(entry);
+                return Check(returnentry);
             }
             else
             {
-                if (entry.BorrowBook.RequestRecord != null)
+                if (returnentry.BorrowBook.RequestRecord != null)
                 {
-                    entry.BorrowBook.BookStatus = Status.Reserved;
-                    entry.BorrowBook.RequestRecord.ExpireDate = DateTime.Now.Date.AddDays(3);
+                    returnentry.BorrowBook.BookStatus = Status.Reserved;
+                    returnentry.BorrowBook.RequestRecord.ExpireDate = DateTime.Now.Date.AddDays(3);
                 }
                 else
                 {
-                    entry.BorrowBook.BookStatus = Status.Available;
+                    returnentry.BorrowBook.BookStatus = Status.Available;
                 }
-                entry.ReturnDate = DateTime.Now.Date;
-                db.Entry(entry).State = EntityState.Modified;
-                db.SaveChanges();
+                returnentry.ReturnDate = DateTime.Now.Date;
+                libRepo.BorrowEntryRepo.Update(returnentry);
+                libRepo.Save();
                 TempData["Notification"] = "Return successfully.";
-                return Check(entry);
+                return Check(returnentry);
             }
 
         }
@@ -171,7 +170,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(db.BorrowList.ToList());
+            return View(libRepo.BorrowEntryRepo.List());
         }
 
         //Show viewtable if user click 'Check'
@@ -188,25 +187,25 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Transaction(BorrowEntry newentry,string operation)
+        public ActionResult Transaction(BorrowEntry entry,string operation)
         {
             ModelState.Remove("BookID");
-            TempData["UserID"] = newentry.UserID;
-            TempData["BookID"] = (newentry.BookID == 0)?null:newentry.BookID.ToString();
+            TempData["UserID"] = entry.UserID;
+            TempData["BookID"] = (entry.BookID == 0)?null:entry.BookID.ToString();
             if (ModelState.IsValid)
             {
                 if (operation == "Check")
                 {
-                    return View(Check(newentry));
+                    return View(Check(entry));
                 }
 
                 else if (operation == "Submit")
                 {
-                    return View(Borrow(newentry));
+                    return View(Borrow(entry));
                 }
                 else if (operation == "Return")
                 {
-                    return View(Return(newentry));
+                    return View(Return(entry));
                 }
                 else
                 {
@@ -215,12 +214,6 @@ namespace TestLibrary.Controllers
                 }
             }
             else return View();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

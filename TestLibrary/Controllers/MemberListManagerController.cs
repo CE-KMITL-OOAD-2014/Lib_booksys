@@ -12,14 +12,14 @@ namespace TestLibrary.Controllers
 {
     public class MemberListManagerController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         [Authorize]
         public ActionResult Index()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(db.Members.ToList());
+            return View(libRepo.MemberRepo.List());
         }
 
         [Authorize]
@@ -28,7 +28,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            Member target = db.Members.Find(id);
+            Member target = libRepo.MemberRepo.Find(id);
             if (target != null)
                 return View(target);
             else
@@ -44,7 +44,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            Member target = db.Members.Find(id);
+            Member target = libRepo.MemberRepo.Find(id);
             if (target != null)
                 return View(target);
             else
@@ -64,7 +64,7 @@ namespace TestLibrary.Controllers
             {
                 //1.Check whether member has remain book if yes do not delete.
                 //2.Delete related borrowlist.
-                List<BorrowEntry> BorrowListToDelete = db.BorrowList.Where(entry => entry.UserID == target.UserID).ToList();
+                List<BorrowEntry> BorrowListToDelete = libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == target.UserID);
                 if (BorrowListToDelete.Count != 0)
                 {
                     if (BorrowListToDelete.Where(entry => entry.ReturnDate == null).ToList().Count > 0)
@@ -72,11 +72,11 @@ namespace TestLibrary.Controllers
                         TempData["Notification"] = "Can't delete " + target.UserName + " due to this member has book that not returned.";
                         return RedirectToAction("Index");
                     }
-                    db.BorrowList.RemoveRange(BorrowListToDelete);
+                    libRepo.BorrowEntryRepo.Remove(BorrowListToDelete);
                 }
 
                 //3.Check whether there is reserved book of that member in which turn status of that book to Available.
-                List<RequestEntry> RequestListToDelete = db.RequestList.Where(entry => entry.UserID == target.UserID).ToList();
+                List<RequestEntry> RequestListToDelete = libRepo.RequestEntryRepo.ListWhere(entry => entry.UserID == target.UserID);
                 if (RequestListToDelete.Count != 0)
                 {
                     foreach (var item in RequestListToDelete.Where(entry => entry.ExpireDate != null).ToList())
@@ -84,23 +84,16 @@ namespace TestLibrary.Controllers
                             item.RequestBook.BookStatus = Status.Available;
                     }
                     //4.Delete related requestlist.
-                    db.RequestList.RemoveRange(RequestListToDelete);
+                    libRepo.RequestEntryRepo.Remove(RequestListToDelete);
                 }
 
                 //5.Delete member.
-                db.Entry(target).State = EntityState.Deleted;
-                db.SaveChanges();
+                libRepo.MemberRepo.Remove(target);
+                libRepo.Save();
                 TempData["Notification"] = "Delete member " + target.UserName + " successfully.";
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
-        }
-
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

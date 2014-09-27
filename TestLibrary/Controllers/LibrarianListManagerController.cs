@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -10,9 +11,9 @@ using TestLibrary.DataAccess;
 using TestLibrary.Models;
 namespace TestLibrary.Controllers
 {
-    public class AdminListManagerController : Controller
+    public class LibrarianListManagerController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         
         [Authorize]
         public ActionResult Index()
@@ -20,11 +21,11 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(db.Admins.ToList());
+            return View(libRepo.LibrarianRepo.List());
         }
 
         [Authorize]
-        public ActionResult AddAdmin()
+        public ActionResult AddLibrarian()
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
@@ -35,16 +36,17 @@ namespace TestLibrary.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddAdmin(Admin newAdmin)
+        public ActionResult AddLibrarian(Librarian newLibrarian)
         {
             if (ModelState.IsValid)
             {
-                if((db.Members.SingleOrDefault(target => target.UserName == newAdmin.UserName)==null)&&
-                (db.Admins.SingleOrDefault(target => target.UserName == newAdmin.UserName) == null))
+                if((libRepo.MemberRepo.ListWhere(target => target.UserName == newLibrarian.UserName).SingleOrDefault()==null)&&
+                (libRepo.LibrarianRepo.ListWhere(target => target.UserName == newLibrarian.UserName).SingleOrDefault() == null))
                 {
-                    db.Admins.Add(newAdmin);
-                    db.SaveChanges();
-                    TempData["Notification"] = "Add admin " + newAdmin.UserName + " successfully.";
+                    newLibrarian.Password = Crypto.HashPassword(newLibrarian.Password);
+                    libRepo.LibrarianRepo.Add(newLibrarian);
+                    libRepo.Save();
+                    TempData["Notification"] = "Add librarian " + newLibrarian.UserName + " successfully.";
                     return RedirectToAction("Index");
                 }
                 else
@@ -52,7 +54,7 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "This username is already exists.";
                 }
             }
-            return View(newAdmin);
+            return View(newLibrarian);
         }
         [Authorize]
         public ActionResult View([DefaultValue(0)]int id)
@@ -60,10 +62,10 @@ namespace TestLibrary.Controllers
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
                 if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                     return RedirectToAction("Index", "Account");
-                Admin target = db.Admins.Find(id);
+                Librarian target = libRepo.LibrarianRepo.Find(id);
                 if (target != null)
                     return View(target);
-                TempData["Notification"] = "Please specified correct Admin ID.";
+                TempData["Notification"] = "Please specified correct Librarian ID.";
                 return RedirectToAction("Index");
         }
 
@@ -73,25 +75,25 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            Admin target = db.Admins.Find(id);
+            Librarian target = libRepo.LibrarianRepo.Find(id);
             if (target != null)
                 return View(target);
-            TempData["Notification"] = "Please specified correct Admin ID.";
+            TempData["Notification"] = "Please specified correct Librarian ID.";
             return RedirectToAction("Index");
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Admin target,string answer)
+        public ActionResult Delete(Librarian target,string answer)
         {
             if (answer == "Yes" && ModelState.IsValid)
             {
                 try
                 {
-                    db.Entry(target).State = EntityState.Deleted;
-                    db.SaveChanges();
-                    TempData["Notification"] = "Delete admin " + target.UserName + " successfully.";
+                    libRepo.LibrarianRepo.Remove(target);
+                    libRepo.Save();
+                    TempData["Notification"] = "Delete librarian " + target.UserName + " successfully.";
                     return RedirectToAction("Index");
                 }
                 catch (DbUpdateException)
@@ -102,12 +104,5 @@ namespace TestLibrary.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-
     }
 }

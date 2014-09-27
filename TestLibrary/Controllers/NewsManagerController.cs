@@ -12,7 +12,7 @@ namespace TestLibrary.Controllers
 {
     public class NewsManagerController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
 
         [Authorize]
         public ActionResult Index()
@@ -20,7 +20,7 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(db.NewsList.OrderByDescending(news => news.PostTime).ToList());
+            return View(libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime));
         }
         
         [Authorize]
@@ -35,17 +35,17 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddNews(News newstoadd)
+        public ActionResult AddNews(News newsToAdd)
         {
             if (ModelState.IsValid)
             {
-                newstoadd.PostTime = DateTime.Now;
-                db.Entry(newstoadd).State = EntityState.Added;
-                db.SaveChanges();
+                newsToAdd.PostTime = DateTime.Now;
+                libRepo.NewsRepo.Add(newsToAdd);
+                libRepo.Save();
                 TempData["Notification"] = "Add news successfully.";
                 return RedirectToAction("Index");
             }
-            return View(newstoadd);
+            return View(newsToAdd);
         }
 
 
@@ -55,9 +55,9 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            News newstoedit = db.NewsList.Find(id);
-            if (newstoedit != null)
-                return View(newstoedit);
+            News newsToEdit = libRepo.NewsRepo.Find(id);
+            if (newsToEdit != null)
+                return View(newsToEdit);
             return HttpNotFound();
 
         }
@@ -65,18 +65,17 @@ namespace TestLibrary.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditNews(News newstoedit)
+        public ActionResult EditNews(News newsToEdit)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(newstoedit).State = EntityState.Modified;
-                db.SaveChanges();
+                libRepo.NewsRepo.Update(newsToEdit);
+                libRepo.Save();
                 TempData["Notification"] = "Edit news successfully.";
                 return RedirectToAction("Index");
             }
-            return View(newstoedit);
+            return View(newsToEdit);
         }
-
 
         [Authorize]
         public ActionResult DeleteNews(int id)
@@ -84,31 +83,24 @@ namespace TestLibrary.Controllers
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            News newstodelete = db.NewsList.Find(id);
-            if (newstodelete != null)
-                return View(newstodelete);
+            News newsToDelete = libRepo.NewsRepo.Find(id);
+            if (newsToDelete != null)
+                return View(newsToDelete);
             return HttpNotFound();
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteNews(News newstodelete, string answer)
+        public ActionResult DeleteNews(News newsToDelete, string answer)
         {
             if (answer == "Yes")
             {
-                db.Entry(newstodelete).State = EntityState.Deleted;
+                libRepo.NewsRepo.Remove(newsToDelete);
                 TempData["Notification"] = "Delete news successfully.";
-                db.SaveChanges();
+                libRepo.Save();
             }
             return RedirectToAction("Index");
-        }
-
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

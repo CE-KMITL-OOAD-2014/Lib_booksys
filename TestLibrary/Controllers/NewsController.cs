@@ -9,12 +9,12 @@ namespace TestLibrary.Controllers
 {
     public class NewsController : Controller
     {
-        LibraryContext db = new LibraryContext();
+        LibraryRepository libRepo = new LibraryRepository();
         public ActionResult View(int id)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             Session["LoginUser"] = HttpContext.User.Identity.Name;
-            News newstoview = db.NewsList.Find(id);
+            News newstoview = libRepo.NewsRepo.Find(id);
             if (newstoview != null)
                 return View(newstoview);
             else
@@ -27,12 +27,7 @@ namespace TestLibrary.Controllers
             {
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
             }
-            return View(db.NewsList.ToList().OrderByDescending(target => target.PostTime));
-        }
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
+            return View(libRepo.NewsRepo.List().OrderByDescending(target => target.PostTime));
         }
     }
 }

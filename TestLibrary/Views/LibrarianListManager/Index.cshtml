@@ -2,10 +2,10 @@
     ViewBag.Title = "Index";
 }
 
-@model List<TestLibrary.Models.Admin>
-<h2>AdminList manager</h2>
+@model List<TestLibrary.Models.Librarian>
+<h2>LibrarianList manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
-<a class="account-btt" href="/AdminListManager/AddAdmin">Add admin</a>
+<a class="account-btt" href="/LibrarianListManager/AddLibrarian">Add librarian</a>
 <table class="list">
     <tr>
         <th>
@@ -32,13 +32,13 @@
                 @item.Name
             </td>
             <td>
-                <a href="/AdminListManager/View/@item.UserID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a>
+                <a href="/LibrarianListManager/View/@item.UserID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a>
             </td>
             <td>
-                <a href="/AdminListManager/Delete/@item.UserID"><img class="delete-btt" src="/Content/delete-gray-btt.png" /></a>
+                <a href="/LibrarianListManager/Delete/@item.UserID"><img class="delete-btt" src="/Content/delete-gray-btt.png" /></a>
             </td>
         </tr>
     }
 </table>
-<a class="account-btt" href="/Account/AdminPortal">Portal</a>
+<a class="account-btt" href="/Account/LibrarianPortal">Portal</a>
 

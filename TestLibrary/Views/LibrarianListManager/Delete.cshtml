@@ -1,12 +1,12 @@
 ﻿@{
     ViewBag.Title = "Delete";
 }
-@model TestLibrary.Models.Admin
-<form class="account-form" action="/AdminListManager/Delete" method="post">
+@model TestLibrary.Models.Librarian
+<form class="account-form" action="/LibrarianListManager/Delete" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
-        <legend>Delete admin</legend>
-        Are you sure want to delete this admin?[@Html.DisplayFor(model => model.UserName)]
+        <legend>Delete librarian</legend>
+        Are you sure want to delete this librarian?[@Html.DisplayFor(model => model.UserName)]
         @Html.HiddenFor(model => model.UserID)
         @Html.HiddenFor(model => model.UserName)
         @Html.HiddenFor(model => model.Name)

@@ -1,11 +1,11 @@
 ﻿@model List<TestLibrary.Models.BorrowEntry>
 @{
-    ViewBag.Title = "Admin transaction manager";
+    ViewBag.Title = "Librarian transaction manager";
     int count = 0;
 }
-<h1>Admin transaction manager</h1>
+<h1>Librarian transaction manager</h1>
 <ul class="admin-panel">
-    <li><a href="/AdminTransaction/Transaction">Do Transaction</a></li>
+    <li><a href="/LibrarianTransaction/Transaction">Do Transaction</a></li>
 </ul><br />
 <h2>Borrow tracking</h2>
 <table class="list">
@@ -44,4 +44,4 @@
         
     }
 </table>
-<a class="account-btt" href="/Account/AdminPortal">Portal</a>
+<a class="account-btt" href="/Account/LibrarianPortal">Portal</a>

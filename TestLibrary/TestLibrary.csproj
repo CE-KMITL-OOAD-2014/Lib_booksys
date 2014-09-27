@@ -120,8 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminListManagerController.cs" />
-    <Compile Include="Controllers\AdminTransactionController.cs" />
+    <Compile Include="Controllers\LibrarianListManagerController.cs" />
+    <Compile Include="Controllers\LibrarianTransactionController.cs" />
     <Compile Include="Controllers\AuthenticateController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\BookManagerController.cs" />
@@ -131,28 +131,19 @@
     <Compile Include="Controllers\MemberTransactionController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\NewsManagerController.cs" />
+    <Compile Include="DataAccess\IRepository.cs" />
     <Compile Include="DataAccess\LibraryContext.cs" />
+    <Compile Include="DataAccess\LibraryRepository.cs" />
+    <Compile Include="DataAccess\LocalRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201409221557429_initial.cs" />
-    <Compile Include="Migrations\201409221557429_initial.Designer.cs">
-      <DependentUpon>201409221557429_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409221605311_ver2.cs" />
-    <Compile Include="Migrations\201409221605311_ver2.Designer.cs">
-      <DependentUpon>201409221605311_ver2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409221644291_ver3.cs" />
-    <Compile Include="Migrations\201409221644291_ver3.Designer.cs">
-      <DependentUpon>201409221644291_ver3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409221704407_ver4.cs" />
-    <Compile Include="Migrations\201409221704407_ver4.Designer.cs">
-      <DependentUpon>201409221704407_ver4.cs</DependentUpon>
+    <Compile Include="Migrations\201409252007027_initial.cs" />
+    <Compile Include="Migrations\201409252007027_initial.Designer.cs">
+      <DependentUpon>201409252007027_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\Librarian.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\BorrowEntry.cs" />
     <Compile Include="Models\Member.cs" />
@@ -161,7 +152,7 @@
     <Compile Include="Models\RequestEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountEditor.cs" />
-    <Compile Include="ViewModels\LoginEditor.cs" />
+    <Compile Include="ViewModels\LoginForm.cs" />
     <Compile Include="ViewModels\MemberTransactionViewer.cs" />
     <Compile Include="ViewModels\PasswordChanger.cs" />
   </ItemGroup>
@@ -313,10 +304,10 @@
     <Content Include="Views\News\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\AdminTransaction\Transaction.cshtml" />
+    <Content Include="Views\LibrarianTransaction\Transaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\AdminTransaction\Index.cshtml" />
+    <Content Include="Views\LibrarianTransaction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\MemberTransaction\Renew.cshtml" />
@@ -340,28 +331,19 @@
     <Content Include="Script\ckeditor\LICENSE.md" />
     <Content Include="Script\ckeditor\README.md" />
     <Content Include="Script\ckeditor\skins\moono\readme.md" />
-    <Content Include="Views\AdminListManager\Index.cshtml" />
-    <Content Include="Views\AdminListManager\View.cshtml" />
-    <Content Include="Views\AdminListManager\Delete.cshtml" />
-    <Content Include="Views\AdminListManager\AddAdmin.cshtml" />
-    <Content Include="Views\Account\AdminPortal.cshtml" />
+    <Content Include="Views\LibrarianListManager\Index.cshtml" />
+    <Content Include="Views\LibrarianListManager\View.cshtml" />
+    <Content Include="Views\LibrarianListManager\Delete.cshtml" />
+    <Content Include="Views\LibrarianListManager\AddLibrarian.cshtml" />
+    <Content Include="Views\Account\LibrarianPortal.cshtml" />
     <Content Include="Views\MemberListManager\Index.cshtml" />
     <Content Include="Views\MemberListManager\View.cshtml" />
     <Content Include="Views\MemberListManager\Delete.cshtml" />
     <Content Include="Views\Book\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409221557429_initial.resx">
-      <DependentUpon>201409221557429_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409221605311_ver2.resx">
-      <DependentUpon>201409221605311_ver2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409221644291_ver3.resx">
-      <DependentUpon>201409221644291_ver3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409221704407_ver4.resx">
-      <DependentUpon>201409221704407_ver4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409252007027_initial.resx">
+      <DependentUpon>201409252007027_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
