@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BackgroundController.cs" />
     <Compile Include="Controllers\LibrarianListManagerController.cs" />
     <Compile Include="Controllers\LibrarianTransactionController.cs" />
     <Compile Include="Controllers\AuthenticateController.cs" />
@@ -342,6 +343,7 @@
     <Content Include="Views\Book\View.cshtml" />
     <Content Include="Views\Authenticate\ForgotPassword.cshtml" />
     <Content Include="Views\Authenticate\ResetPassword.cshtml" />
+    <Content Include="Views\Background\UpdateDatabase.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201409252007027_initial.resx">

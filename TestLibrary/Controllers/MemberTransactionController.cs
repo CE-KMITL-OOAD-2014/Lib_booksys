@@ -24,19 +24,6 @@ namespace TestLibrary.Controllers
                                            target.ReturnDate == null));
                 viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.RequestUser.UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2))));
-
-                List<RequestEntry> temp = new List<RequestEntry>();
-                temp.AddRange(viewer.GetRequestEntryViews());
-                foreach (RequestEntry item in temp)
-                {
-                    if (item.ExpireDate != null)
-                    {
-                        if (DateTime.Now.Date > item.ExpireDate.Value.Date)
-                        {
-                            viewer.GetRequestEntryViews().Remove(item);
-                        }
-                    }
-                }
                 return View(viewer);
             }
             else

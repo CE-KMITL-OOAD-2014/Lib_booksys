@@ -23,29 +23,9 @@ namespace TestLibrary.Controllers
 
             MemberTransactionViewer viewer = new MemberTransactionViewer();
             viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(targetEntry => targetEntry.UserID == entry.UserID
-                && targetEntry.ReturnDate == null).ToList());
+                && targetEntry.ReturnDate == null));
 
-            List<RequestEntry> ReqList = libRepo.RequestEntryRepo.List();
-            List<RequestEntry> expireList = ReqList.Where(targetEntry => targetEntry.ExpireDate != null).ToList();
-
-            //Call list of requestlist of preferred member that expiredate field is null.
-            List<RequestEntry> WantedList = ReqList.Where(targetEntry => targetEntry.UserID == entry.UserID
-                                            && targetEntry.ExpireDate == null).ToList();
-            //Append wantedList with expiredate in range
-            WantedList.AddRange(expireList.Where(targetEntry => targetEntry.UserID == entry.UserID
-                                                && targetEntry.ExpireDate >= DateTime.Now.Date).ToList());
-
-            //Fetch requestList up-to-date by delete expire list.
-            expireList = expireList.Where(targetEntry => targetEntry.ExpireDate < DateTime.Now.Date).ToList();
-            if (expireList != null)
-            {
-                foreach (var item in expireList)
-                    item.RequestBook.BookStatus = Status.Available;
-
-                libRepo.RequestEntryRepo.Remove(expireList);
-            }
-            libRepo.Save();
-            viewer.SetRequestEntryViews(WantedList);
+            viewer.SetRequestEntryViews(libRepo.RequestEntryRepo.ListWhere(targetentry => targetentry.UserID == entry.UserID));
             return viewer;
         }
 
