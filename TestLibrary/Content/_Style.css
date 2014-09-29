@@ -25,7 +25,6 @@ div.reg-login-linkzone{
     color:white;
     font-size:14px;
     text-align:right;
-    display:inline-block;
     float:right;
     
 }
@@ -388,7 +387,13 @@ a.paratab:link{
     text-decoration:none;
 }
 
+a.norm:link {
+    color:black;
+}
 
+a.norm:visited{
+    color:black;
+}
 a.paratab:visited{
     color:white;
 }

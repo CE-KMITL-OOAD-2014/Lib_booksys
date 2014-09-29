@@ -340,6 +340,8 @@
     <Content Include="Views\MemberListManager\View.cshtml" />
     <Content Include="Views\MemberListManager\Delete.cshtml" />
     <Content Include="Views\Book\View.cshtml" />
+    <Content Include="Views\Authenticate\ForgotPassword.cshtml" />
+    <Content Include="Views\Authenticate\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201409252007027_initial.resx">
