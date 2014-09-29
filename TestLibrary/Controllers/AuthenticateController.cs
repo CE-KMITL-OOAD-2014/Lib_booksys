@@ -77,8 +77,8 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((libRepo.MemberRepo.ListWhere(target => target.UserName == (regist.UserName)).SingleOrDefault() == null) &&
-                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName == (regist.UserName)).SingleOrDefault() == null))
+                if ((libRepo.MemberRepo.ListWhere(target => target.UserName == (regist.UserName) || target.Email == regist.Email).SingleOrDefault() == null) &&
+                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName == (regist.UserName) || target.Email == regist.Email).SingleOrDefault() == null))
                 {
                     if (regist.Password == confirmPwd)
                     {
@@ -96,7 +96,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    TempData["Notification"] = "This user name is already exists.";
+                    TempData["Notification"] = "This user name or e-mail is already exists.";
                     return View(regist);
                 }
             }
@@ -122,17 +122,19 @@ namespace TestLibrary.Controllers
 
             if (email != null)
             {
-                Member memberToRecover = libRepo.MemberRepo.ListWhere(target => target.Email == email).SingleOrDefault();
-                if (memberToRecover != null)
+                Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Email == email).SingleOrDefault();
+                if(userToRecover == null)
+                    userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Email == email).SingleOrDefault();
+                if (userToRecover != null)
                 {
                     //Send email
 
                     MailMessage mail = new MailMessage();
                     mail.From = new MailAddress("paratabplus@gmail.com", "Paratab+");
-                    mail.To.Add(new MailAddress(memberToRecover.Email));
-                    mail.Subject = "Reset password for " + memberToRecover.UserName;
+                    mail.To.Add(new MailAddress(userToRecover.Email));
+                    mail.Subject = "Reset password for " + userToRecover.UserName;
                     mail.IsBodyHtml = true;
-                    mail.Body = "Hi! " + memberToRecover.UserName + " <br> Please click <a href = \""+Request.Url.GetLeftPart(UriPartial.Authority) +"/Authenticate/ResetPassword/?token="+HttpUtility.UrlEncode(memberToRecover.Password) + "\">here</a> to reset password.<br>Thank you for use our service.";
+                    mail.Body = "Hi! " + userToRecover.UserName + " <br> Please click <a href = \""+Request.Url.GetLeftPart(UriPartial.Authority) +"/Authenticate/ResetPassword/?token="+HttpUtility.UrlEncode(userToRecover.Password) + "\">here</a> to reset password.<br>Thank you for use our service.";
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
                     smtp.EnableSsl = true;
                     smtp.Credentials = new System.Net.NetworkCredential("paratabplus@gmail.com", "Dream1357");
@@ -142,7 +144,7 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "Send email successfully.";
                     return View();
                 }
-                TempData["Notification"] = "Error! No member was found to recover.";
+                TempData["Notification"] = "Error! No user was found to recover.";
                 return View();
             }
             else
@@ -157,10 +159,14 @@ namespace TestLibrary.Controllers
         {
             if(!HttpContext.User.Identity.IsAuthenticated)
             {
-                Member memberToRecover = libRepo.MemberRepo.ListWhere(target => target.Password == token).SingleOrDefault();
-                if (memberToRecover != null)
+                Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Password == token).SingleOrDefault();
+                if (userToRecover == null)
+                userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Password == token).SingleOrDefault();
+                if (userToRecover != null)
                 {
-                    return View(memberToRecover);
+                    TempData["UserName"] = userToRecover.UserName;
+                    TempData["Token"] = token;
+                    return View(userToRecover);
                 }
                 else
                 {
@@ -177,17 +183,35 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(Member memberToRecover, PasswordChanger pwdToChange)
+        public ActionResult ResetPassword(string userName,PasswordChanger pwdToChange)
         {
             ModelState.Remove("oldPassword");
+            TempData["UserName"] = userName;
+            TempData["Token"] = pwdToChange.oldPassword;
             if (ModelState.IsValid)
             {
+                Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Password == pwdToChange.oldPassword 
+                                                                && target.UserName == userName).SingleOrDefault();
+                if(userToRecover == null)
+                    userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Password == pwdToChange.oldPassword
+                                                             && target.UserName == userName).SingleOrDefault();
+                if (userToRecover == null)
+                {
+                    TempData["Notification"] = "Oops! Something went wrong.";
+                    return RedirectToAction("Login");
+                }
+
                 if (pwdToChange.isEqualPassword())
                 {
                     try
                     {
-                        memberToRecover.Password = Crypto.HashPassword(pwdToChange.newPassword);
-                        libRepo.MemberRepo.Update(memberToRecover);
+                        userToRecover.Password = Crypto.HashPassword(pwdToChange.newPassword);
+                        if (userToRecover.Identify().StartsWith("Member"))
+                        {
+                            libRepo.MemberRepo.Update((Member)userToRecover);
+                        }
+                        else
+                            libRepo.LibrarianRepo.Update((Librarian)userToRecover);
                         libRepo.Save();
                         TempData["Notification"] = "Reset password successfully.";
                         return RedirectToAction("Login");
@@ -201,14 +225,13 @@ namespace TestLibrary.Controllers
                 else
                 {
                     TempData["Notification"] = "Password did not match.";
-                    return View(memberToRecover);
+                    return View();
                 }
-
             }
             else
             {
                 TempData["Notification"] = "Please fill in the blank of password and comfirm password.";
-                return View(memberToRecover);
+                return View();
             }
         }
     }

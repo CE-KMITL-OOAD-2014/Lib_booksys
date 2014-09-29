@@ -2,10 +2,10 @@
     ViewBag.Title = "Add Librarian";
 }
 @model TestLibrary.Models.Librarian
+           <p class="noti-msg">@TempData["Notification"]</p>
 <form class="account-form" action="/LibrarianListManager/AddLibrarian" method="post">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
-    @TempData["Notification"]
     <fieldset>
         <legend>Add new librarian</legend>
         <input type="text" placeholder="UserName" name="UserName" value="@Html.DisplayFor(model => model.UserName)" />

@@ -92,20 +92,29 @@ namespace TestLibrary.Controllers
             if (ModelState.IsValid)
             {
                 string userName = HttpContext.User.Identity.Name.ToString().Substring(2);
-                Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == userName).SingleOrDefault();
-                if (target == null)
+                if ((libRepo.MemberRepo.ListWhere(targetusr => targetusr.Email == editor.Email && targetusr.UserName != userName).SingleOrDefault() == null) &&
+                   (libRepo.LibrarianRepo.ListWhere(targetusr => targetusr.Email == editor.Email && targetusr.UserName != userName).SingleOrDefault() == null))
                 {
-                    target = libRepo.MemberRepo.ListWhere(member => member.UserName == userName).SingleOrDefault();
+                    Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == userName).SingleOrDefault();
+                    if (target == null)
+                    {
+                        target = libRepo.MemberRepo.ListWhere(member => member.UserName == userName).SingleOrDefault();
+                    }
+                    target.Name = editor.Name;
+                    target.Email = editor.Email;
+                    if (target.Identify().StartsWith("Librarian"))
+                        libRepo.LibrarianRepo.Update((Librarian)target);
+                    else
+                        libRepo.MemberRepo.Update((Member)target);
+                    libRepo.Save();
+                    TempData["Notification"] = "Edit account successfully.";
+                    return RedirectToAction("Index");
                 }
-                target.Name = editor.Name;
-                target.Email = editor.Email;
-                if (target.Identify().StartsWith("Librarian"))
-                    libRepo.LibrarianRepo.Update((Librarian)target);
                 else
-                    libRepo.MemberRepo.Update((Member)target);
-                libRepo.Save();
-                TempData["Notification"] = "Edit account successfully.";
-                return RedirectToAction("Index");
+                {
+                    TempData["Notification"] = "This e-mail is already exists.";
+                    return View(editor);
+                }
             }
             return View(editor);
         }

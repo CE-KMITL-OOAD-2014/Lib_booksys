@@ -40,8 +40,8 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                if((libRepo.MemberRepo.ListWhere(target => target.UserName == newLibrarian.UserName).SingleOrDefault()==null)&&
-                (libRepo.LibrarianRepo.ListWhere(target => target.UserName == newLibrarian.UserName).SingleOrDefault() == null))
+                if ((libRepo.MemberRepo.ListWhere(target => target.UserName == newLibrarian.UserName || target.Email == newLibrarian.Email).SingleOrDefault() == null) &&
+                (libRepo.LibrarianRepo.ListWhere(target => target.UserName == newLibrarian.UserName || target.Email == newLibrarian.Email).SingleOrDefault() == null))
                 {
                     newLibrarian.Password = Crypto.HashPassword(newLibrarian.Password);
                     libRepo.LibrarianRepo.Add(newLibrarian);
@@ -51,7 +51,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    TempData["Notification"] = "This username is already exists.";
+                    TempData["Notification"] = "This username or e-mail is already exists.";
                 }
             }
             return View(newLibrarian);
