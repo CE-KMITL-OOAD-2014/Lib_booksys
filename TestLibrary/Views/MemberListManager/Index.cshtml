@@ -1,9 +1,10 @@
 ﻿@{
     ViewBag.Title = "Member list manager";
 }
-@model List<TestLibrary.Models.Member>
+@model TestLibrary.ViewModels.PageList<TestLibrary.Models.Member>
 <h2>Member list manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
+@if (Model != null) { 
 <table class="list">
     <tr>
         <th>
@@ -17,7 +18,7 @@
         </th>
         <th></th><th></th>
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.GetList())
     {
         <tr>
             <th>
@@ -37,5 +38,33 @@
             </td>
         </tr>
     }
+    <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
 </table>
+    
+    <form class="page-portal" action="/MemberlistManager/Index/" method="post">
+    <label>Jump to page:</label>
+    <select class="autosubmit" name="page" size="1">
+        @for (int j = 1; j <= Model.GetPageSize(); j++)
+        {
+            <option value="@j" selected="@((int.Parse(TempData["page"].ToString()) == j)? "selected":null)">@j</option>
+        }
+    </select>
+    <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+</form>
+
+    <form class="page-portal" action="/MemberlistManager/Index/" method="post">
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
+            <option value="20" selected="@((int.Parse(TempData["pageSize"].ToString()) == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
+        </select>
+    </form>
+}
 <a class="account-btt" href="/Account/LibrarianPortal">Portal</a>
+<script type="text/javascript">
+    $("select.autosubmit").change(function () {
+        $(this).parent().submit();
+    });
+</script>

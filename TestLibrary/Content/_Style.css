@@ -8,9 +8,9 @@ body{
 
 div#nav{
     position:fixed;
-    font-family:Calibri;
+    font-family:CalibriFont,Calibri;
     background-color:black;
-    height:70px;
+    height:75px;
     top:0;
     width:100%
 }
@@ -44,19 +44,27 @@ div.reg-login-linkzone a:visited{
 
 div#quicksearch{
     color:white;
-    margin-top:0px;
+    margin-top:3px;
     margin-bottom:0px;
     float:right;
 }
 
 form.search-bar input{
-    font-family:Calibri;  
+    font-family:CalibriFont,Calibri;
 }
 
 form.search-bar input[type="text"]{
     width:140px  
 }
 
+div.error-block{
+    padding:20px;
+    margin-bottom:15px;
+    border:1px solid gray;
+    font-family:Single;
+    font-size:x-large;
+    color:red
+}
 /*---account form---*/
 form.account-form{
     font-family:Single;
@@ -139,9 +147,20 @@ form.news-form label{
     font-weight:900
 }
 /*--------------------------*/
+
+form.page-portal{
+    display:inline-block;
+    font-family:Single;
+    font-size:x-large;
+    font-weight:900;
+    margin-bottom:15px
+}
+
+/*--------------------------*/
 table.news-list{
     font-family:Single;
     font-size:x-large;
+    caption-side:bottom;
     margin:15px 0 15px 0;
     padding:5px;
     border:1px solid #808080;
@@ -206,7 +225,7 @@ div.account-detail{
 }
 
 div#menubar{
-    margin-top:8px;
+    margin-top:6px;
     margin-left:auto;
     margin-right:auto;
     margin-bottom:0;
@@ -222,7 +241,7 @@ ul.menulist{
 }
 
 ul.menulist li a:link{
-    margin-top:5px;
+    margin-top:3px;
     padding-bottom:3px;
     text-decoration:none;
     text-align:center;
@@ -283,9 +302,12 @@ table.list{
     font-family:Single;
     font-size:x-large;
     margin:15px 0 15px 0;
-    border-collapse:collapse
+    border-collapse:collapse;
 }
 
+table.list caption{
+    caption-side:bottom;
+}
 table.list th{
     background-color:#99CCFF;
     font-weight:bolder;
@@ -295,6 +317,11 @@ table.list th{
 table.list td{
     padding:5px;
     border:1px solid #808080;
+}
+
+td.res-col{
+    word-break:break-all;
+    min-width:70px
 }
 
 img.delete-btt,img.edit-btt,img.view-btt,img.paratab{
@@ -311,7 +338,7 @@ img.menu-btt{
 }
 
 div.menu-slider{
-    font-family:Calibri;
+    font-family:CalibriFont,Calibri;
     color:white;
     margin:0;
 }
@@ -349,7 +376,7 @@ div.menu-slider li a:visited{
 
 /*----------------------------------*/
 div#content{
-    margin-top:70px;
+    margin-top:75px;
     margin-left:auto;
     margin-right:auto;
     background-color:white;
@@ -375,7 +402,7 @@ footer{
    
     height:25px;
     color:white;
-    font-family:Calibri;
+    font-family:CalibriFont,Calibri;
     font-size:18px;
     text-align:center;
     padding-top:12.5px;
@@ -412,7 +439,7 @@ h1{
 }
 
 h2{
-    font-family:Calibri; 
+    font-family:CalibriFont,Calibri;
     text-decoration:underline;
 }
 
@@ -456,6 +483,17 @@ a.news-link:visited,a.book-link:visited{
     color:black
 }
 
+p.page-number-list{
+    font-size:x-large;
+    font-family:Single;
+    color:blue;
+}
+a.page-number-list:link{
+    color:blue;
+}
+a.page-number-list:visited{
+    color:blue;
+}
 @font-face{
     font-family:Single;
     src:url(/Font/_DS-Single.ttf);

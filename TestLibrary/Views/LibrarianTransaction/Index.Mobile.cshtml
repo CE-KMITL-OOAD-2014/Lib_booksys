@@ -1,0 +1,40 @@
+﻿@model List<TestLibrary.Models.BorrowEntry>
+@{
+    ViewBag.Title = "Librarian transaction manager";
+    int count = 0;
+}
+<h1>Librarian transaction manager</h1>
+<ul class="admin-panel">
+    <li><a href="/LibrarianTransaction/Transaction">Do Transaction</a></li>
+</ul><br />
+
+<h2>Borrow tracking</h2>
+<table class="list">
+    <tr>
+        <th>No.</th>
+        <th>BookName</th>
+        <th>Borrower</th>
+        <th>Due</th>
+        <th>RT</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@(++count)</td>
+            <td class="res-col">@item.BorrowBook.BookName</td>
+            <td class="res-col">@item.Borrower.UserName</td>
+            <td>@item.DueDate.Date.Day/@item.DueDate.Date.Month/@item.DueDate.Date.Year.ToString().Substring(2)</td>
+            <td>
+                @if (item.ReturnDate != null)
+                {
+                    <text>Y</text>
+                }
+                else
+                {
+                    <text>N</text>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<a class="account-btt" href="/Account/LibrarianPortal">Portal</a>

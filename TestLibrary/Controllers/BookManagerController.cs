@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
+using TestLibrary.ViewModels;
 using System.Data.Entity;
 using System.ComponentModel;
 namespace TestLibrary.Controllers
@@ -14,12 +15,42 @@ namespace TestLibrary.Controllers
         LibraryRepository libRepo = new LibraryRepository();
 
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1,int pageSize = 10)
         {
+
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(libRepo.BookRepo.List());
+            TempData["pageSize"] = pageSize;
+            TempData["page"] = page;
+            List<Book> bookList = libRepo.BookRepo.List();
+            PageList<Book> pglist;
+            int index = (page - 1) * pageSize;
+            if (index < bookList.Count && ((index + pageSize) <= bookList.Count))
+            {
+                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, pageSize));
+            }
+            else if (index < bookList.Count)
+            {
+                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize,bookList.Count % pageSize));
+            }
+            else if (bookList.Count == 0)
+            {
+                TempData["Notification"] = "No book list to show please create one to start the magic.";
+                return View();
+            }
+            else
+            {
+                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                return View();
+            }
+
+            if(bookList.Count % pageSize == 0)
+                pglist.SetPageSize(bookList.Count / pageSize);
+            else
+                pglist.SetPageSize((bookList.Count / pageSize + 1));
+            pglist.SetCurrentPage(page);
+            return View(pglist);
         }
 
 

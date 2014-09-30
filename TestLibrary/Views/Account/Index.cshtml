@@ -11,7 +11,6 @@ User ID:</b>@Html.DisplayFor(model => model.UserID)<br />
 <b>Email:</b>@Html.DisplayTextFor(model => model.Email)<br />
 <b>Password:</b>********
 </p>
-<center>
     @if (Session["LoginUser"].ToString().Substring(0,2) == "M_")
     {
         <a class="account-btt" href="/MemberTransaction/">Member trans-service</a>
@@ -23,4 +22,3 @@ User ID:</b>@Html.DisplayFor(model => model.UserID)<br />
     <a class="account-btt" href="/Account/EditAccount">Edit Account</a>
     <a class="account-btt" href="/Account/ChangePassword">Change password</a>
     <a class="account-btt" href="/Authenticate/Logout">Sign out</a>
-</center>

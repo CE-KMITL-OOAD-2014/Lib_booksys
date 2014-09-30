@@ -155,6 +155,7 @@
     <Compile Include="ViewModels\AccountEditor.cs" />
     <Compile Include="ViewModels\LoginForm.cs" />
     <Compile Include="ViewModels\MemberTransactionViewer.cs" />
+    <Compile Include="ViewModels\PageList.cs" />
     <Compile Include="ViewModels\PasswordChanger.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -344,6 +345,10 @@
     <Content Include="Views\Authenticate\ForgotPassword.cshtml" />
     <Content Include="Views\Authenticate\ResetPassword.cshtml" />
     <Content Include="Views\Background\UpdateDatabase.cshtml" />
+    <Content Include="Views\Home\Error404.cshtml" />
+    <Content Include="Views\Home\Error400.cshtml" />
+    <Content Include="Views\LibrarianTransaction\Index.Mobile.cshtml" />
+    <Content Include="Views\Home\Error500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201409252007027_initial.resx">

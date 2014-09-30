@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
+using TestLibrary.ViewModels;
 namespace TestLibrary.Controllers
 {
     public class LibrarianListManagerController : Controller
@@ -16,12 +17,41 @@ namespace TestLibrary.Controllers
         LibraryRepository libRepo = new LibraryRepository();
         
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1,int pageSize = 10)
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(libRepo.LibrarianRepo.List());
+            TempData["pageSize"] = pageSize;
+            TempData["page"] = page;
+            List<Librarian> librarianList = libRepo.LibrarianRepo.List();
+            PageList<Librarian> pglist;
+            int index = (page - 1) * pageSize;
+            if (index < librarianList.Count && ((index + pageSize) <= librarianList.Count))
+            {
+                pglist = new PageList<Librarian>(librarianList.GetRange((page - 1) * pageSize, pageSize));
+            }
+            else if (index < librarianList.Count)
+            {
+                pglist = new PageList<Librarian>(librarianList.GetRange((page - 1) * pageSize, librarianList.Count % pageSize));
+            }
+            else if (librarianList.Count == 0)
+            {
+                TempData["Notification"] = "No librarian list to show please create one to start the magic.";
+                return View();
+            }
+            else
+            {
+                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                return View();
+            }
+
+            if (librarianList.Count % pageSize == 0)
+                pglist.SetPageSize(librarianList.Count / pageSize);
+            else
+                pglist.SetPageSize((librarianList.Count / pageSize + 1));
+            pglist.SetCurrentPage(page);
+            return View(pglist);
         }
 
         [Authorize]

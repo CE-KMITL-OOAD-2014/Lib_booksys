@@ -234,5 +234,17 @@ namespace TestLibrary.Controllers
                 return View();
             }
         }
+
+        public ActionResult test(string term)
+        {
+            string s;
+            Member m = libRepo.MemberRepo.ListWhere(target => target.UserName == term).SingleOrDefault();
+            if (m != null)
+                s = m.UserName;
+            else
+                s = "Not found";
+            return this.Json(s, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }

@@ -7,19 +7,48 @@ using System.ComponentModel;
 using System.Data.Entity;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
-
+using TestLibrary.ViewModels;
 namespace TestLibrary.Controllers
 {
     public class MemberListManagerController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1,int pageSize = 10)
         {
             Session["LoginUser"] = HttpContext.User.Identity.Name;
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
                 return RedirectToAction("Index", "Account");
-            return View(libRepo.MemberRepo.List());
+            TempData["pageSize"] = pageSize;
+            TempData["page"] = page;
+            List<Member> memberList = libRepo.MemberRepo.List();
+            PageList<Member> pglist;
+            int index = (page - 1) * pageSize;
+            if (index < memberList.Count && ((index + pageSize) <= memberList.Count))
+            {
+                pglist = new PageList<Member>(memberList.GetRange((page - 1) * pageSize, pageSize));
+            }
+            else if (index < memberList.Count)
+            {
+                pglist = new PageList<Member>(memberList.GetRange((page - 1) * pageSize, memberList.Count % pageSize));
+            }
+            else if (memberList.Count == 0)
+            {
+                TempData["Notification"] = "No member list to show invite known member to register now.";
+                return View();
+            }
+            else
+            {
+                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                return View();
+            }
+
+            if (memberList.Count % pageSize == 0)
+                pglist.SetPageSize(memberList.Count / pageSize);
+            else
+                pglist.SetPageSize((memberList.Count / pageSize + 1));
+            pglist.SetCurrentPage(page);
+            return View(pglist);
         }
 
         [Authorize]

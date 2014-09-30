@@ -37,5 +37,26 @@ namespace TestLibrary.Controllers
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
+
+        public ActionResult Error404()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+            return View();
+        }
+
+        public ActionResult Error400()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+            return View();
+        }
+
+        public ActionResult Error500()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+            return View();
+        }
     }
 }
