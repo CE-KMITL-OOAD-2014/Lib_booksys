@@ -98,7 +98,7 @@
             <div id="quicksearch">
                 <form class="search-bar" action="/BookSearch/QuickSearch" method="post">
                     @Html.AntiForgeryToken()
-                    <input type="text" placeholder="Quick search" name="BookName" value="@ViewBag.quicksearchkey">
+                    <input type="text" placeholder="Quick search" name="BookName" value="@TempData["quicksearchkey"]">
                     <input type="submit" value="Search" />
                 </form>
 

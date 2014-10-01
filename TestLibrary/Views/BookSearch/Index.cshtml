@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Search";
 }
-@model List<TestLibrary.Models.Book>
+@model TestLibrary.ViewModels.PageList<TestLibrary.Models.Book>
 <h1>Search</h1>
 <h2>Basic search</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
@@ -20,8 +20,6 @@
 </form>
 @if (Model != null && TempData["AdvanceSearch"]!="Advance")
 {
-    if (Model.Count > 0)
-    {
     <table class="list">
         <tr>
             <th>ID</th>
@@ -31,7 +29,7 @@
             <th>Status</th>
             <th></th>
         </tr>
-        @foreach (var item in Model)
+        @foreach(var item in Model.GetList())
         {
             <tr>
                 <th>@item.BookID</th>
@@ -42,9 +40,37 @@
                 <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png"/></a></td>
             </tr>
         }
+        <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
     </table>
-    }
+    <form class="page-portal" action="/BookSearch/Basic/" method="post">
+        @Html.AntiForgeryToken()
+        <label>Jump to page:</label>
+        <select class="autosubmit" name="page" size="1">
+        @for (int j = 1; j <= Model.GetPageSize(); j++)
+        {
+            <option value="@j" selected="@((int.Parse(TempData["page"].ToString()) == j)? "selected":null)">@j</option>
+        }
+        </select>
+        <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+        <input type="hidden" name="Keyword" value="@ViewBag.Keyword" />
+        <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />     
+    </form>
+
+    <form class="page-portal" action="/BookSearch/Basic/" method="post">
+        @Html.AntiForgeryToken()
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
+            <option value="20" selected="@((int.Parse(TempData["pageSize"].ToString()) == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
+        </select>
+        <input type="hidden" name="Keyword" value="@ViewBag.Keyword" />
+        <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />
+    </form>
 }
+
+
     <h2>Advance search</h2>
     <form class="book-search" action="/BookSearch/Advance" method="post">
     @Html.AntiForgeryToken()
@@ -59,8 +85,6 @@
 
 @if (Model != null && TempData["AdvanceSearch"] == "Advance")
 {
-    if (Model.Count > 0)
-    {
         <table class="list">
             <tr>
                 <th>ID</th>
@@ -70,7 +94,7 @@
                 <th>Status</th>
                 <th></th>
             </tr>
-            @foreach (var item in Model)
+            @foreach (var item in Model.GetList())
             {
                 <tr>
                     <th>@item.BookID</th>
@@ -81,6 +105,43 @@
                     <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
                 </tr>
             }
+            <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
         </table>
-    }
+    
+        <form class="page-portal" action="/BookSearch/Advance/" method="post">
+        @Html.AntiForgeryToken()
+        <label>Jump to page:</label>
+        <select class="autosubmit" name="page" size="1">
+        @for (int j = 1; j <= Model.GetPageSize(); j++)
+        {
+            <option value="@j" selected="@((int.Parse(TempData["page"].ToString()) == j)? "selected":null)">@j</option>
+        }
+        </select>
+        <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+        <input type="hidden" name="BookName" value="@TempData["BookName"]" />
+        <input type="hidden" name="Author" value="@TempData["Author"]" /> 
+        <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
+        <input type="hidden" name="Year" value="@TempData["Year"]" />
+    </form>
+
+    <form class="page-portal" action="/BookSearch/Advance/" method="post">
+        @Html.AntiForgeryToken()
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
+            <option value="20" selected="@((int.Parse(TempData["pageSize"].ToString()) == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
+        </select>
+        <input type="hidden" name="BookName" value="@TempData["BookName"]" />
+        <input type="hidden" name="Author" value="@TempData["Author"]" />
+        <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
+        <input type="hidden" name="Year" value="@TempData["Year"]" />
+    </form>
 }
+
+<script type="text/javascript">
+    $("select.autosubmit").change(function () {
+        $(this).parent().submit();
+    });
+</script>
