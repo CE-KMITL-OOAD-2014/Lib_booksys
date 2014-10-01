@@ -175,6 +175,42 @@ table.news-list tr:hover{
 }
 
 /*--------------------------*/
+
+table.top10{
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:14px;
+    max-width:300px;
+    font-size:x-large;
+    font-family:Single;
+    border-collapse:collapse;
+}
+
+table.top10 th{
+    background-color:skyblue;
+    border:1px solid black;
+    padding:5px;
+}
+table.top10 th.first{
+    background-color:gold;
+}
+table.top10 th.second{
+    background-color:silver;
+}
+table.top10 th.third{
+    background-color:#B87333;
+}
+table.top10 th.norm{
+    background-color:skyblue;
+}
+table.top10 th.first{
+    background-color:gold;
+}
+table.top10 td{
+    border:1px solid black;
+    padding:5px;
+}
+/*--------------------------*/
 div.news-area{
     margin:15px 0 15px 0;
     padding:10px;
@@ -241,7 +277,7 @@ ul.menulist{
 }
 
 ul.menulist li a:link{
-    margin-top:3px;
+    margin-top:10px;
     padding-bottom:3px;
     text-decoration:none;
     text-align:center;

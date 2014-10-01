@@ -349,6 +349,7 @@
     <Content Include="Views\Home\Error400.cshtml" />
     <Content Include="Views\LibrarianTransaction\Index.Mobile.cshtml" />
     <Content Include="Views\Home\Error500.cshtml" />
+    <Content Include="Views\Home\TopBorrower.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201409252007027_initial.resx">

@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Top 10 Borrower";
+    int Count = 0;
+}
+@model List<TestLibrary.Models.Member>
+<h2>Top 10 Borrower</h2>
+@if (Model == null)
+{
+    <p class="noti-msg">@TempData["Notification"]</p>
+}
+else
+{
+    <table class="top10">
+        <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Count</th>
+        </tr>
+        
+            @foreach(var item in Model)
+            {
+                <tr>
+                    
+                    @if (Count == 0)
+                    {
+                        <th class="first">@(++Count)</th>
+                    }
+                    else if(Count == 1){
+                         <th class="second">@(++Count)</th>
+                    }
+                    else if (Count == 2)
+                    {
+                        <th class="third">@(++Count)</th>
+                    }
+                    else
+                    {
+                        <th class="norm">@(++Count)</th>
+                    }
+                 <td>
+                  @item.UserName
+                 </td>
+                 <td>
+                  @item.BorrowEntries.Count
+                  </td>
+                  </tr>
+            }
+        
+    </table>
+}
