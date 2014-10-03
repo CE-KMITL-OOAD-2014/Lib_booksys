@@ -10,16 +10,12 @@
     {
         <tr>
             <td><b>@news.PostTime.ToShortDateString()</b></td>
-            <td>@news.Title</td>
-            
-            <td><a class="operation-link" href="/News/View/@news.NewsID">อ่านต่อ</a></td>
+            <td><a class="news-link" href="/News/View/@news.NewsID">@news.Title</a></td>
         </tr>
     }
-
     <tr>
         <td></td>
-        <td></td>
-        <td><a class="operation-link" href="/News/ViewAll">ดูทั้งหมด</a></td>
+        <td class="right-col"><a class="norm" href="/News/ViewAll">ดูทั้งหมด</a></td>
     </tr>
 </table>
 

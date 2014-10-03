@@ -39,5 +39,10 @@ namespace TestLibrary.ViewModels
         {
             return List;
         }
+
+        public void Categorized()
+        {
+
+        }
     }
 }

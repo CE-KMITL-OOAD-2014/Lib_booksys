@@ -121,7 +121,7 @@ form.book-search{
     font-family:Single;
     font-size:xx-large;
     margin:15px 0px 15px 0px;
-    width:300px;
+    max-width:300px;
 }
 form.book-search input,form.book-search select,form.book-search label{
     display:table-cell;
@@ -172,6 +172,24 @@ table.news-list{
 
 table.news-list tr:hover{
     background-color:#FFFF75;
+}
+
+table.news-list td.right-col{
+
+    text-align:right
+}
+
+a.news-link:link{
+    text-decoration:none;
+    color:black;
+}
+
+a.news-link:hover{
+    text-decoration:underline;
+}
+
+a.news-link:visited{
+    color:black;
 }
 
 /*--------------------------*/
@@ -334,31 +352,42 @@ ul.admin-panel li a:visited{
     color:black;
 }
 
-table.list{
+table.list,table.res-list{
     font-family:Single;
     font-size:x-large;
     margin:15px 0 15px 0;
     border-collapse:collapse;
 }
 
-table.list caption{
+table.list caption,table.res-list caption{
     caption-side:bottom;
 }
-table.list th{
+table.list th,table.res-list th{
     background-color:#99CCFF;
     font-weight:bolder;
     border:1px solid #808080;
     padding:5px;
 }
-table.list td{
+table.res-list th{
+}
+table.list td,table.res-list td{
     padding:5px;
     border:1px solid #808080;
 }
 
-td.res-col{
-    word-break:break-all;
-    min-width:70px
+table.res-list{
+    width:100%;
 }
+
+td.res-col{
+    width:30%;
+    word-break:break-all;
+}
+table.res-list td.center-col{
+    padding:0;
+    text-align:center;
+}
+
 
 img.delete-btt,img.edit-btt,img.view-btt,img.paratab{
     vertical-align:text-bottom;
@@ -459,14 +488,6 @@ a.norm:visited{
 }
 a.paratab:visited{
     color:white;
-}
-
-a.operation-link:link{
-    color:black
-}
-
-a.operation-link:visited{
-    color:black
 }
 
 h1{

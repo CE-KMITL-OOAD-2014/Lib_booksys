@@ -11,8 +11,7 @@
     {
         <tr>
             <td><b>@news.PostTime.ToShortDateString()</b></td>
-            <td>@news.Title</td>
-            <td><a href="/News/View/@news.NewsID">อ่านต่อ</a></td>
+            <td><a class="news-link" href="/News/View/@news.NewsID">@news.Title</a></td>
         </tr>
     }
     <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>

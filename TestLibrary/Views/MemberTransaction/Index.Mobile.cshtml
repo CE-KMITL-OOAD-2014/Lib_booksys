@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Member transaction viewer";
+}
+@model TestLibrary.ViewModels.MemberTransactionViewer
+<h1>Member transaction</h1>
+<p class="noti-msg">@TempData["Notification"]</p>
+<h2>Book that you borrowed</h2>
+@if (Model.GetBorrowEntryViews().Count != 0) { 
+<table class="res-list">
+    <tr>
+        <th>Book name</th>
+        <th>Due date</th>
+        <th>Rn-Cnt</th>
+        <th></th>
+    </tr>
+    @foreach (var record in Model.GetBorrowEntryViews())
+    {
+        <tr>
+            <td class="res-col">@record.BorrowBook.BookName</td>
+            <td>@record.DueDate.ToShortDateString()</td>
+            <td>@record.RenewCount</td>
+            @if (@record.RenewCount == 3) { 
+            <td></td>
+            }
+            else
+            {
+                <td class="center-col"><a class="operation-link" href="/MemberTransaction/Renew/@record.ID">Renew</a></td>
+            }
+            
+        </tr>
+    }
+</table>
+}
+else{
+    <p class="noti-msg">No book that you borrowed now.</p>
+}
+
+<h2>Book that you requested</h2>
+@if (Model.GetRequestEntryViews().Count != 0)
+{
+    <table class="res-list">
+        <tr>
+            <th>Book name</th>
+            <th>Status</th>
+            <th>Exp. Date</th>
+            <th></th>
+        </tr>
+        @foreach (var record in Model.GetRequestEntryViews())
+        {
+            <tr>
+            <td class="res-col">
+                @record.RequestBook.BookName
+            </td>
+                @if (record.ExpireDate != null) { 
+                <td>
+                    Avail.
+                </td>
+                    <td>
+                @record.ExpireDate.Value.ToShortDateString()
+                        </td>
+                }
+                else
+                {
+                    <td>
+                    Not Avail.
+                    </td>
+                    <td>@Html.DisplayFor(target => target.GetRequestEntryViews().Single(rec => rec == record).ExpireDate)</td>
+                }
+                <td class="center-col">
+                    <a class="operation-link" href="/MemberTransaction/CancelRequest/@record.BookID">Cancel</a>
+                        </td>
+                </tr>
+        }
+    </table>
+}
+else{
+    <p class="noti-msg">No book that you requested now.</p>
+}
+
+<a class="account-btt" href="/MemberTransaction/Request">Request Book</a>
+<a class="account-btt" href="/Account/Index">Back</a>

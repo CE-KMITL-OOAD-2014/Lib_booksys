@@ -1,45 +1,41 @@
-﻿@model TestLibrary.ViewModels.PageList<TestLibrary.Models.BorrowEntry>
-@{
-    ViewBag.Title = "Librarian transaction manager";
-    int count;
+﻿@{
+    ViewBag.Title = "Member list manager";
 }
-<h1>Librarian transaction manager</h1>
-<ul class="admin-panel">
-    <li><a href="/LibrarianTransaction/Transaction">Do Transaction</a></li>
-</ul><br />
-@if (Model != null){
-    count = (Model.GetCurrentPage() - 1) * int.Parse(TempData["pageSize"].ToString());
-<h2>Borrow tracking</h2>
+@model TestLibrary.ViewModels.PageList<TestLibrary.Models.Member>
+<h2>Member list manager</h2>
+<p class="noti-msg">@TempData["Notification"]</p>
+@if (Model != null) { 
 <table class="res-list">
     <tr>
-        <th>No.</th>
-        <th>BookName</th>
-        <th>Borrower</th>
-        <th>Due</th>
-        <th>RT</th>
+        <th>
+            ID
+        </th>
+        <th>
+            UserName
+        </th>
+        <th></th><th></th>
     </tr>
     @foreach (var item in Model.GetList())
     {
         <tr>
-            <td>@(++count)</td>
-            <td class="res-col">@item.BorrowBook.BookName</td>
-            <td class="res-col">@item.Borrower.UserName</td>
-            <td>@item.DueDate.Date.Day/@item.DueDate.Date.Month/@item.DueDate.Date.Year.ToString().Substring(2)</td>
-            <td>
-                @if (item.ReturnDate != null)
-                {
-                    <text>Y</text>
-                }
-                else
-                {
-                    <text>N</text>
-                }
+            <th>
+                @item.UserID
+            </th>
+            <td class="res-col">
+                @item.UserName
+            </td>
+            <td class="center-col">
+                <a href="/MemberListManager/View/@item.UserID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a>
+            </td>
+            <td class="center-col">
+                <a href="/MemberListManager/Delete/@item.UserID"><img class="delete-btt" src="/Content/delete-gray-btt.png" /></a>
             </td>
         </tr>
     }
     <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
 </table>
-    <form class="page-portal" action="/LibrarianTransaction/Index/" method="post">
+    
+    <form class="page-portal" action="/MemberlistManager/Index/" method="post">
     <label>Jump to page:</label>
     <select class="autosubmit" name="page" size="1">
         @for (int j = 1; j <= Model.GetPageSize(); j++)
@@ -50,7 +46,7 @@
     <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
 </form>
 
-    <form class="page-portal" action="/LibrarianTransaction/Index/" method="post">
+    <form class="page-portal" action="/MemberlistManager/Index/" method="post">
         <label>List per page:</label>
         <select class="autosubmit" name="pageSize" size="1">
             <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
@@ -59,10 +55,6 @@
             <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
         </select>
     </form>
-}
-else
-{
-    <p class="noti-msg">@TempData["Notification"]</p>
 }
 <a class="account-btt" href="/Account/LibrarianPortal">Portal</a>
 <script type="text/javascript">
