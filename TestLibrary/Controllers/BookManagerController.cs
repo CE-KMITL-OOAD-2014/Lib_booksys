@@ -24,33 +24,21 @@ namespace TestLibrary.Controllers
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<Book> bookList = libRepo.BookRepo.List();
-            PageList<Book> pglist;
-            int index = (page - 1) * pageSize;
-            if (index < bookList.Count && ((index + pageSize) <= bookList.Count))
+            PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
+            switch (pglist.Categorized())
             {
-                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, pageSize));
+                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Empty:
+                    {
+                        TempData["Notification"] = "No book list to show.";
+                        return View();
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View();
+                    }
             }
-            else if (index < bookList.Count)
-            {
-                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize,bookList.Count % pageSize));
-            }
-            else if (bookList.Count == 0)
-            {
-                TempData["Notification"] = "No book list to show please create one to start the magic.";
-                return View();
-            }
-            else
-            {
-                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                return View();
-            }
-
-            if(bookList.Count % pageSize == 0)
-                pglist.SetPageSize(bookList.Count / pageSize);
-            else
-                pglist.SetPageSize((bookList.Count / pageSize + 1));
-            pglist.SetCurrentPage(page);
-            return View(pglist);
         }
 
 
@@ -114,6 +102,30 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
+                //If book is lost check related borrowentry and force return&delete req.entry//
+                if (bookToEdit.BookStatus == Status.Lost)
+                {
+                    BorrowEntry entry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToEdit.BookID && target.ReturnDate == null).SingleOrDefault();
+                    if (entry != null)
+                    {
+                        entry.ReturnDate = DateTime.Now.Date;
+                        RequestEntry removeEntry = entry.BorrowBook.RequestRecord;
+                        if (removeEntry != null)
+                            libRepo.RequestEntryRepo.Remove(removeEntry);
+                    }
+                }
+                //If book is available make sure that book is not reserve or borrowed//
+                else if (bookToEdit.BookStatus == Status.Available)
+                {
+                    Book bookToFind = libRepo.BookRepo.Find(bookToEdit.BookID);
+                    if (bookToFind.BookStatus == Status.Borrowed || bookToFind.BookStatus == Status.Reserved)
+                    {
+                        TempData["Notification"] = "Can't edit book status due to this book is " + bookToFind.BookStatus.ToString();
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                //Another check???? Avail -> Borrowed? Avail -> Req.
                 libRepo.BookRepo.Update(bookToEdit);
                 TempData["Notification"] = "Edit book successfully.";
                 libRepo.Save();

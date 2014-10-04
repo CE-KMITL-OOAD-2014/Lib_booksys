@@ -22,33 +22,21 @@ namespace TestLibrary.Controllers
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<Member> memberList = libRepo.MemberRepo.List();
-            PageList<Member> pglist;
-            int index = (page - 1) * pageSize;
-            if (index < memberList.Count && ((index + pageSize) <= memberList.Count))
+            PageList<Member> pglist = new PageList<Member>(memberList, page, pageSize);
+            switch (pglist.Categorized())
             {
-                pglist = new PageList<Member>(memberList.GetRange((page - 1) * pageSize, pageSize));
+                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Empty:
+                    {
+                        TempData["Notification"] = "No member list to show.";
+                        return View();
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View();
+                    }
             }
-            else if (index < memberList.Count)
-            {
-                pglist = new PageList<Member>(memberList.GetRange((page - 1) * pageSize, memberList.Count % pageSize));
-            }
-            else if (memberList.Count == 0)
-            {
-                TempData["Notification"] = "No member list to show invite known member to register now.";
-                return View();
-            }
-            else
-            {
-                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                return View();
-            }
-
-            if (memberList.Count % pageSize == 0)
-                pglist.SetPageSize(memberList.Count / pageSize);
-            else
-                pglist.SetPageSize((memberList.Count / pageSize + 1));
-            pglist.SetCurrentPage(page);
-            return View(pglist);
         }
 
         [Authorize]

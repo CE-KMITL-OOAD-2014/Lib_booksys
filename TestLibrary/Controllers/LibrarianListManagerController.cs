@@ -25,33 +25,21 @@ namespace TestLibrary.Controllers
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<Librarian> librarianList = libRepo.LibrarianRepo.List();
-            PageList<Librarian> pglist;
-            int index = (page - 1) * pageSize;
-            if (index < librarianList.Count && ((index + pageSize) <= librarianList.Count))
+            PageList<Librarian> pglist = new PageList<Librarian>(librarianList, page, pageSize);
+            switch (pglist.Categorized())
             {
-                pglist = new PageList<Librarian>(librarianList.GetRange((page - 1) * pageSize, pageSize));
+                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Empty:
+                    {
+                        TempData["Notification"] = "No librarian list to show.";
+                        return View();
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View();
+                    }
             }
-            else if (index < librarianList.Count)
-            {
-                pglist = new PageList<Librarian>(librarianList.GetRange((page - 1) * pageSize, librarianList.Count % pageSize));
-            }
-            else if (librarianList.Count == 0)
-            {
-                TempData["Notification"] = "No librarian list to show please create one to start the magic.";
-                return View();
-            }
-            else
-            {
-                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                return View();
-            }
-
-            if (librarianList.Count % pageSize == 0)
-                pglist.SetPageSize(librarianList.Count / pageSize);
-            else
-                pglist.SetPageSize((librarianList.Count / pageSize + 1));
-            pglist.SetCurrentPage(page);
-            return View(pglist);
         }
 
         [Authorize]

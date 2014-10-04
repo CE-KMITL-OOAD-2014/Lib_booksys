@@ -65,34 +65,21 @@ namespace TestLibrary.Controllers
 
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
-            PageList<Book> pglist;
-            int index = (page - 1) * pageSize;
-            if (index < bookList.Count && ((index + pageSize) <= bookList.Count))
+            PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
+            switch (pglist.Categorized())
             {
-                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, pageSize));
+                case PageListResult.Ok: { return View("Index", pglist); }
+                case PageListResult.Empty:
+                    {                
+                    TempData["Notification"] = "No book result found.";
+                    return View("Index");
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View("Index");
+                    }
             }
-            else if (index < bookList.Count)
-            {
-                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, bookList.Count % pageSize));
-            }
-            else if (bookList.Count == 0)
-            {
-                TempData["Notification"] = "No book with keyword found.";
-                return View("Index");
-            }
-            else
-            {
-                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                return View("Index");
-            }
-
-            if (bookList.Count % pageSize == 0)
-                pglist.SetPageSize(bookList.Count / pageSize);
-            else
-                pglist.SetPageSize((bookList.Count / pageSize + 1));
-            pglist.SetCurrentPage(page);
-            return View("Index",pglist);
-
         }
 
         [HttpPost]
@@ -125,37 +112,23 @@ namespace TestLibrary.Controllers
                     (target.Author.Contains(bookToSearch.Author)) && (target.Publisher.Contains(bookToSearch.Publisher))).ToList();
                 }
                 TempData["AdvanceSearch"] = "Advance";
-                /*if (targetlist.Count == 0)
-                    TempData["Notification"] = "No result book found.";*/
                 TempData["pageSize"] = pageSize;
                 TempData["page"] = page;
-                PageList<Book> pglist;
-                int index = (page - 1) * pageSize;
-                if (index < bookList.Count && ((index + pageSize) <= bookList.Count))
+                PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
+                switch (pglist.Categorized())
                 {
-                    pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, pageSize));
+                    case PageListResult.Ok: { return View("Index", pglist); }
+                    case PageListResult.Empty:
+                        {
+                            TempData["Notification"] = "No book result found.";
+                            return View("Index");
+                        }
+                    default:
+                        {
+                            TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                            return View("Index");
+                        }
                 }
-                else if (index < bookList.Count)
-                {
-                    pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, bookList.Count % pageSize));
-                }
-                else if (bookList.Count == 0)
-                {
-                    TempData["Notification"] = "No result book found.";
-                    return View("Index");
-                }
-                else
-                {
-                    TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                    return View("Index");
-                }
-
-                if (bookList.Count % pageSize == 0)
-                    pglist.SetPageSize(bookList.Count / pageSize);
-                else
-                    pglist.SetPageSize((bookList.Count / pageSize + 1));
-                pglist.SetCurrentPage(page);
-                return View("Index", pglist);
             }
             else
                 TempData["Notification"] = "Input string was not in a correct format.";
@@ -171,33 +144,21 @@ namespace TestLibrary.Controllers
             List<Book> bookList = libRepo.BookRepo.ListWhere(target => target.BookName.Contains(bookName));
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
-            PageList<Book> pglist;
-            int index = (page - 1) * pageSize;
-            if (index < bookList.Count && ((index + pageSize) <= bookList.Count))
+            PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
+            switch (pglist.Categorized())
             {
-                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, pageSize));
+                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Empty:
+                    {
+                        TempData["Notification"] = "No book result found.";
+                        return View();
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View();
+                    }
             }
-            else if (index < bookList.Count)
-            {
-                pglist = new PageList<Book>(bookList.GetRange((page - 1) * pageSize, bookList.Count % pageSize));
-            }
-            else if (bookList.Count == 0)
-            {
-                TempData["Notification"] = "No book with keyword found.";
-                return View();
-            }
-            else
-            {
-                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                return View();
-            }
-
-            if (bookList.Count % pageSize == 0)
-                pglist.SetPageSize(bookList.Count / pageSize);
-            else
-                pglist.SetPageSize((bookList.Count / pageSize + 1));
-            pglist.SetCurrentPage(page);
-            return View(pglist);
         }
     }
 }

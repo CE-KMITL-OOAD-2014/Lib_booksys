@@ -153,33 +153,21 @@ namespace TestLibrary.Controllers
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<BorrowEntry> borrowList = libRepo.BorrowEntryRepo.List();
-            PageList<BorrowEntry> pglist;
-            int index = (page - 1) * pageSize;
-            if (index < borrowList.Count && ((index + pageSize) <= borrowList.Count))
+            PageList<BorrowEntry> pglist = new PageList<BorrowEntry>(borrowList, page, pageSize);
+            switch (pglist.Categorized())
             {
-                pglist = new PageList<BorrowEntry>(borrowList.GetRange((page - 1) * pageSize, pageSize));
+                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Empty:
+                    {
+                        TempData["Notification"] = "No borrowed list to show.";
+                        return View();
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View();
+                    }
             }
-            else if (index < borrowList.Count)
-            {
-                pglist = new PageList<BorrowEntry>(borrowList.GetRange((page - 1) * pageSize, borrowList.Count % pageSize));
-            }
-            else if (borrowList.Count == 0)
-            {
-                TempData["Notification"] = "No borrow list to show please service for one to start the magic.";
-                return View();
-            }
-            else
-            {
-                TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
-                return View();
-            }
-
-            if (borrowList.Count % pageSize == 0)
-                pglist.SetPageSize(borrowList.Count / pageSize);
-            else
-                pglist.SetPageSize((borrowList.Count / pageSize + 1));
-            pglist.SetCurrentPage(page);
-            return View(pglist);
         }
 
         //Show viewtable if user click 'Check'
