@@ -1,10 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
 namespace TestLibrary.Controllers
@@ -55,7 +53,12 @@ namespace TestLibrary.Controllers
             return View(topTen);
         }
 
-
+        public ActionResult LibraryApi()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+            return View();
+        }
 
         public ActionResult Error404()
         {

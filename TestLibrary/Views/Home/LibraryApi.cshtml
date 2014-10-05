@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "LibraryApi";
+}
+
+<h2>LibraryApi</h2>
+<table class="list">
+    <tr>
+        <th>ID</th>
+        <th>BookName</th>
+        <th>Author</th>
+    </tr>
+</table>
+<form class="news-form">
+    <label>Find by name</label>
+    <input id="in" type="text" name="name" />
+    <input type="button" value="Search" onclick="find()"/>
+</form>
+<p class="noti-msg"/>
+<script type="text/javascript" src="/Script/jquery-1.11.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $.getJSON("/api/BookQuery").done(function (data) {
+            $.each(data, function (key, item) {
+                $("table.list").append("<tr><td>"+item.BookID + "</td><td>" + item.BookName+"</td><td>"+item.Author+"</td></tr>");
+            });
+        }).fail(function (jQxSR, error, err) {
+            $("#test").append(err);
+        });
+    });
+
+    function find() {
+        $.getJSON("/api/BookQuery/?name=" + $("#in").val())
+            .done(function (data) {
+                $("table.list").children().remove();
+                $("p.noti-msg").text("");
+                $.each(data, function (key, item) {
+                    $("table.list").append("<tr><td>" + item.BookID + "</td><td>" + item.BookName + "</td><td>" + item.Author + "</td></tr>");
+                });
+            })
+            .fail(function (JqxCR, error, err) {
+                $("p.noti-msg").text(err);
+            });
+    }
+</script>

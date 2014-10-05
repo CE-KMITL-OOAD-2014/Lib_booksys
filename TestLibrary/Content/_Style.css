@@ -249,6 +249,23 @@ a.account-btt{
     padding-bottom:3px;
     width:150px
 }
+a.btt-inline:link{
+    color:black;
+    display:inline-block;
+    font-size:x-large;
+    background-color:chartreuse;
+    text-decoration:none;
+    width:100px;
+    min-height:31px;
+    margin:2px;
+}
+
+a.btt-inline:hover{
+    background-color:DarkOliveGreen;
+}
+a.btt-inline:visited{
+        color:black;
+}
 
 a.account-btt:link{
     color:black;
