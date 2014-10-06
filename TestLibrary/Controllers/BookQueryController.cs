@@ -40,7 +40,28 @@ namespace TestLibrary.Controllers
                 return Ok(target);
             else
                 return NotFound();
-        } 
+        }
+        
+
+        //Get book by ID to view Detail.
+        public IHttpActionResult GetBookById(int id)
+        {
+            Book target = (from book in LibRepo.BookRepo.List()
+                          where book.BookID == id
+                          select new Book(){
+                              BookID = book.BookID,
+                              BookName = book.BookName,
+                              Author = book.Author,
+                              Detail = book.Detail,
+                              Publisher = book.Publisher
+                          }).SingleOrDefault();
+            if(target!=null)
+                return Ok(target);
+            return NotFound();
+        }
+
+
+
 
         // POST api/<controller>
         public void Post([FromBody]string value)

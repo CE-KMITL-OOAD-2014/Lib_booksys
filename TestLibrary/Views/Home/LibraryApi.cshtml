@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "LibraryApi";
+    ViewBag.Title = "Library Api";
 }
 
 <h2>LibraryApi</h2>
@@ -8,37 +8,63 @@
         <th>ID</th>
         <th>BookName</th>
         <th>Author</th>
+        <th></th>
     </tr>
 </table>
-<form class="news-form">
-    <label>Find by name</label>
-    <input id="in" type="text" name="name" />
+<div class="detail" style="font-family:Single;font-size:x-large">
+
+</div>
+<div class="news-area">
+    <label><b>Find by name</b></label>
+    <input id="in" type="text" name="name"/>
     <input type="button" value="Search" onclick="find()"/>
-</form>
+</div>
 <p class="noti-msg"/>
 <script type="text/javascript" src="/Script/jquery-1.11.1.js"></script>
 <script>
     $(document).ready(function () {
+        $("table.list").on("click","tr.test button.view-btt",function(){
+            view($(this).val());
+        });
+
         $.getJSON("/api/BookQuery").done(function (data) {
             $.each(data, function (key, item) {
-                $("table.list").append("<tr><td>"+item.BookID + "</td><td>" + item.BookName+"</td><td>"+item.Author+"</td></tr>");
+                $("table.list").append("<tr class=\"test\"><td>" + item.BookID + "</td><td>"
+                + item.BookName + "</td><td>" + item.Author + "</td>"
+                + "<td class=\"btt\"><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
+            }).fail(function (jQxSR, error, err) {
+                $("#test").append(err);
             });
-        }).fail(function (jQxSR, error, err) {
-            $("#test").append(err);
-        });
+        });       
+            //view($(this).val());
     });
+
 
     function find() {
         $.getJSON("/api/BookQuery/?name=" + $("#in").val())
             .done(function (data) {
-                $("table.list").children().remove();
+                $("table.list").show();
+                $("table.list tr.test").remove();
                 $("p.noti-msg").text("");
                 $.each(data, function (key, item) {
-                    $("table.list").append("<tr><td>" + item.BookID + "</td><td>" + item.BookName + "</td><td>" + item.Author + "</td></tr>");
+                    $("table.list").append("<tr class=\"test\"><td>" + item.BookID + "</td><td>"
+                    + item.BookName + "</td><td>" + item.Author + "</td>"
+                    + "<td><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
                 });
             })
             .fail(function (JqxCR, error, err) {
+                $("table.list").hide();
                 $("p.noti-msg").text(err);
             });
+
     }
+
+    function view(id) {
+        $.getJSON("/api/BookQuery/"+id)
+            .done(function (data) {
+                $("div.detail").children().remove();
+                $("div.detail").append("<p><b>"+data.BookID + " " + data.BookName+"<br>"+data.Detail+"</p>");
+            });
+    }
+
 </script>
