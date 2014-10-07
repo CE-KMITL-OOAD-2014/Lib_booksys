@@ -60,12 +60,27 @@ namespace TestLibrary.Controllers
             return NotFound();
         }
 
-
-
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        //Will Change to find overall book-data later
+        public IHttpActionResult PostBookAuthor([FromBody()]string author)
         {
+            var list = from book in LibRepo.BookRepo.List()
+                       where book.Author.Contains(author)
+                       select new Book()
+                       {
+                           BookID = book.BookID,
+                           BookName = book.BookName,
+                           Author = book.Author,
+                           Detail = book.Detail,
+                           Publisher = book.Publisher
+                       };
+
+            if (list == null)
+                return NotFound();
+            else if (list.ToList().Count > 0)
+                return Ok(list);
+            else
+                return NotFound();
         }
+
     }
 }

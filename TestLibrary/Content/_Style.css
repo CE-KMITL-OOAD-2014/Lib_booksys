@@ -282,6 +282,32 @@ a.account-btt:visited{
     text-decoration:none;
 }
 
+a.facebook-btt:link{
+    width:100px;
+    display:inline-block;
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    background-color:#3B5999;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+}
+
+
+a.facebook-btt:hover{
+    background-color:#1E2C4C
+}
+
+
+a.facebook-btt:visited{
+    color:white;
+    text-decoration:none;
+}
+
+
+
 div.account-detail{
     font-family:Single;
     font-size:x-large;
@@ -478,7 +504,6 @@ img.back-to-top-btt{
     right:20px;
     
 }
-
 
 footer{
    

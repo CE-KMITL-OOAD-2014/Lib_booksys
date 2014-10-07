@@ -17,7 +17,10 @@
 <div class="news-area">
     <label><b>Find by name</b></label>
     <input id="in" type="text" name="name"/>
-    <input type="button" value="Search" onclick="find()"/>
+    <input type="button" value="Search" onclick="find()"/><br />
+    <label><b>Find by author</b></label>
+    <input id="in2" type="text" name="author" />
+    <input type="button" value="Search" onclick="findAuthor()" />
 </div>
 <p class="noti-msg"/>
 <script type="text/javascript" src="/Script/jquery-1.11.1.js"></script>
@@ -36,7 +39,6 @@
                 $("#test").append(err);
             });
         });       
-            //view($(this).val());
     });
 
 
@@ -67,4 +69,18 @@
             });
     }
 
+    function findAuthor() {
+        var str = $("#in2").val();
+        $.post("/api/BookQuery/",{'':str }).fail(function (jQxCR, error, err) {
+            $("p.noti-msg").text(err);
+        }).done(function (data) {
+            $("p.noti-msg").text("");
+            $("table.list tr.test").remove();
+            $.each(data, function (key, item) {
+                $("table.list").append("<tr class=\"test\"><td>" + item.BookID + "</td><td>"
+                + item.BookName + "</td><td>" + item.Author + "</td>"
+                + "<td><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
+            });
+        });
+    }
 </script>
