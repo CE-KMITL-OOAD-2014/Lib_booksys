@@ -12,15 +12,18 @@
     </tr>
 </table>
 <div class="detail" style="font-family:Single;font-size:x-large">
-
 </div>
 <div class="news-area">
-    <label><b>Find by name</b></label>
-    <input id="in" type="text" name="name"/>
-    <input type="button" value="Search" onclick="find()"/><br />
-    <label><b>Find by author</b></label>
-    <input id="in2" type="text" name="author" />
-    <input type="button" value="Search" onclick="findAuthor()" />
+    <label><b>Name</b></label>
+    <input type="text" name="bookname"/>
+    <input type="button" value="Search by name" onclick="findBookByName()"/><br />
+    <label><b>Author</b></label>
+    <input type="text" name="author" /><br />
+    <label><b>Publisher</b></label>
+    <input type="text" name="publisher" /><br />
+    <label><b>Year</b></label>
+    <input type="text" name="year" />
+    <input type="button" value="Search" onclick="findBook()" /><br />
 </div>
 <p class="noti-msg"/>
 <script type="text/javascript" src="/Script/jquery-1.11.1.js"></script>
@@ -42,8 +45,8 @@
     });
 
 
-    function find() {
-        $.getJSON("/api/BookQuery/?name=" + $("#in").val())
+    function findBookByName() {
+        $.getJSON("/api/BookQuery/?name=" + $("input[name='bookname']").val())
             .done(function (data) {
                 $("table.list").show();
                 $("table.list tr.test").remove();
@@ -65,7 +68,7 @@
         $.getJSON("/api/BookQuery/"+id)
             .done(function (data) {
                 $("div.detail").children().remove();
-                $("div.detail").append("<p><b>"+data.BookID + " " + data.BookName+"<br>"+data.Detail+"</p>");
+                $("div.detail").append("<p><b>"+data.BookID + " " + data.BookName+"<br>Detail:"+data.Detail+"<br>Year:"+data.Year+"</p>");
             });
     }
 
@@ -81,6 +84,34 @@
                 + item.BookName + "</td><td>" + item.Author + "</td>"
                 + "<td><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
             });
+        });
+    }
+
+
+    function findBook() {
+        var target = new Object();
+        target.BookName = $("input[name='bookname']").val();
+        target.Author = $("input[name='author']").val();
+        target.Publisher = $("input[name='publisher']").val();
+        target.Year = $("input[name='year']").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/api/BookQuery/",
+            data: JSON.stringify(target),
+            contentType: "application/json"
+        }).done(function (data) {
+            $("p.noti-msg").text("");
+            $("table.list tr.test").remove();
+            $("table.list").show();
+            $.each(data, function (key, item) {
+                $("table.list").append("<tr class=\"test\"><td>" + item.BookID + "</td><td>"
+                + item.BookName + "</td><td>" + item.Author + "</td>"
+                + "<td><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
+            });
+        }).fail(function (JqrdR, error, err) {
+            $("table.list").hide();
+            $("p.noti-msg").text(err);
         });
     }
 </script>

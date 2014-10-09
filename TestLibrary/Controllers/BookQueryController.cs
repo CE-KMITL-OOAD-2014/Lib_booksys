@@ -7,6 +7,7 @@ using System.Web.Http;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
 namespace TestLibrary.Controllers
 {
     public class BookQueryController : ApiController
@@ -32,7 +33,10 @@ namespace TestLibrary.Controllers
                           select new Book(){
                               BookID = book.BookID,
                               BookName = book.BookName,
-                              Author = book.Author
+                              Author = book.Author,
+                              Detail = book.Detail,
+                              Publisher = book.Publisher,
+                              Year = book.Year
                             };
             if (target == null)
                 return NotFound();
@@ -53,33 +57,66 @@ namespace TestLibrary.Controllers
                               BookName = book.BookName,
                               Author = book.Author,
                               Detail = book.Detail,
-                              Publisher = book.Publisher
+                              Publisher = book.Publisher,
+                              Year = book.Year
                           }).SingleOrDefault();
             if(target!=null)
                 return Ok(target);
             return NotFound();
         }
 
-        //Will Change to find overall book-data later
-        public IHttpActionResult PostBookAuthor([FromBody()]string author)
+        public IHttpActionResult PostBook([FromBody]JObject target)
         {
-            var list = from book in LibRepo.BookRepo.List()
-                       where book.Author.Contains(author)
+            Book bookToFind = new Book();
+            bookToFind.BookName = target["BookName"].ToString();
+            bookToFind.Author = target["Author"].ToString();
+            bookToFind.Publisher = target["Publisher"].ToString();
+            IEnumerable<Book> list;
+            if (target["Year"].ToString() == "")
+            {
+                list = from book in LibRepo.BookRepo.List()
+                           where book.Author.Contains(bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
+                                 book.Publisher.Contains(bookToFind.Publisher)
+                           select new Book()
+                           {
+                               BookID = book.BookID,
+                               BookName = book.BookName,
+                               Author = book.Author,
+                               Detail = book.Detail,
+                               Publisher = book.Publisher,
+                               Year = book.Year
+                           };
+            }
+            else
+            {
+                try
+                {
+                bookToFind.Year = int.Parse(target["Year"].ToString());
+                list = from book in LibRepo.BookRepo.List()
+                       where book.Author.Contains(bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
+                                 book.Publisher.Contains(bookToFind.Publisher) && book.Year == bookToFind.Year
                        select new Book()
                        {
                            BookID = book.BookID,
                            BookName = book.BookName,
                            Author = book.Author,
                            Detail = book.Detail,
-                           Publisher = book.Publisher
+                           Publisher = book.Publisher,
+                           Year = book.Year
                        };
-
-            if (list == null)
+                    }
+                
+                    catch(FormatException){   
+                        return InternalServerError();
+                    }
+            }
+           if (list == null)
                 return NotFound();
             else if (list.ToList().Count > 0)
                 return Ok(list);
             else
                 return NotFound();
+            
         }
 
     }
