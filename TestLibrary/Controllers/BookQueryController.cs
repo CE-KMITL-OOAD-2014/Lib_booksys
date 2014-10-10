@@ -8,6 +8,7 @@ using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
+using TestLibrary.Utilities;
 namespace TestLibrary.Controllers
 {
     public class BookQueryController : ApiController
@@ -79,8 +80,8 @@ namespace TestLibrary.Controllers
             if (target["Year"].ToString() == "")
             {
                 list = from book in LibRepo.BookRepo.List()
-                           where book.Author.Contains(bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
-                                 book.Publisher.Contains(bookToFind.Publisher)
+                           where StringUtil.IsContains(book.Author,bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
+                                 StringUtil.IsContains(book.Publisher, bookToFind.Publisher)
                            select new Book()
                            {
                                BookID = book.BookID,
@@ -97,8 +98,8 @@ namespace TestLibrary.Controllers
                 {
                 bookToFind.Year = int.Parse(target["Year"].ToString());
                 list = from book in LibRepo.BookRepo.List()
-                       where book.Author.Contains(bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
-                                 book.Publisher.Contains(bookToFind.Publisher) && book.Year == bookToFind.Year
+                       where StringUtil.IsContains(book.Author, bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
+                                 StringUtil.IsContains(book.Publisher, bookToFind.Publisher) && book.Year == bookToFind.Year
                        select new Book()
                        {
                            BookID = book.BookID,
@@ -114,11 +115,12 @@ namespace TestLibrary.Controllers
                         return InternalServerError();
                     }
             }
-           /*  if (list.ToList().Count > 0)
+            if (list == null)
+                return NotFound();
+           else if (list.ToList().Count > 0)
                 return Ok(list);
             else
-                return NotFound();*/
-            return Ok(list);
+                return NotFound();
         }
 
     }

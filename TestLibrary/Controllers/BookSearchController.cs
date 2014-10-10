@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using TestLibrary.ViewModels;
+using TestLibrary.Utilities;
 namespace TestLibrary.Controllers
 {
     public class BookSearchController : Controller
@@ -36,12 +37,12 @@ namespace TestLibrary.Controllers
             }
             else if (searchType == "Author")
             {
-                bookList = libRepo.BookRepo.ListWhere(target => target.Author.Contains(keyword)).OrderBy(booksort => booksort.BookName).ToList();
+                bookList = libRepo.BookRepo.ListWhere(target => StringUtil.IsContains(target.Author,keyword)).OrderBy(booksort => booksort.BookName).ToList();
                 
             }
             else if (searchType == "Publisher")
             {
-                bookList = libRepo.BookRepo.ListWhere(target => target.Publisher.Contains(keyword)).OrderBy(booksort => booksort.BookName).ToList();
+                bookList = libRepo.BookRepo.ListWhere(target => StringUtil.IsContains(target.Publisher, keyword)).OrderBy(booksort => booksort.BookName).ToList();
             }
 
             else if (searchType == "Year")
@@ -102,14 +103,14 @@ namespace TestLibrary.Controllers
                 if (bookToSearch.Year != null)
                 {
                     bookList = libRepo.BookRepo.ListWhere(target => (target.BookName.Contains(bookToSearch.BookName)) &&
-                    (target.Author.Contains(bookToSearch.Author)) && (target.Publisher.Contains(bookToSearch.Publisher)) &&
+                    (StringUtil.IsContains(target.Author, bookToSearch.Author)) && (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher)) &&
                      (target.Year == bookToSearch.Year)).ToList();
                 }
 
                 else
                 {
                     bookList = libRepo.BookRepo.ListWhere(target => (target.BookName.Contains(bookToSearch.BookName)) &&
-                    (target.Author.Contains(bookToSearch.Author)) && (target.Publisher.Contains(bookToSearch.Publisher))).ToList();
+                    (StringUtil.IsContains(target.Author, bookToSearch.Author)) && (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher))).ToList();
                 }
                 TempData["AdvanceSearch"] = "Advance";
                 TempData["pageSize"] = pageSize;
