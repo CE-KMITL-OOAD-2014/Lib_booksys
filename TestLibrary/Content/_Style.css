@@ -225,6 +225,7 @@ table.top10 th.first{
     background-color:gold;
 }
 table.top10 td{
+    word-break:break-all;
     border:1px solid black;
     padding:5px;
 }

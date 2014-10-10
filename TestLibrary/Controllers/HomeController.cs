@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
+using TestLibrary.ViewModels;
 namespace TestLibrary.Controllers
 {
     public class HomeController : Controller
@@ -37,20 +38,27 @@ namespace TestLibrary.Controllers
             return View();
         }
 
-        public ActionResult TopBorrower()
+        public ActionResult TopTen()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
-            List<Member> topTen = libRepo.MemberRepo.List().OrderByDescending(member => member.BorrowEntries.Count).ToList();
-            if (topTen.Count > 10)
-                topTen = topTen.GetRange(0, 10);
-            else if (topTen.Count > 0)
-                topTen = topTen.GetRange(0, topTen.Count);
-            else{
-                TempData["Notification"] = "No top borrower to list now.";
-                return View();
-            }
-            return View(topTen);
+            TopTenViewer viewer = new TopTenViewer();
+            List<Member> topMember = libRepo.MemberRepo.List().OrderByDescending(member => member.BorrowEntries.Count).ToList();
+            List<Book> topBorrowBook = libRepo.BookRepo.List().OrderByDescending(book => book.BorrowEntries.Count).ToList();
+
+            if (topMember.Count > 10)
+                topMember = topMember.GetRange(0, 10);
+            else
+                topMember = topMember.GetRange(0, topMember.Count);
+
+            if (topBorrowBook.Count > 10)
+                topBorrowBook = topBorrowBook.GetRange(0, 10);
+            else
+                topBorrowBook = topBorrowBook.GetRange(0, topBorrowBook.Count);
+
+            viewer.SetTopBook(topBorrowBook);
+            viewer.SetTopMember(topMember);
+            return View(viewer);
         }
 
         public ActionResult LibraryApi()
