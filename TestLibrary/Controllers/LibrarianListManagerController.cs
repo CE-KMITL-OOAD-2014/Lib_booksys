@@ -58,8 +58,13 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((libRepo.MemberRepo.ListWhere(target => target.UserName == newLibrarian.UserName || target.Email == newLibrarian.Email).SingleOrDefault() == null) &&
-                (libRepo.LibrarianRepo.ListWhere(target => target.UserName == newLibrarian.UserName || target.Email == newLibrarian.Email).SingleOrDefault() == null))
+                if (newLibrarian.UserName.Contains(" "))
+                {
+                    TempData["Notification"] = "Username can't have space character.";
+                    return View(newLibrarian);
+                }
+                else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == newLibrarian.UserName.ToLower() || target.Email.ToLower() == newLibrarian.Email.ToLower()).SingleOrDefault() == null) &&
+                (libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == newLibrarian.UserName.ToLower() || target.Email.ToLower() == newLibrarian.Email.ToLower()).SingleOrDefault() == null))
                 {
                     newLibrarian.Password = Crypto.HashPassword(newLibrarian.Password);
                     libRepo.LibrarianRepo.Add(newLibrarian);

@@ -65,12 +65,16 @@ namespace TestLibrary.Controllers
             return NotFound();
         }
 
+        
+        //Edit null reference on comparison and check of booksearch and others.
+        //Also trim input USERNAME (USERNAME MUST NO SPACE)
         public IHttpActionResult PostBook([FromBody]JObject target)
         {
             Book bookToFind = new Book();
             bookToFind.BookName = target["BookName"].ToString();
             bookToFind.Author = target["Author"].ToString();
             bookToFind.Publisher = target["Publisher"].ToString();
+
             IEnumerable<Book> list;
             if (target["Year"].ToString() == "")
             {
@@ -110,13 +114,11 @@ namespace TestLibrary.Controllers
                         return InternalServerError();
                     }
             }
-           if (list == null)
-                return NotFound();
-            else if (list.ToList().Count > 0)
+           /*  if (list.ToList().Count > 0)
                 return Ok(list);
             else
-                return NotFound();
-            
+                return NotFound();*/
+            return Ok(list);
         }
 
     }

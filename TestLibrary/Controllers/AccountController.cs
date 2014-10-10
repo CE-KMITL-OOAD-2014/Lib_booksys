@@ -92,8 +92,8 @@ namespace TestLibrary.Controllers
             if (ModelState.IsValid)
             {
                 string userName = HttpContext.User.Identity.Name.ToString().Substring(2);
-                if ((libRepo.MemberRepo.ListWhere(targetusr => targetusr.Email == editor.Email && targetusr.UserName != userName).SingleOrDefault() == null) &&
-                   (libRepo.LibrarianRepo.ListWhere(targetusr => targetusr.Email == editor.Email && targetusr.UserName != userName).SingleOrDefault() == null))
+                if ((libRepo.MemberRepo.ListWhere(targetusr => targetusr.Email.ToLower() == editor.Email.ToLower() && targetusr.UserName.ToLower() != userName.ToLower()).SingleOrDefault() == null) &&
+                   (libRepo.LibrarianRepo.ListWhere(targetusr => targetusr.Email.ToLower() == editor.Email.ToLower() && targetusr.UserName.ToLower() != userName.ToLower()).SingleOrDefault() == null))
                 {
                     Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == userName).SingleOrDefault();
                     if (target == null)

@@ -24,35 +24,38 @@ namespace TestLibrary.Controllers
             return View();
         }
 
+
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginForm submitData)
         {
-            if (ModelState.IsValid)
-            {
-                Person loginUser;
-                loginUser = libRepo.MemberRepo.ListWhere(target => target.UserName == submitData.UserName && Crypto.VerifyHashedPassword(target.Password, submitData.Password)).SingleOrDefault();
-                if (loginUser != null)
+                if (ModelState.IsValid)
                 {
-                    FormsAuthentication.SetAuthCookie("M_" + submitData.UserName, submitData.Remember);
-                    Session["LoginUser"] = "M_" + submitData.UserName;
-                    return RedirectToAction("Index", "Account");
-                }
-                else
-                {
-                    loginUser = libRepo.LibrarianRepo.ListWhere(target => target.UserName == submitData.UserName && Crypto.VerifyHashedPassword(target.Password, submitData.Password)).SingleOrDefault();
+                    Person loginUser;
+                    loginUser = libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == submitData.UserName.ToLower() && Crypto.VerifyHashedPassword(target.Password, submitData.Password)).SingleOrDefault();
                     if (loginUser != null)
                     {
-                        FormsAuthentication.SetAuthCookie("A_" + submitData.UserName, submitData.Remember);
-                        Session["LoginUser"] = "A_" + submitData.UserName;
+                        FormsAuthentication.SetAuthCookie("M_" + loginUser.UserName, submitData.Remember);
+                        Session["LoginUser"] = "M_" + loginUser.UserName;
                         return RedirectToAction("Index", "Account");
                     }
-                    TempData["Notification"] = "Login info is incorrect.";
-                    return View(submitData);
+                    else
+                    {
+                        loginUser = libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == submitData.UserName.ToLower() && Crypto.VerifyHashedPassword(target.Password, submitData.Password)).SingleOrDefault();
+                        if (loginUser != null)
+                        {
+                            FormsAuthentication.SetAuthCookie("A_" + loginUser.UserName, submitData.Remember);
+                            Session["LoginUser"] = "A_" + loginUser.UserName;
+                            return RedirectToAction("Index", "Account");
+                        }
+                        TempData["Notification"] = "Login info is incorrect.";
+                        return View(submitData);
+                    }
                 }
+                return View(submitData);
             }
-            return View(submitData);
-        }
+        
 
         public ActionResult Logout()
         {
@@ -77,8 +80,12 @@ namespace TestLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((libRepo.MemberRepo.ListWhere(target => target.UserName == (regist.UserName) || target.Email == regist.Email).SingleOrDefault() == null) &&
-                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName == (regist.UserName) || target.Email == regist.Email).SingleOrDefault() == null))
+                if(regist.UserName.Contains(" ")){
+                    TempData["Notification"] = "Username can't have space character.";
+                    return View(regist);
+                }
+                else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (regist.UserName.ToLower()) || target.Email.ToLower() == regist.Email.ToLower()).SingleOrDefault() == null) &&
+                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == (regist.UserName.ToLower()) || target.Email.ToLower() == regist.Email.ToLower()).SingleOrDefault() == null))
                 {
                     if (regist.Password == confirmPwd)
                     {
@@ -122,9 +129,9 @@ namespace TestLibrary.Controllers
 
             if (email != null)
             {
-                Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Email == email).SingleOrDefault();
+                Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Email.ToLower() == email.ToLower()).SingleOrDefault();
                 if(userToRecover == null)
-                    userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Email == email).SingleOrDefault();
+                    userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Email.ToLower() == email.ToLower()).SingleOrDefault();
                 if (userToRecover != null)
                 {
                     //Send email
@@ -233,18 +240,6 @@ namespace TestLibrary.Controllers
                 TempData["Notification"] = "Please fill in the blank of password and comfirm password.";
                 return View();
             }
-        }
-
-        public ActionResult test(string term)
-        {
-            string s;
-            Member m = libRepo.MemberRepo.ListWhere(target => target.UserName == term).SingleOrDefault();
-            if (m != null)
-                s = m.UserName;
-            else
-                s = "Not found";
-            return this.Json(s, JsonRequestBehavior.AllowGet);
-
         }
     }
 }

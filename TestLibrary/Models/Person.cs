@@ -9,7 +9,7 @@ namespace TestLibrary.Models
     public abstract class Person
     {
         private string _UserName;
-
+        [MinLength(6,ErrorMessage="Username length must more than 6 characters.")]
         [Required]
         public string UserName { get { return _UserName; } set { _UserName = value; } }
 
@@ -19,6 +19,8 @@ namespace TestLibrary.Models
 
 
         private string _Password;
+        
+        [MinLength(8,ErrorMessage="For security,password length must more than 8 characters.")]
         [Required]
         [DataType(DataType.Password)]
         public string Password { get { return _Password; } set { _Password = value; } }
