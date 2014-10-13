@@ -6,62 +6,8 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="~/Content/_Style.css" type="text/css" />
-    <script src="~/Script/jquery-1.11.1.js"></script>
-    <script src="~/Script/jquery-ui.js"></script>
-    <script>
-        function resizewindow() {
-            if (window.innerWidth < 785) {
-                $("ul.menulist").hide();
-                $("img.menu-btt").show();
-            }
-            else {
-                $("img.menu-btt,div.menu-slider").hide();
-                $("ul.menulist").show();
-            }
-        }
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("div#content").css("max-width", 930);
-            $("div#header,div#menubar").css("max-width", 960);
-            resizewindow();
-            $("img.back-to-top-btt,div.menu-slider").hide();
-            $(window).resize(resizewindow);
-            $("img.menu-btt").click(function () {
-                $("div.menu-slider").slideToggle("300");
-            });
-            $("img.delete-btt").mouseover(function () {
-                $(this).attr("src", "/Content/delete-black-btt.png");
-            });
-            $("img.delete-btt").mouseout(function () {
-                $(this).attr("src", "/Content/delete-gray-btt.png");
-            });
-            $("img.edit-btt").mouseover(function () {
-                $(this).attr("src", "/Content/edit-black-btt.png");
-            });
-            $("img.edit-btt").mouseout(function () {
-                $(this).attr("src", "/Content/edit-gray-btt.png");
-            });
-            $("img.view-btt").mouseover(function () {
-                $(this).attr("src", "/Content/view-black-btt.png");
-            });
-            $("img.view-btt").mouseout(function(){
-                $(this).attr("src", "/Content/view-gray-btt.png");
-            });
-
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 30)
-                    $("img.back-to-top-btt").fadeIn();
-                else
-                    $("img.back-to-top-btt").fadeOut();
-            });
-            $("img.back-to-top-btt").click(function () {
-                $("html").animate({ scrollTop: 0 }, "500", "easeOutExpo");
-            });
-        });
-       
-    </script>
+    @System.Web.Optimization.Scripts.Render("~/Bundles")
+    @System.Web.Optimization.Styles.Render("~/StyleBundles")
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 </head>
