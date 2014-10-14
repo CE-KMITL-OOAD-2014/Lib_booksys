@@ -14,11 +14,11 @@ namespace TestLibrary.Models
         public int NewsID { get { return _NewsID; } set { _NewsID = value; } }
 
         private string _Title;
-        [Required]
+        [Required(ErrorMessage="News title is required.")]
         public string Title { get { return _Title; } set { _Title = value; } }
 
         private string _Detail;
-        [Required]
+        [Required(ErrorMessage = "News detail is required.")]
         [AllowHtml]
         public string Detail { get { return _Detail; } set { _Detail = value; } }
 

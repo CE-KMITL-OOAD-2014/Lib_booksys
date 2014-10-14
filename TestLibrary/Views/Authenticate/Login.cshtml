@@ -3,14 +3,20 @@
 
 }
 @model TestLibrary.ViewModels.LoginForm
-<p class="noti-msg">@TempData["Notification"]</p>
 
     <form class="account-form" action="/Authenticate/Login" method="post">
         @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @if (TempData["Notification"] != null)
+        {
+            <p class="noti-msg">@TempData["Notification"]</p>
+        }
         <fieldset>
             <legend>Login</legend>
-            <input type="text" placeholder="Username" name="UserName" value="@Html.DisplayFor(model => model.UserName)"/>
-            <input type="password" placeholder="Password" name="Password" /><br />
+            @Html.TextBoxFor(model => model.UserName, new { @placeholder = "Username" })
+            @Html.ValidationMessageFor(model => model.UserName)
+            @Html.PasswordFor(model => model.Password, new { @placeholder = "Password" })
+            @Html.ValidationMessageFor(model => model.Password)
             <input type="Submit" value="Login" /><br />
             @Html.CheckBox("Remember")Remember me<br />
             <center><a class="btt-inline" href="/Authenticate/ForgotPassword">Forgot pwd?</a><a class="btt-inline" href="/Authenticate/Register">Register</a></center>

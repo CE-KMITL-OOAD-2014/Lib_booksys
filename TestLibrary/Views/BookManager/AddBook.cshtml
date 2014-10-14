@@ -1,18 +1,20 @@
 ﻿@{
     ViewBag.Title = "AddBook";
 }
-
+@model TestLibrary.Models.Book
 <h2>AddBook</h2>
 <form class="account-form" action="/BookManager/AddBook" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @Html.ValidationSummary(true)
     <fieldset>
         <legend>Add new book</legend>
-        <input type="text" placeholder="Book name" name="BookName"/><br />
-        <input type="text" placeholder="Author" name="Author" /><br />
-        <input type="text" placeholder="Publisher" name="Publisher" /><br />
-        <input type="text" placeholder="Year" name="Year" /><br />
-        <textarea placeholder="Detail" name="Detail"></textarea><br />
+        @Html.TextBoxFor(model => model.BookName, new { @placeholder = "Book name" })
+        @Html.ValidationMessageFor(model => model.BookName)
+        @Html.TextBoxFor(model => model.Author, new { @placeholder = "Author" })
+        @Html.TextBoxFor(model => model.Publisher, new { @placeholder = "Publisher" })
+        @Html.TextBoxFor(model => model.Year, new { @placeholder = "Year" })
+        @Html.ValidationMessageFor(model => model.Year)
+        @Html.TextAreaFor(model => model.Detail, new { @placeholder = "Detail" })
         <input type="submit" value="Add book" />
        </fieldset>
 </form>

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using TestLibrary.Models;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-namespace TestLibrary.Models
+namespace TestLibrary.ViewModels
 {
-    public abstract class Person
+    public class RegisterEditor
     {
         private string _UserName;
-        [MinLength(4,ErrorMessage="Username length must more than 4 characters.")]
+        [MinLength(4, ErrorMessage = "Username length must more than 4 characters.")]
         [Required(ErrorMessage = "Username is required.")]
         public string UserName { get { return _UserName; } set { _UserName = value; } }
 
@@ -19,21 +19,22 @@ namespace TestLibrary.Models
 
 
         private string _Password;
-        
-        [MinLength(8,ErrorMessage="For security,password length must more than 8 characters.")]
-        [Required(ErrorMessage="Password is required.")]
+
+        [MinLength(8, ErrorMessage = "For security,password length must more than 8 characters.")]
+        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
+        [Compare("ConfirmPassword", ErrorMessage = "Not match")]
         public string Password { get { return _Password; } set { _Password = value; } }
 
         private string _Email;
-        
-        [EmailAddress(ErrorMessage="The e-mail format is not correct.")]
+
+        [EmailAddress(ErrorMessage = "The e-mail format is not correct.")]
         [Required(ErrorMessage = "E-mail is required.")]
         public string Email { get { return _Email; } set { _Email = value; } }
 
-        private int _UserID;
-        [Key]
-        public int UserID { get { return _UserID; } set { _UserID = value; } }
-        public abstract string Identify();
+        private string _ConfirmPassword;
+        [Required(ErrorMessage = "Confirm pwd is required.")]
+        public string ConfirmPassword { get { return _ConfirmPassword; } set { _ConfirmPassword = value; } }
+
     }
 }

@@ -594,6 +594,16 @@ a.page-number-list:link{
 a.page-number-list:visited{
     color:blue;
 }
+
+span.field-validation-error{
+    font-size:x-large;
+    font-weight:bolder;
+    color:red
+}
+
+input.input-validation-error{
+    border:1px solid red;
+}
 @font-face{
     font-family:Single;
     src:url(/Font/_DS-Single.ttf);

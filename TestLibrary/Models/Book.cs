@@ -19,7 +19,7 @@ namespace TestLibrary.Models
         
         //Add call number
         private string _BookName;
-        [Required]
+        [Required(ErrorMessage="Book name is required.")]
         public string BookName { get { return _BookName; } set { _BookName = value; } }
 
 

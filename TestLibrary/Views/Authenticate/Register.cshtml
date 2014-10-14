@@ -1,20 +1,25 @@
 ﻿@{
     ViewBag.Title = "Register";
 }
-@model TestLibrary.Models.Member
+@model TestLibrary.ViewModels.RegisterEditor
 <h2>Register page</h2>
 <form class="account-form" action="/Authenticate/Register" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @Html.ValidationSummary(true)
     <p class="noti-msg">@TempData["Notification"]</p>
     <fieldset>
         
         <legend>Register</legend>
-        <input type="text" placeholder="Username" name="UserName" value="@Html.DisplayFor(model => model.UserName)"/><br />
-        <input type="text" placeholder="Name" name="Name" value="@Html.DisplayFor(model => model.Name)" /><br />
-        <input type="text" placeholder="E-mail" name="Email" value="@Html.DisplayTextFor(model => model.Email)" /><br />
-        <input type="password" placeholder="Password" name="Password"/><br />
-        <input type="password" placeholder="Confirm Password" name="confirmPwd" /><br />
+        @Html.TextBoxFor(model => model.UserName, new { @placeholder = "Username" })
+        @Html.ValidationMessageFor(model => model.UserName)
+        @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name" })
+        @Html.ValidationMessageFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Email, new { @placeholder = "E-mail" })
+        @Html.ValidationMessageFor(model => model.Email)
+        @Html.PasswordFor(model => model.Password, new { @placeholder = "Password" })
+        @Html.ValidationMessageFor(model => model.Password)
+        @Html.PasswordFor(model => model.ConfirmPassword, new { @placeholder = "Confirm pwd" })
+        @Html.ValidationMessageFor(model => model.ConfirmPassword)
         <input type="submit" value="Register" />
     </fieldset>
 </form>

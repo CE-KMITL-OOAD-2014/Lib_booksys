@@ -7,12 +7,19 @@ namespace TestLibrary.ViewModels
 {
     public class PasswordChanger
     {
-        [Required]
+        [Required(ErrorMessage="old password is required.")]
+        [MinLength(8, ErrorMessage = "For security,password length must more than 8 characters.")]
         public string oldPassword { get; set; }
-        [Required]
+
+        [Compare("confirmPassword",ErrorMessage="Not match")]
+        [Required(ErrorMessage = "New password is required.")]
+        [MinLength(8, ErrorMessage = "For security,password length must more than 8 characters.")]
         public string newPassword { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "confirm pwd is required.")]
+        [MinLength(8, ErrorMessage = "For security,password length must more than 8 characters.")]
         public string confirmPassword { get; set; }
+
         public bool isEqualPassword()
         {
             return newPassword == confirmPassword;

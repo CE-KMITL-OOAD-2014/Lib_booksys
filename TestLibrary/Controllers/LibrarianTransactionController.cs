@@ -9,6 +9,7 @@ using TestLibrary.ViewModels;
 using System.Data.Entity;
 namespace TestLibrary.Controllers
 {
+    //Caculate fine
     public class LibrarianTransactionController : Controller
     {
 
@@ -134,10 +135,16 @@ namespace TestLibrary.Controllers
                 {
                     returnentry.BorrowBook.BookStatus = Status.Available;
                 }
+                if(returnentry.DueDate.Date < DateTime.Now.Date){
+                    int dif = DateTime.Now.Subtract(returnentry.DueDate.Date).Days;
+                    TempData["Notification"] = "Return successfully.Fine " + (dif * 5) + " baht.";
+                    }
+                else
+                    TempData["Notification"] = "Return successfully.";
                 returnentry.ReturnDate = DateTime.Now.Date;
                 libRepo.BorrowEntryRepo.Update(returnentry);
                 libRepo.Save();
-                TempData["Notification"] = "Return successfully.";
+
                 return Check(returnentry);
             }
 

@@ -11,6 +11,7 @@ namespace TestLibrary.Controllers
 {
     public class MemberTransactionController : Controller
     {
+
         LibraryRepository libRepo = new LibraryRepository();
         [Authorize]
         public ActionResult Index()
@@ -29,7 +30,6 @@ namespace TestLibrary.Controllers
             else
                 return RedirectToAction("Index", "Account");
         }
-
 
         [Authorize]
         public ActionResult Renew(int id)

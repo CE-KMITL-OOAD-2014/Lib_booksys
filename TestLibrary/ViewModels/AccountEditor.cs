@@ -8,10 +8,10 @@ namespace TestLibrary.ViewModels
     public class AccountEditor
     {
             
-        [Required]
+        [Required(ErrorMessage="Name field is required.")]
         public string Name { get; set; }
-        
-        [EmailAddress]
+
+        [EmailAddress(ErrorMessage = "The e-mail format is not correct.")]
         [Required]
         public string Email { get; set; }
     }

@@ -76,21 +76,29 @@ namespace TestLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(Member regist, string confirmPwd)
+        public ActionResult Register(RegisterEditor submitData)
         {
             if (ModelState.IsValid)
             {
-                if(regist.UserName.Contains(" ")){
-                    TempData["Notification"] = "Username can't have space character.";
-                    return View(regist);
-                }
-                else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (regist.UserName.ToLower()) || target.Email.ToLower() == regist.Email.ToLower()).SingleOrDefault() == null) &&
-                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == (regist.UserName.ToLower()) || target.Email.ToLower() == regist.Email.ToLower()).SingleOrDefault() == null))
+                if (submitData.UserName.Contains(" "))
                 {
-                    if (regist.Password == confirmPwd)
+                    TempData["Notification"] = "Username can't have space character.";
+                    return View(submitData);
+                }
+                else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).SingleOrDefault() == null) &&
+                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).SingleOrDefault() == null))
+                {
+                    if (submitData.Password == submitData.ConfirmPassword)
                     {
-                        regist.Password = Crypto.HashPassword(regist.Password);
-                        libRepo.MemberRepo.Add(regist);
+                        submitData.Password = Crypto.HashPassword(submitData.Password);
+                        libRepo.MemberRepo.Add(
+                            new Member
+                            {
+                                UserName = submitData.UserName,
+                                Name = submitData.Name,
+                                Email = submitData.Email,
+                                Password = submitData.Password
+                            });
                         libRepo.Save();
                         TempData["Notification"] = "Register successful,please login for first use.";
                         return RedirectToAction("Login");
@@ -98,17 +106,17 @@ namespace TestLibrary.Controllers
                     else
                     {
                         TempData["Notification"] = "Password did not match.";
-                        return View(regist);
+                        return View(submitData);
                     }
                 }
                 else
                 {
                     TempData["Notification"] = "This user name or e-mail is already exists.";
-                    return View(regist);
+                    return View(submitData);
                 }
             }
             else
-                return View(regist);
+                return View(submitData);
         }
 
         public ActionResult ForgotPassword()

@@ -2,16 +2,23 @@
     ViewBag.Title = "Add Librarian";
 }
 @model TestLibrary.Models.Librarian
-           <p class="noti-msg">@TempData["Notification"]</p>
 <form class="account-form" action="/LibrarianListManager/AddLibrarian" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @Html.ValidationSummary(true)
+    @if (TempData["Notification"] != null)
+    {
+        <p class="noti-msg">@TempData["Notification"]</p>
+    }
     <fieldset>
         <legend>Add new librarian</legend>
-        <input type="text" placeholder="UserName" name="UserName" value="@Html.DisplayFor(model => model.UserName)" />
-        <input type="text" placeholder="Name" name="Name" value="@Html.DisplayFor(model => model.Name)" />
-        <input type="text" placeholder="E-mail" name="Email" value="@Html.DisplayTextFor(model => model.Email)" />
-        <input type="password" placeholder="Password" name="Password"/>
+        @Html.TextBoxFor(model => model.UserName, new { placeholder = "Username" })
+        @Html.ValidationMessageFor(model => model.UserName)
+        @Html.TextBoxFor(model => model.Name, new { placeholder = "Name" })
+        @Html.ValidationMessageFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Email, new { placeholder = "E-mail" })
+        @Html.ValidationMessageFor(model => model.Email)
+        @Html.PasswordFor(model => model.Password, new { placeholder = "Password" })
+        @Html.ValidationMessageFor(model => model.Password)
         <input type="submit" value="Add librarian"/>
     </fieldset>
 </form>

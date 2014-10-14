@@ -7,10 +7,10 @@ namespace TestLibrary.ViewModels
 {
     public class LoginForm
     {
-        [Required]
+        [Required(ErrorMessage="Username field is required")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password field is required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
