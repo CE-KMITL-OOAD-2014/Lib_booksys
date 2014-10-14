@@ -155,7 +155,7 @@ namespace TestLibrary.Controllers
                 return RedirectToAction("Index");
             }
             Member preferMember = libRepo.MemberRepo.ListWhere(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
-            if (wantedEntry.RequestUser != preferMember)
+            if (wantedEntry.RequestUser.UserID != preferMember.UserID)
             {
                 TempData["Notification"] = "Can't cancel other member's book request.";
                 return RedirectToAction("Index");

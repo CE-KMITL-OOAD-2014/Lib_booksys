@@ -5,7 +5,7 @@ using System.Web;
 using System.Data.Entity;
 namespace TestLibrary.DataAccess
 {
-    public class LocalRepository<TEntity>:IRepository<TEntity> where TEntity:class
+    public class LocalRepository<TEntity>:IGenericRepository<TEntity> where TEntity:class
     {
         private DbSet<TEntity> db;
         private LibraryContext context;
@@ -17,12 +17,12 @@ namespace TestLibrary.DataAccess
         }
         public List<TEntity> List()
         {
-            return db.ToList();
+            return db.AsNoTracking().ToList();
         }
 
         public List<TEntity> ListWhere(Func<TEntity, bool> condition)
         {
-            return db.ToList().Where(condition).ToList();
+            return db.AsNoTracking().ToList().Where(condition).ToList();
         }
 
         public TEntity Find(int id)
@@ -43,13 +43,15 @@ namespace TestLibrary.DataAccess
 
         public void Remove(TEntity item)
         {
+
             db.Attach(item);
             db.Remove(item);
         }
 
         public void Remove(List<TEntity> removeList)
         {
-            db.RemoveRange(removeList);
+            foreach (var item in removeList)
+                Remove(item);
         }
 
 

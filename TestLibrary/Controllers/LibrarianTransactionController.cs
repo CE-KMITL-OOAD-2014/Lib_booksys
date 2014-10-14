@@ -9,7 +9,6 @@ using TestLibrary.ViewModels;
 using System.Data.Entity;
 namespace TestLibrary.Controllers
 {
-    //Caculate fine
     public class LibrarianTransactionController : Controller
     {
 
@@ -71,7 +70,7 @@ namespace TestLibrary.Controllers
 
                     else if (booktoborrow.BookStatus == Status.Reserved)
                     {
-                        RequestEntry reqentry = libRepo.RequestEntryRepo.List().LastOrDefault(target => target.RequestBook == booktoborrow);
+                        RequestEntry reqentry = booktoborrow.RequestRecord;
                         if (reqentry.ExpireDate.Value.Date < DateTime.Now.Date)
                         {
                             libRepo.RequestEntryRepo.Remove(reqentry);

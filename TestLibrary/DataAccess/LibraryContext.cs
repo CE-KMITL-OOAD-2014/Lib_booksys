@@ -8,12 +8,12 @@ namespace TestLibrary.DataAccess
 {
         public class LibraryContext : DbContext
         {
-            public DbSet<Librarian> Librarians { get; set; }
-            public DbSet<Member> Members { get; set; }
-            public DbSet<Book> Books { get; set; }
-            public DbSet<News> NewsList { get; set; }
-            public DbSet<BorrowEntry> BorrowList { get; set; }
-            public DbSet<RequestEntry> RequestList { get; set; }
+            public virtual DbSet<Librarian> Librarians { get; set; }
+            public virtual DbSet<Member> Members { get; set; }
+            public virtual DbSet<Book> Books { get; set; }
+            public virtual DbSet<News> NewsList { get; set;}
+            public virtual DbSet<BorrowEntry> BorrowList { get; set; }
+            public virtual DbSet<RequestEntry> RequestList { get; set; }
         }
     
 }

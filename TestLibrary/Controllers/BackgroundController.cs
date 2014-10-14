@@ -21,6 +21,7 @@ namespace TestLibrary.Controllers
                 foreach (RequestEntry entry in entryToRemove)
                 {
                     entry.RequestBook.BookStatus = Status.Available;
+                    libRepo.BookRepo.Update(entry.RequestBook);
                 }
                 libRepo.RequestEntryRepo.Remove(entryToRemove);
                 libRepo.Save();

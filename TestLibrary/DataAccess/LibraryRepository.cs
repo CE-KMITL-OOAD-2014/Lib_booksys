@@ -5,7 +5,7 @@ using System.Web;
 using TestLibrary.Models;
 namespace TestLibrary.DataAccess
 {
-    public class LibraryRepository
+    public class LibraryRepository:IRepository
     {
         private LibraryContext context = new LibraryContext();
         private LocalRepository<Book> bookRepository;

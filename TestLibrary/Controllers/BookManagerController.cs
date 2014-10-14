@@ -41,7 +41,6 @@ namespace TestLibrary.Controllers
             }
         }
 
-
         //Will edit later
         [Authorize]
         public ActionResult ViewBook([DefaultValue(0)]int id)
@@ -123,6 +122,15 @@ namespace TestLibrary.Controllers
                         TempData["Notification"] = "Can't edit book status due to this book is " + bookToFind.BookStatus.ToString();
                         return RedirectToAction("Index");
                     }
+                    bookToFind.BookName = bookToEdit.BookName;
+                    bookToFind.Author = bookToEdit.Author;
+                    bookToFind.Publisher = bookToEdit.Publisher;
+                    bookToFind.Year = bookToEdit.Year;
+                    bookToFind.Detail = bookToEdit.Detail;
+                    libRepo.BookRepo.Update(bookToFind);
+                    TempData["Notification"] = "Edit book successfully.";
+                    libRepo.Save();
+                    return RedirectToAction("Index");
                 }
 
                 //Another check???? Avail -> Borrowed? Avail -> Req.
@@ -156,12 +164,12 @@ namespace TestLibrary.Controllers
             if (answer == "Yes")
             {
                 TempData["Notification"] = "Delete " + bookToDelete.BookName + " successfully.";
-                List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BorrowBook.BookID == bookToDelete.BookID).ToList();
-                RequestEntry entryToRemove = libRepo.RequestEntryRepo.Find(bookToDelete.BookID);
-                if (entryToRemove != null)
-                    libRepo.RequestEntryRepo.Remove(entryToRemove);
+                List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToDelete.BookID).ToList();
+                Book bookToDel = libRepo.BookRepo.Find(bookToDelete.BookID);
+                if (bookToDel.RequestRecord != null)
+                    libRepo.RequestEntryRepo.Remove(bookToDel.RequestRecord);
                 libRepo.BorrowEntryRepo.Remove(removeBorrowEntry);
-                libRepo.BookRepo.Remove(bookToDelete);
+                libRepo.BookRepo.Remove(bookToDel);
                 libRepo.Save();
                 return RedirectToAction("Index");
             }

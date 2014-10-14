@@ -20,11 +20,13 @@
             @Model.BookStatus.ToString()
             <input type="hidden" name="BookStatus" value="@(Model.BookStatus.ToString()=="Borrowed"?1:2)"/>
         }
-        <input type="text" placeholder="Book name" name="BookName" value="@Model.BookName" /><br />
-        <input type="text" placeholder="Author" name="Author" value="@Model.Author" /><br />
-        <input type="text" placeholder="Publisher" name="Publisher" value="@Model.Publisher" /><br />
-        <input type="text" placeholder="Year" name="Year" value="@Model.Year" /><br />
-        <textarea placeholder="Detail" name="Detail">@Model.Detail</textarea><br />
+        @Html.TextBoxFor(model => model.BookName, new { @placeholder = "Book name" })
+        @Html.ValidationMessageFor(model => model.BookName)
+        @Html.TextBoxFor(model => model.Author, new { @placeholder = "Author" })
+        @Html.TextBoxFor(model => model.Publisher, new { @placeholder = "Publisher" })
+        @Html.TextBoxFor(model => model.Year, new { @placeholder = "Year" })
+        @Html.ValidationMessageFor(model => model.Year)
+        @Html.TextAreaFor(model => model.Detail, new { @placeholder = "Detail" })
         <input type="submit" value="Edit book" />
     </fieldset>
 </form>
