@@ -1,13 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Detail";
+    ViewBag.Title = "News detail";
 }
 @model TestLibrary.Models.News
 <h1>@Html.DisplayFor(model => model.Title)</h1>
 @if (Session["LoginUser"] != null)
 {
     if(Session["LoginUser"].ToString().Substring(0, 2) == "A_"){
-    <a class="news-link" href="/NewsManager/EditNews/@Model.NewsID">แก้ไข</a><text>|</text>
-    <a class="news-link" href="/NewsManager/DeleteNews/@Model.NewsID">ลบ</a>
+    <a class="norm" href="/NewsManager/EditNews/@Model.NewsID">แก้ไข</a><text>|</text>
+    <a class="norm" href="/NewsManager/DeleteNews/@Model.NewsID">ลบ</a>
 }
 }
 

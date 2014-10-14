@@ -180,6 +180,7 @@ table.news-list td.right-col{
 }
 
 a.news-link:link{
+    display:block;
     text-decoration:none;
     color:black;
 }

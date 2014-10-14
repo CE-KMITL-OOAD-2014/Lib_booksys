@@ -112,18 +112,15 @@ namespace TestLibrary.Controllers
         {
             if (answer == "Yes" && ModelState.IsValid)
             {
-                try
+                if (libRepo.LibrarianRepo.List().Count == 1)
                 {
+                    TempData["Notification"] = "Can't delete the only one librarian remain out of system.";
+                    return RedirectToAction("Index");
+                }
                     libRepo.LibrarianRepo.Remove(target);
                     libRepo.Save();
                     TempData["Notification"] = "Delete librarian " + target.UserName + " successfully.";
                     return RedirectToAction("Index");
-                }
-                catch (DbUpdateException)
-                {
-                    TempData["Notification"] = "DbUpdateException!!!";
-                    return RedirectToAction("Index");
-                }
             }
             return RedirectToAction("Index");
         }

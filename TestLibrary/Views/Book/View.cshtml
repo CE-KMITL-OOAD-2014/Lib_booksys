@@ -9,8 +9,8 @@
     {
         if (Session["LoginUser"].ToString().Substring(0, 2) == "A_")
         {
-            <a class="news-link" href="/BookManager/EditBook/@Model.BookID">แก้ไข</a><text>|</text>
-            <a class="news-link" href="/BookManager/DeleteBook/@Model.BookID">ลบ</a>           
+            <a class="norm" href="/BookManager/EditBook/@Model.BookID">แก้ไข</a><text>|</text>
+            <a class="norm" href="/BookManager/DeleteBook/@Model.BookID">ลบ</a>           
         }
     }
 <p class="book-detail"><b>BookID</b></p>

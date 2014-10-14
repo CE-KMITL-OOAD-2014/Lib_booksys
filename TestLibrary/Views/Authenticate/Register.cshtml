@@ -8,7 +8,6 @@
     @Html.ValidationSummary(true)
     <p class="noti-msg">@TempData["Notification"]</p>
     <fieldset>
-        
         <legend>Register</legend>
         @Html.TextBoxFor(model => model.UserName, new { @placeholder = "Username" })
         @Html.ValidationMessageFor(model => model.UserName)
