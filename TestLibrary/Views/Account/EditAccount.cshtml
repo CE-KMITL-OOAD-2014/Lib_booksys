@@ -3,11 +3,13 @@
 }
 @model TestLibrary.ViewModels.AccountEditor
 <h2>Edit Account for @Session["LoginUser"].ToString().Substring(2)</h2>
-<p class="noti-msg">@TempData["Notification"]</p>
 <form class="news-form" action="/Account/EditAccount" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
     <fieldset>
+        @if (TempData["Notification"] != null)
+        {
+            @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
+        }
         <label>UserName:</label>
         <input type="text" disabled="disabled" value="@Session["LoginUser"].ToString().Substring(2)"/><br />
         <label>Name:</label>

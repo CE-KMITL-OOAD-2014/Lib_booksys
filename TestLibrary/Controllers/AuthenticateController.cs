@@ -23,8 +23,6 @@ namespace TestLibrary.Controllers
             }
             return View();
         }
-
-
         
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -181,7 +179,7 @@ namespace TestLibrary.Controllers
                 {
                     TempData["UserName"] = userToRecover.UserName;
                     TempData["Token"] = token;
-                    return View(userToRecover);
+                    return View();
                 }
                 else
                 {

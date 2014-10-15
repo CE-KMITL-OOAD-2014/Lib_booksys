@@ -2,11 +2,14 @@
     ViewBag.Title = "Register";
 }
 @model TestLibrary.ViewModels.RegisterEditor
-<h2>Register page</h2>
+<h2>Register</h2>
 <form class="account-form" action="/Authenticate/Register" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    <p class="noti-msg">@TempData["Notification"]</p>
+    @if (TempData["Notification"] != null)
+    {
+        @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
+
+    }
     <fieldset>
         <legend>Register</legend>
         @Html.TextBoxFor(model => model.UserName, new { @placeholder = "Username" })

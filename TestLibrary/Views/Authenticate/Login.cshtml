@@ -6,10 +6,10 @@
 
     <form class="account-form" action="/Authenticate/Login" method="post">
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
         @if (TempData["Notification"] != null)
         {
-            <p class="noti-msg">@TempData["Notification"]</p>
+            @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
+
         }
         <fieldset>
             <legend>Login</legend>
