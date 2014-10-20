@@ -35,12 +35,9 @@
             {
                 <a href="/Authenticate/Register">Register</a><text>|</text><a href="/Authenticate/Login">Login</a>
             }
-
-
         </div>
 </div>
         <div id="menubar">
-            <img class="menu-btt" src="/Content/menu.png"/>
             <div id="quicksearch">
                 <form class="search-bar" action="/BookSearch/QuickSearch" method="post">
                     @Html.AntiForgeryToken()
@@ -66,7 +63,7 @@
     </div>
 
     <div id="content">
-       
+       <noscript><p class="noti-msg">Please enable javascript for better experience.</p></noscript>
         @RenderBody()
     </div>
     <a href="#top"><img class="back-to-top-btt" src="~/Content/upArrow.png" /></a>

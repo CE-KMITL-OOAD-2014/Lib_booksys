@@ -9,7 +9,6 @@
         @if (TempData["Notification"] != null)
         {
             @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
-
         }
         <fieldset>
             <legend>Login</legend>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 namespace TestLibrary.DataAccess
 {
-    interface IGenericRepository<typeName> where typeName:class
+    public interface IGenericRepository<typeName> where typeName:class
     {
         List<typeName> List();
         List<typeName> ListWhere(Func<typeName, bool> condition);

@@ -12,8 +12,10 @@ $(document).ready(function () {
     var str = '<ul><li><a href="/">Home</a></li><li><a href="/BookSearch/">Search</a></li><li><a href="/Home/TopTen">Top 10</a></li> <li><a href="/Home/About">About Us</a></li><li><a href="/Home/Contact">Contact</a></li><li><a href="/Home/ChangeLog">Change log</a></li><li class="last-menu"><a href="/Home/LibraryApi">API</a></li></ul>';
     $("div#content").css("max-width", 930);
     $("div#header,div#menubar").css("max-width", 960);
+    $("div#menubar").prepend('<img class="menu-btt"/>');
     resizewindow();
     $("img.back-to-top-btt,div.menu-slider").hide();
+    $("img.menu-btt").attr("src", "/Content/menu.png");
     $("div.menu-slider").append(str);
     $(window).resize(resizewindow);
     $("img.menu-btt").click(function () {

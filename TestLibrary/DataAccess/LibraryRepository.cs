@@ -8,15 +8,15 @@ namespace TestLibrary.DataAccess
     public class LibraryRepository:IRepository
     {
         private LibraryContext context = new LibraryContext();
-        private LocalRepository<Book> bookRepository;
-        private LocalRepository<News> newsRepository;
-        private LocalRepository<BorrowEntry> borrowEntryRepository;
-        private LocalRepository<RequestEntry> requestEntryRepository;
-        private LocalRepository<Member> memberRepository;
-        private LocalRepository<Librarian> librarianRepository;
+        private IGenericRepository<Book> bookRepository;
+        private IGenericRepository<News> newsRepository;
+        private IGenericRepository<BorrowEntry> borrowEntryRepository;
+        private IGenericRepository<RequestEntry> requestEntryRepository;
+        private IGenericRepository<Member> memberRepository;
+        private IGenericRepository<Librarian> librarianRepository;
 
 
-        public LocalRepository<Book> BookRepo
+        public IGenericRepository<Book> BookRepo
         {
             get {
                 if (bookRepository == null)
@@ -25,7 +25,7 @@ namespace TestLibrary.DataAccess
                     return bookRepository;
             }
         }
-        public LocalRepository<News> NewsRepo
+        public IGenericRepository<News> NewsRepo
         {
             get
             {
@@ -35,7 +35,7 @@ namespace TestLibrary.DataAccess
                     return newsRepository;
             }
         }
-        public LocalRepository<BorrowEntry> BorrowEntryRepo
+        public IGenericRepository<BorrowEntry> BorrowEntryRepo
         {
             get
             {
@@ -45,7 +45,7 @@ namespace TestLibrary.DataAccess
                     return borrowEntryRepository;
             }
         }
-        public LocalRepository<RequestEntry> RequestEntryRepo
+        public IGenericRepository<RequestEntry> RequestEntryRepo
         {
             get
             {
@@ -55,7 +55,7 @@ namespace TestLibrary.DataAccess
                     return requestEntryRepository;
             }
         }
-        public LocalRepository<Member> MemberRepo
+        public IGenericRepository<Member> MemberRepo
         {
             get
             {
@@ -65,7 +65,7 @@ namespace TestLibrary.DataAccess
                     return memberRepository;
             }
         }
-        public LocalRepository<Librarian> LibrarianRepo
+        public IGenericRepository<Librarian> LibrarianRepo
         {
             get
             {
