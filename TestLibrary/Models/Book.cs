@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using TestLibrary.DataAccess;
 namespace TestLibrary.Models
 {
     public enum Status
@@ -44,10 +45,16 @@ namespace TestLibrary.Models
         [Column("Status")]
         public Status BookStatus { get { return _BookStatus; } set { _BookStatus = value; } }
 
-        private ICollection<BorrowEntry> _BorrowEntries;
-        public virtual ICollection<BorrowEntry> BorrowEntries { get { return _BorrowEntries; } set { _BorrowEntries = value; } }
+        public List<BorrowEntry> GetRelatedBorrowEntry()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.BorrowEntryRepo.ListWhere(entry => entry.BookID == BookID);
+        }
 
-        private RequestEntry _RequestRecord;
-        public virtual RequestEntry RequestRecord { get { return _RequestRecord; } set { _RequestRecord = value; } }
+        public RequestEntry GetRelatedRequestEntry()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.RequestEntryRepo.ListWhere(entry => entry.BookID == BookID).SingleOrDefault();
+        }
     }
 }

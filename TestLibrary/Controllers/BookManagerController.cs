@@ -108,7 +108,7 @@ namespace TestLibrary.Controllers
                     if (entry != null)
                     {
                         entry.ReturnDate = DateTime.Now.Date;
-                        RequestEntry removeEntry = entry.BorrowBook.RequestRecord;
+                        RequestEntry removeEntry = entry.GetBorrowBook().GetRelatedRequestEntry();
                         if (removeEntry != null)
                             libRepo.RequestEntryRepo.Remove(removeEntry);
                     }
@@ -166,8 +166,9 @@ namespace TestLibrary.Controllers
                 TempData["Notification"] = "Delete " + bookToDelete.BookName + " successfully.";
                 List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToDelete.BookID).ToList();
                 Book bookToDel = libRepo.BookRepo.Find(bookToDelete.BookID);
-                if (bookToDel.RequestRecord != null)
-                    libRepo.RequestEntryRepo.Remove(bookToDel.RequestRecord);
+                RequestEntry entryToCheck = bookToDel.GetRelatedRequestEntry();
+                if (entryToCheck != null)
+                    libRepo.RequestEntryRepo.Remove(entryToCheck);
                 libRepo.BorrowEntryRepo.Remove(removeBorrowEntry);
                 libRepo.BookRepo.Remove(bookToDel);
                 libRepo.Save();

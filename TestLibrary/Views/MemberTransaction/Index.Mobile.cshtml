@@ -16,7 +16,7 @@
     @foreach (var record in Model.GetBorrowEntryViews())
     {
         <tr>
-            <td class="res-col">@record.BorrowBook.BookName</td>
+            <td class="res-col">@record.GetBorrowBook().BookName</td>
             <td>@record.DueDate.ToShortDateString()</td>
             <td>@record.RenewCount</td>
             @if (@record.RenewCount == 3) { 
@@ -49,7 +49,7 @@ else{
         {
             <tr>
             <td class="res-col">
-                @record.RequestBook.BookName
+                @record.GetRequestBook().BookName
             </td>
                 @if (record.ExpireDate != null) { 
                 <td>

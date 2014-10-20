@@ -27,10 +27,10 @@
             @(++count)
             </td>
             <td>
-                @record.BorrowBook.BookName
+                @record.GetBorrowBook().BookName
             </td>
             <td>
-                @record.Borrower.UserName
+                @record.GetBorrower().UserName
             </td>
             <td>
                 @record.DueDate.ToShortDateString()

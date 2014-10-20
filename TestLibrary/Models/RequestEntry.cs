@@ -4,18 +4,17 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TestLibrary.DataAccess;
 namespace TestLibrary.Models
 {
     public class RequestEntry
     {
 
         private int _BookID;
-        [Key]
-        [ForeignKey("RequestBook")]
+        [Key,DatabaseGenerated(databaseGeneratedOption:DatabaseGeneratedOption.None)]
         public int BookID { get { return _BookID; } set { _BookID = value; } }
 
         private int _UserID;
-        [ForeignKey("RequestUser")]
         public int UserID { get { return _UserID; } set { _UserID = value; } }
 
         private DateTime _RequestDate;
@@ -26,10 +25,16 @@ namespace TestLibrary.Models
         [Column(TypeName="date")]
         public DateTime? ExpireDate { get { return _ExpireDate; } set { _ExpireDate = value; } }
 
-        private Book _RequestBook;
-        public virtual Book RequestBook { get { return _RequestBook; } set { _RequestBook = value; } }
+        public Book GetRequestBook()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.BookRepo.ListWhere(book => book.BookID == BookID).SingleOrDefault();
+        }
 
-        private Member _RequestUser;
-        public virtual Member RequestUser { get { return _RequestUser; } set { _RequestUser = value; } }
+        public Member GetRequestUser()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.MemberRepo.ListWhere(member => member.UserID == UserID).SingleOrDefault();
+        }
     }
 }

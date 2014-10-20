@@ -7,7 +7,6 @@ using System.Web.Security;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
 using TestLibrary.ViewModels;
-using System.Numerics;
 namespace TestLibrary.Controllers
 {
     public class HomeController : Controller
@@ -52,8 +51,8 @@ namespace TestLibrary.Controllers
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
             TopTenViewer viewer = new TopTenViewer();
-            List<Member> topMember = libRepo.MemberRepo.List().OrderByDescending(member => member.BorrowEntries.Count).ToList();
-            List<Book> topBorrowBook = libRepo.BookRepo.List().OrderByDescending(book => book.BorrowEntries.Count).ToList();
+            List<Member> topMember = libRepo.MemberRepo.List().OrderByDescending(member => member.GetRelatedBorrowEntry().Count).ToList();
+            List<Book> topBorrowBook = libRepo.BookRepo.List().OrderByDescending(book => book.GetRelatedBorrowEntry().Count).ToList();
             if (topMember.Count > 10)
                 topMember = topMember.GetRange(0, 10);
             else

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using TestLibrary.DataAccess;
 namespace TestLibrary.Models
 {
     public class Member:Person
@@ -12,9 +12,16 @@ namespace TestLibrary.Models
             return ("Member "+this.UserName);
         }
 
-        private ICollection<BorrowEntry> _BorrowEntries;
-        private ICollection<RequestEntry> _RequestEntries;
-        public virtual ICollection<BorrowEntry> BorrowEntries { get{return _BorrowEntries;} set{ _BorrowEntries = value; } }
-        public virtual ICollection<RequestEntry> RequestEntries { get { return _RequestEntries; } set { _RequestEntries = value; } }
+        public List<BorrowEntry> GetRelatedBorrowEntry()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == UserID);
+        }
+
+        public List<RequestEntry> GetRelatedRequestEntry()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.RequestEntryRepo.ListWhere(entry => entry.UserID == UserID);
+        }
     }
 }

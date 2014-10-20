@@ -20,10 +20,10 @@ namespace TestLibrary.Controllers
             if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) == "M_")
             {
                 MemberTransactionViewer viewer = new MemberTransactionViewer();
-                viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(target => target.Borrower.UserName ==
+                viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(target => target.GetBorrower().UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2) &&
                                            target.ReturnDate == null));
-                viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.RequestUser.UserName ==
+                viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.GetRequestUser().UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2))));
                 return View(viewer);
             }
@@ -46,7 +46,7 @@ namespace TestLibrary.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (renewentry.Borrower.UserName != Session["LoginUser"].ToString().Substring(2))
+            if (renewentry.GetBorrower().UserName != Session["LoginUser"].ToString().Substring(2))
             {
                 TempData["Notification"] = "Invalid renew operation.";
                 return RedirectToAction("Index");
@@ -54,7 +54,7 @@ namespace TestLibrary.Controllers
 
             if (renewentry.RenewCount == 3)
             {
-                TempData["Notification"] = "Your renew of book ID." + renewentry.BorrowBook.BookID + " is exceed maximum!";
+                TempData["Notification"] = "Your renew of book ID." + renewentry.GetBorrowBook().BookID + " is exceed maximum!";
                 return RedirectToAction("Index");
             }
             return View(renewentry);
@@ -125,7 +125,7 @@ namespace TestLibrary.Controllers
                                                 HttpContext.User.Identity.Name.ToString().Substring(2)).Single();
 
                 if (libRepo.BorrowEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID &&
-                                                        target.Borrower == request_member && target.ReturnDate == null) != null)
+                                                        target.GetBorrower() == request_member && target.ReturnDate == null) != null)
                 {
                     TempData["Notification"] = "Can't request your current borrowed book.";
                     return View();
@@ -155,7 +155,7 @@ namespace TestLibrary.Controllers
                 return RedirectToAction("Index");
             }
             Member preferMember = libRepo.MemberRepo.ListWhere(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
-            if (wantedEntry.RequestUser.UserID != preferMember.UserID)
+            if (wantedEntry.GetRequestUser().UserID != preferMember.UserID)
             {
                 TempData["Notification"] = "Can't cancel other member's book request.";
                 return RedirectToAction("Index");

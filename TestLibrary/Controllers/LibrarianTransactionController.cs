@@ -70,7 +70,7 @@ namespace TestLibrary.Controllers
 
                     else if (booktoborrow.BookStatus == Status.Reserved)
                     {
-                        RequestEntry reqentry = booktoborrow.RequestRecord;
+                        RequestEntry reqentry = booktoborrow.GetRelatedRequestEntry();
                         if (reqentry.ExpireDate.Value.Date < DateTime.Now.Date)
                         {
                             libRepo.RequestEntryRepo.Remove(reqentry);
@@ -125,14 +125,20 @@ namespace TestLibrary.Controllers
             }
             else
             {
-                if (returnentry.BorrowBook.RequestRecord != null)
+                RequestEntry reqToCheck = returnentry.GetBorrowBook().GetRelatedRequestEntry();
+                if (reqToCheck != null)
                 {
-                    returnentry.BorrowBook.BookStatus = Status.Reserved;
-                    returnentry.BorrowBook.RequestRecord.ExpireDate = DateTime.Now.Date.AddDays(3);
+                    Book bookToUpdate = returnentry.GetBorrowBook();
+                    bookToUpdate.BookStatus = Status.Reserved;
+                    reqToCheck.ExpireDate = DateTime.Now.Date.AddDays(3);
+                    libRepo.BookRepo.Update(bookToUpdate);
+                    libRepo.RequestEntryRepo.Update(reqToCheck);
                 }
                 else
                 {
-                    returnentry.BorrowBook.BookStatus = Status.Available;
+                    Book bookToUpdate = returnentry.GetBorrowBook();
+                    bookToUpdate.BookStatus = Status.Available;
+                    libRepo.BookRepo.Update(bookToUpdate);
                 }
                 if(returnentry.DueDate.Date < DateTime.Now.Date){
                     int dif = DateTime.Now.Subtract(returnentry.DueDate.Date).Days;

@@ -40,7 +40,7 @@ else
                   @item.UserName
                  </td>
                  <td>
-                  @item.BorrowEntries.Count
+                  @item.GetRelatedBorrowEntry().Count
                   </td>
                   </tr>
             }
@@ -89,7 +89,7 @@ else
                     <th>@(++Count)</th>
                 }
                 <td>@item.BookName</td>
-                <td>@item.BorrowEntries.Count</td>
+                <td>@item.GetRelatedBorrowEntry().Count</td>
             </tr>
         }
     </table>

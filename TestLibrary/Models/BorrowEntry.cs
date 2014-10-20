@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using TestLibrary.DataAccess;
 namespace TestLibrary.Models
 {
     public class BorrowEntry
@@ -14,11 +15,9 @@ namespace TestLibrary.Models
         public int ID { get { return _ID; } set { _ID = value; } }
 
         private int _UserID;
-        [ForeignKey("Borrower")]
         public int UserID { get { return _UserID; } set { _UserID = value; } }
 
         private int _BookID;
-        [ForeignKey("BorrowBook")]
         public int BookID { get { return _BookID; } set { _BookID = value; } }
 
         private DateTime _BorrowDate;
@@ -38,11 +37,17 @@ namespace TestLibrary.Models
         [DefaultValue(0)]
         public short RenewCount { get { return _RenewCount; } set { _RenewCount = value; } }
 
-        private Book _BorrowBook;
-        public virtual Book BorrowBook { get { return _BorrowBook; } set { _BorrowBook = value; } }
+        public Book GetBorrowBook()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.BookRepo.ListWhere(book => book.BookID == BookID).SingleOrDefault();
+        }
 
-        private Member _Borrower;
-        public virtual Member Borrower { get { return _Borrower; } set { _Borrower = value; } }
+        public Member GetBorrower()
+        {
+            LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.MemberRepo.ListWhere(member => member.UserID == UserID).SingleOrDefault();
+        }
 
     }
 }

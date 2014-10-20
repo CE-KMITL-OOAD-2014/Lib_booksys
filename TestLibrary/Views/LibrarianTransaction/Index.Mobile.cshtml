@@ -22,8 +22,8 @@
     {
         <tr>
             <td>@(++count)</td>
-            <td class="res-col">@item.BorrowBook.BookName</td>
-            <td class="res-col">@item.Borrower.UserName</td>
+            <td class="res-col">@item.GetBorrowBook().BookName</td>
+            <td class="res-col">@item.GetBorrower().UserName</td>
             <td>@item.DueDate.Date.Day/@item.DueDate.Date.Month/@item.DueDate.Date.Year.ToString().Substring(2)</td>
             <td>
                 @if (item.ReturnDate != null)

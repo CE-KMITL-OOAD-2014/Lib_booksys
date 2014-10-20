@@ -37,7 +37,7 @@
     {
         <tr>
             <th>@item.BookID</th>
-            <td class="res-col">@item.BorrowBook.BookName</td>
+            <td class="res-col">@item.GetBorrowBook().BookName</td>
             <td class="res-col">@item.DueDate.ToShortDateString()</td>
             <td class="center-col">
             <form action="/LibrarianTransaction/Transaction" method="post">
@@ -78,7 +78,7 @@
     {
         <tr>
             <th>@item.BookID</th>
-            <td class="res-col">@item.RequestBook.BookName</td>
+            <td class="res-col">@item.GetRequestBook().BookName</td>
             
             @if(item.ExpireDate != null){
                 <td>

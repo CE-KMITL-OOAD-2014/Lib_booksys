@@ -98,8 +98,9 @@ namespace TestLibrary.Controllers
                 {
                     foreach (var item in RequestListToDelete.Where(entry => entry.ExpireDate != null).ToList())
                     {
-                            item.RequestBook.BookStatus = Status.Available;
-                            libRepo.BookRepo.Update(item.RequestBook);
+                        Book bookToUpdate = item.GetRequestBook();
+                             bookToUpdate.BookStatus = Status.Available;
+                             libRepo.BookRepo.Update(bookToUpdate);
                     }
                     //4.Delete related requestlist.
                     libRepo.RequestEntryRepo.Remove(RequestListToDelete);

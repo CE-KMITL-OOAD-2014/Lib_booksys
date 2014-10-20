@@ -20,8 +20,9 @@ namespace TestLibrary.Controllers
                 entryToRemove = entryToRemove.Where(target => target.ExpireDate.Value.Date < DateTime.Now.Date).ToList();
                 foreach (RequestEntry entry in entryToRemove)
                 {
-                    entry.RequestBook.BookStatus = Status.Available;
-                    libRepo.BookRepo.Update(entry.RequestBook);
+                    Book requestBook = entry.GetRequestBook();
+                    requestBook.BookStatus = Status.Available;
+                    libRepo.BookRepo.Update(requestBook);
                 }
                 libRepo.RequestEntryRepo.Remove(entryToRemove);
                 libRepo.Save();
