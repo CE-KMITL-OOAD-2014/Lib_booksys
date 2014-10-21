@@ -192,5 +192,33 @@ namespace TestLibrary.Controllers
             TempData["Notification"] = "Something went wrong,please try again.";
             return RedirectToAction("Index");
         }
+
+        [Authorize]
+        public ActionResult BorrowHistory(int page = 1,int pageSize = 10)
+        {
+            Session["LoginUser"] = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
+                return RedirectToAction("Index", "Account");
+            string username;
+            username = HttpContext.User.Identity.Name.ToString().Substring(2);
+            Member currentMember = libRepo.MemberRepo.ListWhere(target => target.UserName == username).SingleOrDefault();
+            List<BorrowEntry> EntryList = currentMember.GetRelatedBorrowEntry();
+            PageList<BorrowEntry> pglist = new PageList<BorrowEntry>(EntryList,page,pageSize);
+            TempData["BorrowCount"] = EntryList.Count();
+            switch (pglist.Categorized())
+            {
+                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Empty:
+                    {
+                        TempData["Notification"] = "No borrow history to show.Please do transaction to see your history.";
+                        return View();
+                    }
+                default:
+                    {
+                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        return View();
+                    }
+            }
+        }
     }
 }

@@ -15,10 +15,10 @@ namespace TestLibrary.ViewModels
         private bool IsCategorized;
         private List<typeName> List;
         private int PageSize;
-        public PageList(List<typeName> list,int curPage,int size){
+        public PageList(List<typeName> list,int curPage,int sizePerPage){
         this.List = list;
         CurrentPage = curPage;
-        ListPerPage = size;
+        ListPerPage = sizePerPage;
         IsCategorized = false;
     }
         public PageListResult Categorized()
@@ -30,11 +30,11 @@ namespace TestLibrary.ViewModels
                 int index = (CurrentPage - 1) * ListPerPage;
                 if (index < List.Count && ((index + ListPerPage) <= List.Count))
                 {
-                    List = List.GetRange((CurrentPage - 1) * ListPerPage, ListPerPage);
+                    List = List.GetRange(index, ListPerPage);
                 }
                 else if (index < List.Count)
                 {
-                    List = List.GetRange((CurrentPage - 1) * ListPerPage, List.Count % ListPerPage);
+                    List = List.GetRange(index, List.Count % ListPerPage);
                 }
                 else if (List.Count == 0)
                 {
