@@ -3,7 +3,11 @@
 }
 @model TestLibrary.Models.Person
 <h2>Welcome! @Model.Identify()</h2>
-<p class="noti-msg">@TempData["Notification"]</p>
+@if (TempData["Notificaion"] != null)
+{
+    <p class="noti-msg">@TempData["Notification"]</p>
+}
+
 <p class="account-detail"><u><b>Your profile</u><br />
 User ID:</b>@Html.DisplayFor(model => model.UserID)<br />
 <b>User name:</b>@Html.DisplayFor(model => model.UserName)<br />

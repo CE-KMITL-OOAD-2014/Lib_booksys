@@ -7,7 +7,6 @@
 
 <form class="news-form" action="/LibrarianTransaction/Transaction" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
     <label>MemberID</label><br />
     <input type="text" placeholder="MemberID" name="UserID" value="@TempData["UserID"]"/>
     <input type="submit" value="Check" name="operation" />

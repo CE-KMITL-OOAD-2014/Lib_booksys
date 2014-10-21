@@ -5,7 +5,7 @@
 <h2>Search result:@ViewBag.keyword</h2>
 @if (Model == null)
 {
-    <p class="noti-msg">No book with keyword found.</p>
+    <p class="noti-msg">@TempData["Notification"]</p>
 }
 else { 
 <table class="list">
