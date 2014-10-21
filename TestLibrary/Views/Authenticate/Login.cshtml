@@ -3,12 +3,15 @@
 
 }
 @model TestLibrary.ViewModels.LoginForm
-
+<h2>Login</h2>
     <form class="account-form" action="/Authenticate/Login" method="post">
         @Html.AntiForgeryToken()
         @if (TempData["Notification"] != null)
         {
-            @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
+            <div class="noti-red">
+                <img class="close-btt" src="~/Content/close-btt.png" />
+                @TempData["Notification"]
+            </div>
         }
         <fieldset>
             <legend>Login</legend>

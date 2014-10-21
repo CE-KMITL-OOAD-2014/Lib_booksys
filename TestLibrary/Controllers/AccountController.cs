@@ -23,6 +23,13 @@ namespace TestLibrary.Controllers
             Person CurrentLoginUser = libRepo.LibrarianRepo.ListWhere(target => target.UserName == userName).SingleOrDefault();
             if (CurrentLoginUser == null)
                 CurrentLoginUser = libRepo.MemberRepo.ListWhere(target => target.UserName == userName).SingleOrDefault();
+            if (CurrentLoginUser.Identify().StartsWith("Member"))
+            {
+                List<BorrowEntry> checkList = libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == CurrentLoginUser.UserID 
+                                                        && entry.ReturnDate == null && entry.DueDate.Date < DateTime.Now.Date);
+                if (checkList.Count > 0)
+                    TempData["BorrowNoti"] = "You have overdue borrow please check your borrowlist";
+            }
             return View(CurrentLoginUser);
         }
         [Authorize]

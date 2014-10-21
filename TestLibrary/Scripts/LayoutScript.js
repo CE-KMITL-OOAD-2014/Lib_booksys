@@ -52,4 +52,7 @@ $(document).ready(function () {
     $("select.autosubmit").change(function () {
         $(this).parent().submit();
     });
+    $("img.close-btt").click(function () {
+        $(this).parent().remove();
+    })
 });

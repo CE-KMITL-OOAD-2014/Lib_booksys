@@ -199,7 +199,7 @@ namespace TestLibrary.Controllers
         public ActionResult Transaction(BorrowEntry entry,string operation)
         {
             ModelState.Remove("BookID");
-            TempData["UserID"] = entry.UserID;
+            TempData["UserID"] = (entry.UserID == 0)?"":entry.UserID.ToString();
             TempData["BookID"] = (entry.BookID == 0)?null:entry.BookID.ToString();
             if (ModelState.IsValid)
             {
@@ -222,7 +222,11 @@ namespace TestLibrary.Controllers
                     return View();
                 }
             }
-            else return View();
+            else
+            {
+                TempData["Notification"] = "Please enter Member ID";
+                return View();
+            }
         }
     }
 }

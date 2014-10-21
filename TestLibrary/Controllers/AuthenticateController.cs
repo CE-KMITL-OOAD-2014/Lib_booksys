@@ -83,8 +83,8 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "Username can't have space character.";
                     return View(submitData);
                 }
-                else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).SingleOrDefault() == null) &&
-                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).SingleOrDefault() == null))
+                else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).Count == 0) &&
+                    (libRepo.LibrarianRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).Count == 0))
                 {
                     if (submitData.Password == submitData.ConfirmPassword)
                     {
