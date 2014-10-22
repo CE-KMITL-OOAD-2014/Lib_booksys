@@ -3,8 +3,14 @@
 }
 @model TestLibrary.ViewModels.MemberTransactionViewer
 <h1>Member transaction</h1>
-<p class="noti-msg">@TempData["Notification"]</p>
-@if (TempData["SuccessNoti"] != null)
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
+else if (TempData["SuccessNoti"] != null)
 {
 <div class="noti-green">
     <img class="close-btt" src="~/Content/close-btt.png" />
@@ -40,8 +46,11 @@
     }
 </table>
 }
-else{
-    <p class="noti-msg">No book that you borrowed now.</p>
+else
+{
+    <div class="noti-red">
+        No book that you borrowed now.
+    </div>
 }
 
 <h2>Book that you requested</h2>
@@ -86,8 +95,11 @@ else{
         }
     </table>
 }
-else{
-    <p class="noti-msg">No book that you requested now.</p>
+else
+{
+    <div class="noti-red">
+        No book that you requested now.
+    </div>
 }
 
 <a class="account-btt" href="/MemberTransaction/Request">Request Book</a>

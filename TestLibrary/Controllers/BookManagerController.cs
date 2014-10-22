@@ -30,12 +30,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No book list to show.";
+                        TempData["ErrorNoti"] = "No book list to show.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }
@@ -119,7 +119,7 @@ namespace TestLibrary.Controllers
                     Book bookToFind = libRepo.BookRepo.Find(bookToEdit.BookID);
                     if (bookToFind.BookStatus == Status.Borrowed || bookToFind.BookStatus == Status.Reserved)
                     {
-                        TempData["Notification"] = "Can't edit book status due to this book is " + bookToFind.BookStatus.ToString();
+                        TempData["ErrorNoti"] = "Can't edit book status due to this book is " + bookToFind.BookStatus.ToString()+".";
                         return RedirectToAction("Index");
                     }
                     bookToFind.BookName = bookToEdit.BookName;
@@ -127,6 +127,7 @@ namespace TestLibrary.Controllers
                     bookToFind.Publisher = bookToEdit.Publisher;
                     bookToFind.Year = bookToEdit.Year;
                     bookToFind.Detail = bookToEdit.Detail;
+                    bookToFind.BookStatus = bookToEdit.BookStatus;
                     libRepo.BookRepo.Update(bookToFind);
                     TempData["SuccessNoti"] = "Edit book successfully.";
                     libRepo.Save();

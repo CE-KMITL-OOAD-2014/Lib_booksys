@@ -2,12 +2,15 @@
     ViewBag.Title = "Add librarian";
 }
 @model TestLibrary.Models.Librarian
+<h2>Add new librarian</h2>
 <form class="account-form" action="/LibrarianListManager/AddLibrarian" method="post">
     @Html.AntiForgeryToken()
-    @if (TempData["Notification"] != null)
+    @if (TempData["ErrorNoti"] != null)
     {
-        @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
-
+        <div class="noti-red">
+            <img class="close-btt" src="~/Content/close-btt.png" />
+            @TempData["ErrorNoti"]
+        </div>
     }
     <fieldset>
         <legend>Add new librarian</legend>

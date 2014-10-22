@@ -3,7 +3,13 @@
 }
 @model TestLibrary.ViewModels.PageList<TestLibrary.Models.News>
 <h1>All news</h1>
-<p class="noti-msg">@TempData["Notification"]</p>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
 @if(Model != null) { 
 <center>
     <table class="news-list">

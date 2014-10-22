@@ -5,7 +5,12 @@
 <h2>Search result:@ViewBag.keyword</h2>
 @if (Model == null)
 {
-    <p class="noti-msg">@TempData["Notification"]</p>
+    if (TempData["ErrorNoti"] != null)
+    {
+        <div class="noti-red">
+            @TempData["ErrorNoti"]
+        </div>
+    }
 }
 else
 {

@@ -29,12 +29,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No news list to show now.";
+                        TempData["ErrorNoti"] = "No news list to show now.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }

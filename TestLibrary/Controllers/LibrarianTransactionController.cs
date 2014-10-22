@@ -17,7 +17,7 @@ namespace TestLibrary.Controllers
         {
             if (libRepo.MemberRepo.Find(entry.UserID) == null)
             {
-                TempData["Notification"] = "No member that id's exists.";
+                TempData["ErrorNoti"] = "No member that id's exists.";
                 return null;
             }
 
@@ -33,14 +33,14 @@ namespace TestLibrary.Controllers
         {
             if (libRepo.MemberRepo.Find(entry.UserID) == null)
                     {
-                        TempData["Notification"] = "No member that id's exists.";
+                        TempData["ErrorNoti"] = "No member that id's exists.";
                         return null;
                     }
 
                     if (libRepo.BorrowEntryRepo.ListWhere(target => target.UserID == entry.UserID
                         && target.ReturnDate == null).ToList().Count == 3)
                     {
-                        TempData["Notification"] = "This member borrow exceed maximum allowed.";
+                        TempData["ErrorNoti"] = "This member borrow exceed maximum allowed.";
                         return Check(entry);
                     }
 
@@ -48,7 +48,7 @@ namespace TestLibrary.Controllers
 
                     if (booktoborrow == null)
                     {
-                        TempData["Notification"] = "No book was found in database.";
+                        TempData["ErrorNoti"] = "No book was found in database.";
                         return Check(entry);
                     }
                     else if (booktoborrow.BookStatus == Status.Available)
@@ -64,7 +64,7 @@ namespace TestLibrary.Controllers
                     }
                     else if (booktoborrow.BookStatus == Status.Lost)
                     {
-                        TempData["Notification"] = "This book is lost.";
+                        TempData["ErrorNoti"] = "This book is lost.";
                         return Check(entry);
                     }
 
@@ -85,7 +85,7 @@ namespace TestLibrary.Controllers
                         }
                         else if (reqentry.UserID != entry.UserID)
                         {
-                            TempData["Notification"] = "This user has no permission to borrow the requested book by others.";
+                            TempData["ErrorNoti"] = "This user has no permission to borrow the requested book by others.";
                             return Check(entry);
                         }
                         else
@@ -104,7 +104,7 @@ namespace TestLibrary.Controllers
 
                     else
                     {
-                        TempData["Notification"] = "This book is already borrowed.";
+                        TempData["ErrorNoti"] = "This book is already borrowed.";
                         return Check(entry);
                     }
                
@@ -115,12 +115,12 @@ namespace TestLibrary.Controllers
             BorrowEntry returnentry = libRepo.BorrowEntryRepo.Find(entry.ID);
             if (returnentry == null)
             {
-                TempData["Notification"] = "No borrow record found to do return.";
+                TempData["ErrorNoti"] = "No borrow record found to do return.";
                 return null;
             }
             else if (returnentry.ReturnDate != null)
             {
-                TempData["Notification"] = "This book is already returned.";
+                TempData["ErrorNoti"] = "This book is already returned.";
                 return Check(returnentry);
             }
             else
@@ -142,7 +142,8 @@ namespace TestLibrary.Controllers
                 }
                 if(returnentry.DueDate.Date < DateTime.Now.Date){
                     int dif = DateTime.Now.Subtract(returnentry.DueDate.Date).Days;
-                    TempData["Notification"] = "Return successfully.Fine " + (dif * 5) + " baht.";
+                    //Warn noti
+                    TempData["WarnNoti"] = "Return successfully.Fine " + (dif * 5) + " baht.";
                     }
                 else
                     TempData["SuccessNoti"] = "Return successfully.";
@@ -171,12 +172,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No borrowed list to show.";
+                        TempData["ErrorNoti"] = "No borrowed list to show.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }
@@ -218,13 +219,13 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    TempData["Notification"] = "Invalid operation.";
+                    TempData["ErrorNoti"] = "Invalid operation.";
                     return View();
                 }
             }
             else
             {
-                TempData["Notification"] = "Please enter Member ID";
+                TempData["ErrorNoti"] = "Please enter Member ID";
                 return View();
             }
         }

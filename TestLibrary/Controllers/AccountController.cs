@@ -64,13 +64,13 @@ namespace TestLibrary.Controllers
                     }
                     else
                     {
-                        TempData["Notification"] = "New password and confirm password is not match.";
+                        TempData["ErrorNoti"] = "New password and confirm password is not match.";
                         return View();
                     }
                 }
                 else
                 {
-                    TempData["Notification"] = "Your current password information is incorrect.";
+                    TempData["ErrorNoti"] = "Your current password information is incorrect.";
                     return View();
                 }
             }
@@ -119,7 +119,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    TempData["Notification"] = "This e-mail is already exists.";
+                    TempData["ErrorNoti"] = "This e-mail is already exists.";
                     return View(editor);
                 }
             }

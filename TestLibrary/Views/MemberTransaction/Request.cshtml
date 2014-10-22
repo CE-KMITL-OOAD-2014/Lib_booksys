@@ -3,7 +3,13 @@
 }
 
 <h2>Request book</h2>
-<p class="noti-msg">@TempData["Notification"]</p>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
 <form class="news-form" action="/MemberTransaction/Request" method="post">
     @Html.AntiForgeryToken()
     <input type="text" placeholder="BookID" name="BookID" /><br />

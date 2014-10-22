@@ -4,6 +4,13 @@
     int count;
 }
 <h1>Librarian transaction manager</h1>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
 <ul class="admin-panel">
     <li><a href="/LibrarianTransaction/Transaction">Do Transaction</a></li>
 </ul><br />
@@ -59,9 +66,5 @@
             <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
         </select>
     </form>
-}
-else
-{
-    <p class="noti-msg">@TempData["Notification"]</p>
 }
 <a class="account-btt" href="/Account/LibrarianPortal">Portal</a>

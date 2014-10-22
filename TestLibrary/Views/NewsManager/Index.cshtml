@@ -3,8 +3,14 @@
 }
 @model TestLibrary.ViewModels.PageList<TestLibrary.Models.News>
 <h2>News manager</h2>
-<p class="noti-msg">@TempData["Notification"]</p>
-@if (TempData["SuccessNoti"] != null)
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
+else if (TempData["SuccessNoti"] != null)
 {
     <div class="noti-green">
         <img class="close-btt" src="~/Content/close-btt.png" />

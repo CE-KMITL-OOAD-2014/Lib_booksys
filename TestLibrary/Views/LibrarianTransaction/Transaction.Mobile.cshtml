@@ -3,13 +3,26 @@
 }
 @model TestLibrary.ViewModels.MemberTransactionViewer
 <h2>Borrow transaction</h2>
-<p class="noti-msg">@TempData["Notification"]</p>
-@if (TempData["SuccessNoti"] != null)
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
+else if (TempData["SuccessNoti"] != null)
 {
 <div class="noti-green">
     <img class="close-btt" src="~/Content/close-btt.png" />
     @TempData["SuccessNoti"]
 </div>
+}
+else if (TempData["WarnNoti"] != null)
+{
+    <div class="noti-yellow">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["WarnNoti"]
+    </div>
 }
 <form class="news-form" action="/LibrarianTransaction/Transaction" method="post">
     @Html.AntiForgeryToken()
@@ -58,9 +71,11 @@
    }
    else
    {
-       <p class="noti-msg">No book that this member borrowed now.</p>
+    <div class="noti-red">
+        No book that this member borrowed now.
+    </div>
    }
-   
+
 <h2>Current request list</h2>
     if (Model.GetRequestEntryViews().Count != 0)
     {
@@ -109,7 +124,9 @@
     }
     else
     {
-        <p class="noti-msg">No book that this member requested now.</p>
+        <div class="noti-red">
+            No book that this member requested now.
+        </div>
     }
 }
 <a class="account-btt" href="/LibrarianTransaction/">Back</a>

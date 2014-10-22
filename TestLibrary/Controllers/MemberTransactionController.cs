@@ -42,19 +42,19 @@ namespace TestLibrary.Controllers
                                         target.ReturnDate == null).SingleOrDefault();
             if (renewentry == null)
             {
-                TempData["Notification"] = "Invalid renew book id.";
+                TempData["ErrorNoti"] = "Invalid renew book id.";
                 return RedirectToAction("Index");
             }
 
             if (renewentry.GetBorrower().UserName != Session["LoginUser"].ToString().Substring(2))
             {
-                TempData["Notification"] = "Invalid renew operation.";
+                TempData["ErrorNoti"] = "Invalid renew operation.";
                 return RedirectToAction("Index");
             }
 
             if (renewentry.RenewCount == 3)
             {
-                TempData["Notification"] = "Your renew of book ID." + renewentry.GetBorrowBook().BookID + " is exceed maximum!";
+                TempData["ErrorNoti"] = "Your renew of book ID." + renewentry.GetBorrowBook().BookID + " is exceed maximum!";
                 return RedirectToAction("Index");
             }
             return View(renewentry);
@@ -70,7 +70,7 @@ namespace TestLibrary.Controllers
             {
                 if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID && target.ExpireDate == null) != null)
                 {
-                    TempData["Notification"] = "This book is ON HOLD.";
+                    TempData["ErrorNoti"] = "This book is ON HOLD.";
                 }
                 else
                 {
@@ -104,12 +104,12 @@ namespace TestLibrary.Controllers
                 Book booktorequest;
                 if ((booktorequest = libRepo.BookRepo.Find(entry.BookID)) == null)
                 {
-                    TempData["Notification"] = "No book with prefer ID exists.";
+                    TempData["ErrorNoti"] = "No book with prefer ID exists.";
                     return View();
                 }
                 if (booktorequest.BookStatus != Status.Borrowed && booktorequest.BookStatus != Status.Reserved)
                 {
-                    TempData["Notification"] = "Can't request this book due to it is "
+                    TempData["ErrorNoti"] = "Can't request this book due to it is "
                         + booktorequest.BookStatus.ToString() + ".";
                     return View();
                 }
@@ -117,7 +117,7 @@ namespace TestLibrary.Controllers
                 if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == booktorequest.BookID
                                 && target.ExpireDate == null) != null || booktorequest.BookStatus == Status.Reserved)
                 {
-                    TempData["Notification"] = "This book is already requested.";
+                    TempData["ErrorNoti"] = "This book is already requested.";
                     return View();
                 }
 
@@ -127,7 +127,7 @@ namespace TestLibrary.Controllers
                 if (libRepo.BorrowEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID &&
                                                         target.GetBorrower() == request_member && target.ReturnDate == null) != null)
                 {
-                    TempData["Notification"] = "Can't request your current borrowed book.";
+                    TempData["ErrorNoti"] = "Can't request your current borrowed book.";
                     return View();
                 }
 
@@ -139,7 +139,10 @@ namespace TestLibrary.Controllers
                 return RedirectToAction("Index");
             }
             else
+            {
+                TempData["ErrorNoti"] = "Input was not in correct format.";
                 return View();
+            }
         }
 
         [Authorize]
@@ -151,13 +154,13 @@ namespace TestLibrary.Controllers
             RequestEntry wantedEntry = libRepo.RequestEntryRepo.Find(id);
             if (wantedEntry == null)
             {
-                TempData["Notification"] = "No cancel request with prefered id exists.";
+                TempData["ErrorNoti"] = "No cancel request with prefered id exists.";
                 return RedirectToAction("Index");
             }
             Member preferMember = libRepo.MemberRepo.ListWhere(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             if (wantedEntry.GetRequestUser().UserID != preferMember.UserID)
             {
-                TempData["Notification"] = "Can't cancel other member's book request.";
+                TempData["ErrorNoti"] = "Can't cancel other member's book request.";
                 return RedirectToAction("Index");
             }
             return View(wantedEntry);
@@ -175,7 +178,7 @@ namespace TestLibrary.Controllers
                     Book bookToCheck = libRepo.BookRepo.Find(entry.BookID);
                     if (bookToCheck == null)
                     {
-                        TempData["Notification"] = "Something went wrong,please try again.";
+                        TempData["ErrorNoti"] = "Something went wrong,please try again.";
                         return RedirectToAction("Index");
                     }
                     if (bookToCheck.BookStatus == Status.Reserved)
@@ -189,7 +192,7 @@ namespace TestLibrary.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            TempData["Notification"] = "Something went wrong,please try again.";
+            TempData["ErrorNoti"] = "Something went wrong,please try again.";
             return RedirectToAction("Index");
         }
 
@@ -210,12 +213,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No borrow history to show.Please do transaction to see your history.";
+                        TempData["ErrorNoti"] = "No borrow history to show.Please do transaction to see your history.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }

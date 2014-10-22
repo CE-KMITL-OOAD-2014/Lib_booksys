@@ -28,7 +28,7 @@ namespace TestLibrary.Controllers
             List<Book> bookList;
             if (searchType == "")
             {
-                TempData["Notification"] = "Please select search type.";
+                TempData["ErrorNoti"] = "Please select search type.";
                 return View("Index");
             }
             else if (searchType == "BookName")
@@ -54,13 +54,13 @@ namespace TestLibrary.Controllers
                 }
                 catch (FormatException)
                 {
-                    TempData["Notification"] = "Input string was not in a correct format.";
+                    TempData["ErrorNoti"] = "Input string was not in a correct format.";
                     return View("Index");
                 }
             }
             else
             {
-                TempData["Notification"] = "Something was error.";
+                TempData["ErrorNoti"] = "Something was error.";
                 return View("Index");
             }
 
@@ -71,13 +71,13 @@ namespace TestLibrary.Controllers
             {
                 case PageListResult.Ok: { return View("Index", pglist); }
                 case PageListResult.Empty:
-                    {                
-                    TempData["Notification"] = "No book result found.";
+                    {
+                        TempData["ErrorNoti"] = "No book result found.";
                     return View("Index");
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View("Index");
                     }
             }
@@ -121,18 +121,18 @@ namespace TestLibrary.Controllers
                     case PageListResult.Ok: { return View("Index", pglist); }
                     case PageListResult.Empty:
                         {
-                            TempData["Notification"] = "No book result found.";
+                            TempData["ErrorNoti"] = "No book result found.";
                             return View("Index");
                         }
                     default:
                         {
-                            TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                            TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                             return View("Index");
                         }
                 }
             }
             else
-                TempData["Notification"] = "Input string was not in a correct format.";
+                TempData["ErrorNoti"] = "Input string was not in a correct format.";
             return View("Index");
         }
 
@@ -151,12 +151,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No book result found.";
+                        TempData["ErrorNoti"] = "No book result found.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }

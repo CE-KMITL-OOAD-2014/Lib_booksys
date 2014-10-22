@@ -6,9 +6,12 @@
 <form class="news-form" action="/Account/EditAccount" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
-        @if (TempData["Notification"] != null)
+        @if (TempData["ErrorNoti"] != null)
         {
-            @Html.ValidationMessageFor(model => model, validationMessage: TempData["Notification"].ToString(), tag: "p", htmlAttributes: new { @class = "noti-msg" })
+            <div class="noti-red">
+                <img class="close-btt" src="~/Content/close-btt.png" />
+                @TempData["ErrorNoti"]
+            </div>
         }
         <label>UserName:</label>
         <input type="text" disabled="disabled" value="@Session["LoginUser"].ToString().Substring(2)"/><br />

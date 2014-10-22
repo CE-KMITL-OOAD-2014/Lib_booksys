@@ -3,9 +3,12 @@
 }
 @model TestLibrary.Models.Person
 <h2>Welcome! @Model.Identify()</h2>
-@if (TempData["Notificaion"] != null)
+@if (TempData["ErrorNoti"] != null)
 {
-    <p class="noti-msg">@TempData["Notification"]</p>
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
 }
 else if (TempData["SuccessNoti"] != null)
 {

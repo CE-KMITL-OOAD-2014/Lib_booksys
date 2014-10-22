@@ -47,7 +47,7 @@ namespace TestLibrary.Controllers
                             Session["LoginUser"] = "A_" + loginUser.UserName;
                             return RedirectToAction("Index", "Account");
                         }
-                        TempData["Notification"] = "Login info is incorrect.";
+                        TempData["ErrorNoti"] = "Login info is incorrect.";
                         return View(submitData);
                     }
                 }
@@ -80,7 +80,7 @@ namespace TestLibrary.Controllers
             {
                 if (submitData.UserName.Contains(" "))
                 {
-                    TempData["Notification"] = "Username can't have space character.";
+                    TempData["ErrorNoti"] = "Username can't have space character.";
                     return View(submitData);
                 }
                 else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).Count == 0) &&
@@ -103,13 +103,13 @@ namespace TestLibrary.Controllers
                     }
                     else
                     {
-                        TempData["Notification"] = "Password did not match.";
+                        TempData["ErrorNoti"] = "Password did not match.";
                         return View(submitData);
                     }
                 }
                 else
                 {
-                    TempData["Notification"] = "This user name or e-mail is already exists.";
+                    TempData["ErrorNoti"] = "This user name or e-mail is already exists.";
                     return View(submitData);
                 }
             }
@@ -133,7 +133,7 @@ namespace TestLibrary.Controllers
         public ActionResult ForgotPassword(string email)
         {
 
-            if (email != null)
+            if (email != "")
             {
                 Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Email.ToLower() == email.ToLower()).SingleOrDefault();
                 if(userToRecover == null)
@@ -157,12 +157,12 @@ namespace TestLibrary.Controllers
                     TempData["WarnNoti"] = "Send email successfully.";
                     return View();
                 }
-                TempData["Notification"] = "Error! No user was found to recover.";
+                TempData["ErrorNoti"] = "Error! No user was found to recover.";
                 return View();
             }
             else
             {
-                TempData["Notification"] = "Please enter your e-mail address.";
+                TempData["ErrorNoti"] = "Please enter your e-mail address.";
                 return View();
             }
         }
@@ -183,12 +183,13 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    TempData["Notification"] = "Oops! Something went wrong.";
+                    TempData["ErrorNoti"] = "Oops! Something went wrong.";
                     return RedirectToAction("Login", "Authenticate");
                 }
             }
             else
             {
+                TempData["ErrorNoti"] = "Invalid operation.";
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
                 return RedirectToAction("Index", "Account");
             }
@@ -210,7 +211,7 @@ namespace TestLibrary.Controllers
                                                              && target.UserName == userName).SingleOrDefault();
                 if (userToRecover == null)
                 {
-                    TempData["Notification"] = "Oops! Something went wrong.";
+                    TempData["ErrorNoti"] = "Oops! Something went wrong.";
                     return RedirectToAction("Login");
                 }
 
@@ -231,19 +232,19 @@ namespace TestLibrary.Controllers
                     }
                     catch (Exception)
                     {
-                        TempData["Notification"] = "Oops! Something went wrong.";
+                        TempData["ErrorNoti"] = "Oops! Something went wrong.";
                         return RedirectToAction("Login");
                     }
                 }
                 else
                 {
-                    TempData["Notification"] = "Password did not match.";
+                    TempData["ErrorNoti"] = "Password did not match.";
                     return View();
                 }
             }
             else
             {
-                TempData["Notification"] = "Please fill in the blank of password and comfirm password.";
+                TempData["ErrorNoti"] = "Please fill in the blank of password and comfirm password.";
                 return View();
             }
         }

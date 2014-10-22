@@ -3,8 +3,14 @@
 }
 @model TestLibrary.ViewModels.PageList<TestLibrary.Models.Book>
 <h1>Search</h1>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
 <h2>Basic search</h2>
-<p class="noti-msg">@TempData["Notification"]</p>
 <form class="book-search" action="/BookSearch/Basic" method="post">
     @Html.AntiForgeryToken()
     <fieldset>

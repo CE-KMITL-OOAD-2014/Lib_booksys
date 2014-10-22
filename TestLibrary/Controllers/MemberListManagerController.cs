@@ -28,12 +28,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No member list to show.";
+                        TempData["ErrorNoti"] = "No member list to show.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }
@@ -50,7 +50,7 @@ namespace TestLibrary.Controllers
                 return View(target);
             else
             {
-                TempData["Notification"] = "Please specified correct Member ID";
+                TempData["ErrorNoti"] = "Please specified correct Member ID";
                 return RedirectToAction("Index");
             }
         }
@@ -66,7 +66,7 @@ namespace TestLibrary.Controllers
                 return View(target);
             else
             {
-                TempData["Notification"] = "Please specified correct Member ID";
+                TempData["ErrorNoti"] = "Please specified correct Member ID";
                 return RedirectToAction("Index");
             }
         }
@@ -86,7 +86,7 @@ namespace TestLibrary.Controllers
                 {
                     if (BorrowListToDelete.Where(entry => entry.ReturnDate == null).ToList().Count > 0)
                     {
-                        TempData["Notification"] = "Can't delete " + target.UserName + " due to this member has book that not returned.";
+                        TempData["ErrorNoti"] = "Can't delete " + target.UserName + " due to this member has book that not returned.";
                         return RedirectToAction("Index");
                     }
                     libRepo.BorrowEntryRepo.Remove(BorrowListToDelete);

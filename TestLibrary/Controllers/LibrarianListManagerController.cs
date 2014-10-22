@@ -31,12 +31,12 @@ namespace TestLibrary.Controllers
                 case PageListResult.Ok: { return View(pglist); }
                 case PageListResult.Empty:
                     {
-                        TempData["Notification"] = "No librarian list to show.";
+                        TempData["ErrorNoti"] = "No librarian list to show.";
                         return View();
                     }
                 default:
                     {
-                        TempData["Notification"] = "Invalid list view parameter please refresh this page to try again.";
+                        TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
             }
@@ -60,7 +60,7 @@ namespace TestLibrary.Controllers
             {
                 if (newLibrarian.UserName.Contains(" "))
                 {
-                    TempData["Notification"] = "Username can't have space character.";
+                    TempData["ErrorNoti"] = "Username can't have space character.";
                     return View(newLibrarian);
                 }
                 else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == newLibrarian.UserName.ToLower() || target.Email.ToLower() == newLibrarian.Email.ToLower()).Count == 0) &&
@@ -74,7 +74,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    TempData["Notification"] = "This username or e-mail is already exists.";
+                    TempData["ErrorNoti"] = "This username or e-mail is already exists.";
                 }
             }
             return View(newLibrarian);
@@ -88,7 +88,7 @@ namespace TestLibrary.Controllers
                 Librarian target = libRepo.LibrarianRepo.Find(id);
                 if (target != null)
                     return View(target);
-                TempData["Notification"] = "Please specified correct Librarian ID.";
+                TempData["ErrorNoti"] = "Please specified correct Librarian ID.";
                 return RedirectToAction("Index");
         }
 
@@ -101,7 +101,7 @@ namespace TestLibrary.Controllers
             Librarian target = libRepo.LibrarianRepo.Find(id);
             if (target != null)
                 return View(target);
-            TempData["Notification"] = "Please specified correct Librarian ID.";
+            TempData["ErrorNoti"] = "Please specified correct Librarian ID.";
             return RedirectToAction("Index");
         }
 
@@ -114,7 +114,7 @@ namespace TestLibrary.Controllers
             {
                 if (libRepo.LibrarianRepo.List().Count == 1)
                 {
-                    TempData["Notification"] = "Can't delete the only one librarian remain out of system.";
+                    TempData["ErrorNoti"] = "Can't delete the only one librarian remain out of system.";
                     return RedirectToAction("Index");
                 }
                     libRepo.LibrarianRepo.Remove(target);
