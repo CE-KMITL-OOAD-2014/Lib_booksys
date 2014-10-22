@@ -98,7 +98,7 @@ namespace TestLibrary.Controllers
                                 Password = submitData.Password
                             });
                         libRepo.Save();
-                        TempData["Notification"] = "Register successful,please login for first use.";
+                        TempData["SuccessNoti"] = "Register successful,please login for first use.";
                         return RedirectToAction("Login");
                     }
                     else
@@ -154,7 +154,7 @@ namespace TestLibrary.Controllers
                     smtp.Send(mail);
                     TempData["isSuccess"] = "true";
                     TempData["email"] = email;
-                    TempData["Notification"] = "Send email successfully.";
+                    TempData["WarnNoti"] = "Send email successfully.";
                     return View();
                 }
                 TempData["Notification"] = "Error! No user was found to recover.";
@@ -226,7 +226,7 @@ namespace TestLibrary.Controllers
                         else
                             libRepo.LibrarianRepo.Update((Librarian)userToRecover);
                         libRepo.Save();
-                        TempData["Notification"] = "Reset password successfully.";
+                        TempData["SuccessNoti"] = "Reset password successfully.";
                         return RedirectToAction("Login");
                     }
                     catch (Exception)

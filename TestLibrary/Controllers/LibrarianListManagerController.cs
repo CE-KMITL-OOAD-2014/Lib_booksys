@@ -69,7 +69,7 @@ namespace TestLibrary.Controllers
                     newLibrarian.Password = Crypto.HashPassword(newLibrarian.Password);
                     libRepo.LibrarianRepo.Add(newLibrarian);
                     libRepo.Save();
-                    TempData["Notification"] = "Add librarian " + newLibrarian.UserName + " successfully.";
+                    TempData["SuccessNoti"] = "Add librarian " + newLibrarian.UserName + " successfully.";
                     return RedirectToAction("Index");
                 }
                 else
@@ -119,7 +119,7 @@ namespace TestLibrary.Controllers
                 }
                     libRepo.LibrarianRepo.Remove(target);
                     libRepo.Save();
-                    TempData["Notification"] = "Delete librarian " + target.UserName + " successfully.";
+                    TempData["SuccessNoti"] = "Delete librarian " + target.UserName + " successfully.";
                     return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

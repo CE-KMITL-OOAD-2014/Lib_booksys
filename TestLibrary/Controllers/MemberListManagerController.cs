@@ -109,7 +109,7 @@ namespace TestLibrary.Controllers
                 //5.Delete member.
                 libRepo.MemberRepo.Remove(target);
                 libRepo.Save();
-                TempData["Notification"] = "Delete member " + target.UserName + " successfully.";
+                TempData["SuccessNoti"] = "Delete member " + target.UserName + " successfully.";
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

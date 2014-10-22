@@ -28,7 +28,7 @@ namespace TestLibrary.Controllers
                 List<BorrowEntry> checkList = libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == CurrentLoginUser.UserID 
                                                         && entry.ReturnDate == null && entry.DueDate.Date < DateTime.Now.Date);
                 if (checkList.Count > 0)
-                    TempData["BorrowNoti"] = "You have overdue borrow please check your borrowlist";
+                    TempData["WarnNoti"] = "You have overdue borrow please check your borrowlist";
             }
             return View(CurrentLoginUser);
         }
@@ -59,7 +59,7 @@ namespace TestLibrary.Controllers
                         else
                             libRepo.MemberRepo.Update((Member)target);
                         libRepo.Save();
-                        TempData["Notification"] = "Change password successfully.";
+                        TempData["SuccessNoti"] = "Change password successfully.";
                         return RedirectToAction("Index");
                     }
                     else
@@ -114,7 +114,7 @@ namespace TestLibrary.Controllers
                     else
                         libRepo.MemberRepo.Update((Member)target);
                     libRepo.Save();
-                    TempData["Notification"] = "Edit account successfully.";
+                    TempData["SuccessNoti"] = "Edit account successfully.";
                     return RedirectToAction("Index");
                 }
                 else

@@ -5,6 +5,13 @@
 @model TestLibrary.ViewModels.PageList<TestLibrary.Models.Librarian>
 <h2>LibrarianList manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
+@if (TempData["SuccessNoti"] != null)
+{
+    <div class="noti-green">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["SuccessNoti"]
+    </div>
+}
 <a class="account-btt" href="/LibrarianListManager/AddLibrarian">Add librarian</a>
 @if (Model != null) { 
 <table class="list">

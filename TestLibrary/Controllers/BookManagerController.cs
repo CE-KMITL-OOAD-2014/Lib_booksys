@@ -74,7 +74,7 @@ namespace TestLibrary.Controllers
             {
                 libRepo.BookRepo.Add(bookToAdd);
                 libRepo.Save();
-                TempData["Notification"] = "Add new book successfully.";
+                TempData["SuccessNoti"] = "Add new book successfully.";
                 return RedirectToAction("Index");
             }
             return View(bookToAdd);
@@ -128,14 +128,14 @@ namespace TestLibrary.Controllers
                     bookToFind.Year = bookToEdit.Year;
                     bookToFind.Detail = bookToEdit.Detail;
                     libRepo.BookRepo.Update(bookToFind);
-                    TempData["Notification"] = "Edit book successfully.";
+                    TempData["SuccessNoti"] = "Edit book successfully.";
                     libRepo.Save();
                     return RedirectToAction("Index");
                 }
 
                 //Another check???? Avail -> Borrowed? Avail -> Req.
                 libRepo.BookRepo.Update(bookToEdit);
-                TempData["Notification"] = "Edit book successfully.";
+                TempData["SuccessNoti"] = "Edit book successfully.";
                 libRepo.Save();
                 return RedirectToAction("Index");
             }
@@ -163,7 +163,7 @@ namespace TestLibrary.Controllers
         {
             if (answer == "Yes")
             {
-                TempData["Notification"] = "Delete " + bookToDelete.BookName + " successfully.";
+                TempData["SuccessNoti"] = "Delete " + bookToDelete.BookName + " successfully.";
                 List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToDelete.BookID).ToList();
                 Book bookToDel = libRepo.BookRepo.Find(bookToDelete.BookID);
                 RequestEntry entryToCheck = bookToDel.GetRelatedRequestEntry();

@@ -59,7 +59,7 @@ namespace TestLibrary.Controllers
                 newsToAdd.PostTime = DateTime.Now;
                 libRepo.NewsRepo.Add(newsToAdd);
                 libRepo.Save();
-                TempData["Notification"] = "Add news successfully.";
+                TempData["SuccessNoti"] = "Add news successfully.";
                 return RedirectToAction("Index");
             }
             return View(newsToAdd);
@@ -88,7 +88,7 @@ namespace TestLibrary.Controllers
             {
                 libRepo.NewsRepo.Update(newsToEdit);
                 libRepo.Save();
-                TempData["Notification"] = "Edit news successfully.";
+                TempData["SuccessNoti"] = "Edit news successfully.";
                 return RedirectToAction("Index");
             }
             return View(newsToEdit);
@@ -114,7 +114,7 @@ namespace TestLibrary.Controllers
             if (answer == "Yes")
             {
                 libRepo.NewsRepo.Remove(newsToDelete);
-                TempData["Notification"] = "Delete news successfully.";
+                TempData["SuccessNoti"] = "Delete news successfully.";
                 libRepo.Save();
             }
             return RedirectToAction("Index");

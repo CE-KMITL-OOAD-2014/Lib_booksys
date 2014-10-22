@@ -78,7 +78,7 @@ namespace TestLibrary.Controllers
                     entry.RenewCount++;
                     libRepo.BorrowEntryRepo.Update(entry);
                     libRepo.Save();
-                    TempData["Notification"] = "Renew successful!";
+                    TempData["SuccessNoti"] = "Renew successful!";
                 }
             }
             return RedirectToAction("Index");
@@ -135,7 +135,7 @@ namespace TestLibrary.Controllers
                 entry.RequestDate = DateTime.Now;
                 libRepo.RequestEntryRepo.Add(entry);
                 libRepo.Save();
-                TempData["Notification"] = "Request book successfully.";
+                TempData["SuccessNoti"] = "Request book successfully.";
                 return RedirectToAction("Index");
             }
             else
@@ -185,7 +185,7 @@ namespace TestLibrary.Controllers
                     }
                     libRepo.RequestEntryRepo.Remove(entry);
                     libRepo.Save();
-                    TempData["Notification"] = "Cancel request successfully.";
+                    TempData["SuccessNoti"] = "Cancel request successfully.";
                 }
                 return RedirectToAction("Index");
             }

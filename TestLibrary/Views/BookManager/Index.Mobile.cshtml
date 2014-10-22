@@ -5,6 +5,13 @@
 
 <h2>Book manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
+@if (TempData["SuccessNoti"] != null)
+{
+    <div class="noti-green">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["SuccessNoti"]
+    </div>
+}
 <a class="account-btt" href="/BookManager/AddBook">Add book</a>
 
 @if (Model != null) { 

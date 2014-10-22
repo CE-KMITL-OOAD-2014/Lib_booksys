@@ -4,7 +4,13 @@
 @model TestLibrary.ViewModels.MemberTransactionViewer
 <h2>Borrow transaction</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
-
+@if (TempData["SuccessNoti"] != null)
+{
+<div class="noti-green">
+    <img class="close-btt" src="~/Content/close-btt.png" />
+    @TempData["SuccessNoti"]
+</div>
+}
 <form class="news-form" action="/LibrarianTransaction/Transaction" method="post">
     @Html.AntiForgeryToken()
     <label>MemberID</label><br />

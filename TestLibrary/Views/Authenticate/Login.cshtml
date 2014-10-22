@@ -13,6 +13,13 @@
                 @TempData["Notification"]
             </div>
         }
+        else if (TempData["SuccessNoti"] != null)
+        {
+            <div class="noti-green">
+                <img class="close-btt" src="~/Content/close-btt.png" />
+                @TempData["SuccessNoti"]
+            </div>
+        }
         <fieldset>
             <legend>Login</legend>
             @Html.TextBoxFor(model => model.UserName, new { @placeholder = "Username" })

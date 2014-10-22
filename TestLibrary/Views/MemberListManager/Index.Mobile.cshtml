@@ -4,6 +4,13 @@
 @model TestLibrary.ViewModels.PageList<TestLibrary.Models.Member>
 <h2>Member list manager</h2>
 <p class="noti-msg">@TempData["Notification"]</p>
+@if (TempData["SuccessNoti"] != null)
+{
+    <div class="noti-green">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["SuccessNoti"]
+    </div>
+}
 @if (Model != null) { 
 <table class="res-list">
     <tr>

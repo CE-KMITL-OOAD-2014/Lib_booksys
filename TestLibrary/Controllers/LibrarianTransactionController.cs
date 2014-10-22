@@ -59,7 +59,7 @@ namespace TestLibrary.Controllers
                         libRepo.BookRepo.Update(booktoborrow);
                         libRepo.BorrowEntryRepo.Add(entry);
                         libRepo.Save();
-                        TempData["Notification"] = "OK";
+                        TempData["SuccessNoti"] = "OK";
                         return Check(entry);
                     }
                     else if (booktoborrow.BookStatus == Status.Lost)
@@ -80,7 +80,7 @@ namespace TestLibrary.Controllers
                             entry.DueDate = DateTime.Now.Date.AddDays(7);
                             libRepo.BorrowEntryRepo.Add(entry);
                             libRepo.Save();
-                            TempData["Notification"] = "Delete expire req.//OK.";
+                            TempData["SuccessNoti"] = "Delete expire req.//OK.";
                             return Check(entry);
                         }
                         else if (reqentry.UserID != entry.UserID)
@@ -97,7 +97,7 @@ namespace TestLibrary.Controllers
                             libRepo.BookRepo.Update(booktoborrow);
                             libRepo.BorrowEntryRepo.Add(entry);
                             libRepo.Save();
-                            TempData["Notification"] = "User accept reserved book//OK";
+                            TempData["SuccessNoti"] = "User accept reserved book//OK";
                             return Check(entry);
                         }
                     }
@@ -145,7 +145,7 @@ namespace TestLibrary.Controllers
                     TempData["Notification"] = "Return successfully.Fine " + (dif * 5) + " baht.";
                     }
                 else
-                    TempData["Notification"] = "Return successfully.";
+                    TempData["SuccessNoti"] = "Return successfully.";
                 returnentry.ReturnDate = DateTime.Now.Date;
                 libRepo.BorrowEntryRepo.Update(returnentry);
                 libRepo.Save();

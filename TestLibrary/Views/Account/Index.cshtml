@@ -7,12 +7,18 @@
 {
     <p class="noti-msg">@TempData["Notification"]</p>
 }
-
-@if (TempData["BorrowNoti"] != null && Model.Identify().StartsWith("Member"))
+else if (TempData["SuccessNoti"] != null)
+{
+    <div class="noti-green">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["SuccessNoti"]
+    </div>
+}
+@if (TempData["WarnNoti"] != null && Model.Identify().StartsWith("Member"))
 {
     <div class="noti-yellow">
         <img class="close-btt" src="~/Content/close-btt.png" />
-        @TempData["BorrowNoti"] <a class="norm" href="/MemberTransaction/">here</a>.
+        @TempData["WarnNoti"] <a class="norm" href="/MemberTransaction/">here</a>.
     </div>
 }
 <p class="account-detail"><u><b>Your profile</u><br />

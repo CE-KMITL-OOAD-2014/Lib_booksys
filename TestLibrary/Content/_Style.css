@@ -73,7 +73,7 @@ div#content{
 
 div.noti-red{
     min-width:200px;
-    padding:5px 10px 5px 10px;
+    padding:5px 5px 5px 5px;
     margin-bottom:15px;
     border:1px solid #DD3C10;
     background-color:#FFEBE8;
@@ -85,7 +85,9 @@ div.noti-red{
 
 div.noti-yellow{
     min-width:200px;
-    padding:5px 10px 5px 10px;
+    padding:5px 5px 5px 5px;
+    margin-top:10px;
+    margin-bottom:10px;
     font-family:Single;
     font-size:x-large;
     font-weight:bolder;
@@ -95,7 +97,9 @@ div.noti-yellow{
 
 div.noti-green{
     min-width:200px;
-    padding:5px 10px 5px 10px;
+    padding:5px 5px 5px 5px;
+    margin-top:10px;
+    margin-bottom:10px;
     font-family:Single;
     font-size:x-large;
     font-weight:bolder;
