@@ -9,6 +9,7 @@ using System.Net.Mail;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using TestLibrary.ViewModels;
+using TestLibrary.Utilities;
 namespace TestLibrary.Controllers
 {
     public class AuthenticateController : Controller
@@ -81,6 +82,11 @@ namespace TestLibrary.Controllers
                 if (submitData.UserName.Contains(" "))
                 {
                     TempData["ErrorNoti"] = "Username can't have space character.";
+                    return View(submitData);
+                }
+                else if (!StringUtil.IsAsciiCharacter(submitData.UserName))
+                {
+                    TempData["ErrorNoti"] = "Username can't have non-ascii character.";
                     return View(submitData);
                 }
                 else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == (submitData.UserName.ToLower()) || target.Email.ToLower() == submitData.Email.ToLower()).Count == 0) &&

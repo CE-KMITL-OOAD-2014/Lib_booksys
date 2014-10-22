@@ -10,6 +10,7 @@ using System.Data.Entity.Infrastructure;
 using TestLibrary.DataAccess;
 using TestLibrary.Models;
 using TestLibrary.ViewModels;
+using TestLibrary.Utilities;
 namespace TestLibrary.Controllers
 {
     public class LibrarianListManagerController : Controller
@@ -61,6 +62,11 @@ namespace TestLibrary.Controllers
                 if (newLibrarian.UserName.Contains(" "))
                 {
                     TempData["ErrorNoti"] = "Username can't have space character.";
+                    return View(newLibrarian);
+                }
+                else if (!StringUtil.IsAsciiCharacter(newLibrarian.UserName))
+                {
+                    TempData["ErrorNoti"] = "Username can't have non-ascii character.";
                     return View(newLibrarian);
                 }
                 else if ((libRepo.MemberRepo.ListWhere(target => target.UserName.ToLower() == newLibrarian.UserName.ToLower() || target.Email.ToLower() == newLibrarian.Email.ToLower()).Count == 0) &&

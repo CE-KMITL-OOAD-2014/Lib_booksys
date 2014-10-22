@@ -49,8 +49,15 @@ namespace TestLibrary.Controllers
             {
                 try
                 {
-                    int year = int.Parse(keyword);
-                    bookList = libRepo.BookRepo.ListWhere(target => target.Year == year).OrderBy(booksort => booksort.BookName).ToList();
+                    if (keyword != "")
+                    {
+                        int year = int.Parse(keyword);
+                        bookList = libRepo.BookRepo.ListWhere(target => target.Year == year).OrderBy(booksort => booksort.BookName).ToList();
+                    }
+                    else
+                    {
+                        bookList = libRepo.BookRepo.List();
+                    }
                 }
                 catch (FormatException)
                 {

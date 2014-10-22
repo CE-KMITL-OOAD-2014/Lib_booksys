@@ -13,5 +13,16 @@ namespace TestLibrary.Utilities
                 return String.IsNullOrEmpty(str2);
             return str1.Contains(str2);
         }
+
+        public static bool IsAsciiCharacter(string str)
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (!((str[i] >= 48 && str[i] <= 57)||(str[i] == 45 || str[i] == 95)
+                    || (str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)))
+                    return false;
+            }
+            return true;
+        }
     }
 }
