@@ -1,10 +1,75 @@
 ﻿@{
     ViewBag.Title = "Library Api";
+    string str = "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/ApiScript.js\"></script>";
 }
 
-<h2>LibraryApi</h2>
+<h1>LibraryApi</h1>
+<h2>First of all</h2>
 <p class="real-paragraph"> Copy this script tag to your html page and then you can 
     you these function to display book values.</p>
+<div class="show-code">
+    @str
+</div>
+<h2>Structure of book JSON object</h2>
+<p class="real-paragraph">
+    Single Book object in JSON format.
+</p>
+<div class="show-code">
+    {"BookID":3,<br />
+    "BookName":"Computer Science Illuminated",<br />
+    "Author":"Thomas H. Cormen",<br />
+    "Detail":"Some detail",<br />
+    "Year":2012,<br />
+    "Publisher":"Paratab company",<br />
+    "BookStatus":0}
+</div>
+<p class="real-paragraph">
+    Array of Book object in JSON format.
+</p>
+<div class="show-code">
+    [{"BookID":3,"BookName":"Computer Science Illuminated","Author":"Thomas H. Cormen","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":4,"BookName":"you love me","Author":"Taweechai","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":5,"BookName":"love love","Author":"sawan","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":6,"BookName":"Fundamental of Thailaws","Author":"Prasitsak Sirijarupat","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":7,"BookName":"Calculus:Single Variable","Author":"Deborah Hughes-Hallett","Detail":null,"Year":null,"Publisher":null,"BookStatus":0}]
+</div>
+<h2>Properties of Book object</h2>
+<div class="show-obj-detail">
+    <b>BookName:</b>Display book name.<br />
+    <b>Author:</b>Display book's author.Default will be null If it is not defined.<br />
+    <b>Publisher:</b>Display book's publisher.Default will be null If it is not defined.<br />
+    <b>Year:</b>Display book's year which this book is produced.Default will be null If it is not defined.<br />
+    <b>Detail:</b>Display book's detail.Default will be null If it is not defined.
+</div>
+<h2>Preferred functions</h2>
+<div class="show-code-detail">
+    <b>function</b> viewBookDetail(id)<br />
+    Parameter:id as integer.<br />
+    return value:A single Book Object or null if prefer id is not found.<br />
+    Description:This function use to view detail of book which specified id.<br />
+    <b>Example:</b><br />
+    <div class="show-code">
+        var data = viewBookDetail(170); //Retrieve a book which book id is 170.<br />
+        document.getElementById("test").innerHTML = data.BookName; //Display book's name in element with id "test".<br />
+        document.getElementById("test1").innerHTML = data.Author;  //Display book's author in element with id "test1".
+    </div>
+</div>
+
+<div class="show-code-detail">
+    <b>function</b> getAllBook()<br />
+    Parameter:None.<br />
+    return value:Array of book object.<br />
+    Description:This function use to retrieve all book data in our library have.<br />
+    <b>Example:</b><br />
+    <div class="show-code">
+        var list = getAllBook(); //Retrieve all book.<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
+
 <table class="list">
     <tr>
         <th>ID</th>

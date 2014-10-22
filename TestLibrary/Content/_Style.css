@@ -347,17 +347,14 @@ a.facebook-btt:link{
     border-bottom-right-radius:15px;
 }
 
-
 a.facebook-btt:hover{
     background-color:#1E2C4C
 }
-
 
 a.facebook-btt:visited{
     color:white;
     text-decoration:none;
 }
-
 
 
 div.account-detail{
@@ -584,8 +581,6 @@ h2{
     text-decoration:underline;
 }
 
-
-
 p.real-paragraph,p.noti-msg,p.account-detail{
     text-indent:50px;
     text-align:left;
@@ -645,6 +640,41 @@ span.field-validation-error{
 input.input-validation-error{
     border:1px solid red;
 }
+
+div.show-code{
+    word-break:break-all;
+    margin-top:10px;
+    margin-bottom:10px;
+    padding:5px;
+    font-family:Courier New, Courier, monospace;
+    font-size:small;
+    background-color:#E6E6E6;
+    border:1px solid gray;
+    min-width:260px;
+}
+
+div.show-code-detail{
+    margin-top:10px;
+    margin-bottom:10px;
+    padding:5px;
+    font-family:Single;
+    font-size:x-large;
+    background-color:#CCD6E0;
+    border:1px solid #003366;
+    min-width:260px;
+}
+
+div.show-obj-detail{
+    margin-top:10px;
+    margin-bottom:10px;
+    padding:5px;
+    font-family:Single;
+    font-size:x-large;
+    background-color:#C8B5A3;
+    border:1px solid #754719;
+    min-width:260px;
+}
+
 
 @font-face{
     font-family:Single;

@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+    $.ajaxSetup({
+        async: false
+    });
     $("table.list").on("click", "tr.test button.view-btt", function () {
         view($(this).val());
     });
@@ -14,6 +17,26 @@
     });
 });
 
+function viewBookDetail(id) {
+    var received_data;
+    $.getJSON("/api/BookQuery/" + id)
+        .done(function (data) {
+            received_data = data;
+        }).fail(function () {
+            received_data = null;
+        });
+    return received_data;
+}
+
+function getAllBook() {
+    var received_data;
+    $.getJSON("/api/BookQuery/").done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
 
 function findBookByName() {
     $.getJSON("/api/BookQuery/?name=" + $("input[name='bookname']").val())

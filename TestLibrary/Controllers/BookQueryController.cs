@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web.Http;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
-using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
 using TestLibrary.Utilities;
 namespace TestLibrary.Controllers
@@ -66,9 +65,6 @@ namespace TestLibrary.Controllers
             return NotFound();
         }
 
-        
-        //Edit null reference on comparison and check of booksearch and others.
-        //Also trim input USERNAME (USERNAME MUST NO SPACE)
         public IHttpActionResult PostBook([FromBody]JObject target)
         {
             Book bookToFind = new Book();
@@ -110,7 +106,6 @@ namespace TestLibrary.Controllers
                            Year = book.Year
                        };
                     }
-                
                     catch(FormatException){   
                         return InternalServerError();
                     }
