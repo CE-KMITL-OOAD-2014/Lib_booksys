@@ -54,5 +54,9 @@ $(document).ready(function () {
     });
     $("img.close-btt").click(function () {
         $(this).parent().remove();
-    })
+    });
+    $("button.show-code").click(function () {
+        $(this).next().toggle();
+    });
+    $("span.show-code").hide();
 });

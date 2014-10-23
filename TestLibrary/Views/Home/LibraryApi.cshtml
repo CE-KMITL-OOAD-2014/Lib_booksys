@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Library Api";
-    string code = "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/ApiScript.js\"></script>";
+    string code = "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/jquery-2.1.1.js\"></script>\n"+
+        "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/ApiScript.js\"></script>";
     string code2 = "<input type=\"text\" placeholder=\"Search by name\" id=\"inputBookName\">\n" +
     "<button id=\"bttBookName\">Try it!</button><br />\n" +
     "<input type=\"text\" placeholder=\"Search by author\" id=\"inputAuthor\">\n" +
@@ -196,8 +197,7 @@
 <h2>First of all</h2>
 <p class="real-paragraph"> Copy this script tag to your html page and then you can 
     you these function to display book values.</p>
-<div class="show-code">
-    @code
+<div class="show-code" style="white-space:pre-line">@code
 </div>
 <h2>Structure of book JSON object</h2>
 <p class="real-paragraph">
@@ -224,126 +224,128 @@
 </div>
 <h2>Properties of Book object</h2>
 <div class="show-obj-detail">
+    <b>BookID:</b>Display book's ID.<br />
     <b>BookName:</b>Display book name.<br />
     <b>Author:</b>Display book's author.Default will be null If it is not defined.<br />
     <b>Publisher:</b>Display book's publisher.Default will be null If it is not defined.<br />
     <b>Year:</b>Display book's year which this book is produced.Default will be null If it is not defined.<br />
-    <b>Detail:</b>Display book's detail.Default will be null If it is not defined.
+    <b>Detail:</b>Display book's detail.Default will be null If it is not defined.<br />
+    <b>BookStatus:</b>Display book's status.There is 4 type of statuses(0 = Available,1 = Borrowed,2 = Reserved,3 = Lost).
 </div>
 <h2>Preferred functions</h2>
-<div class="show-code-detail">
-    <b>function</b> getAllBook()<br />
-    Parameter:None.<br />
-    return value:Array of book object.<br />
-    Description:This function use to retrieve all book data in our library have.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var list = getAllBook(); //Retrieve all book.<br />
-        var i = 0; //Initalized interator index.<br />
-        while(list[i] != null) //Check whether item in list which index i is null.<br />
-        document.getElementById("test").innerHTML = list[i].Author; //Display book's author of list[i] where i is iterator index in element with id "test".<br />
+    <div class="show-code-detail">
+        <b>function</b> getAllBook()<br />
+        Parameter:None.<br />
+        return value:Array of book object.<br />
+        Description:This function use to retrieve all book data in our library have.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var list = getAllBook(); //Retrieve all book.<br />
+            var i = 0; //Initalized interator index.<br />
+            while(list[i] != null) //Check whether item in list which index i is null.<br />
+            document.getElementById("test").innerHTML = list[i].Author; //Display book's author of list[i] where i is iterator index in element with id "test".<br />
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> getBookByName(name)<br />
-    Parameter:name as string.<br />
-    return value:Array of book object.<br />
-    Description:This function use to find associated book by name.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var list = getBookByName("Caculus"); //Retrieve all book that contain name "Calculus".<br />
-        var i = 0; //Initalized interator index.<br />
-        while(list[i] != null) //Check whether item in list which index i is null.<br />
-        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    <div class="show-code-detail">
+        <b>function</b> getBookByName(name)<br />
+        Parameter:name as string.<br />
+        return value:Array of book object.<br />
+        Description:This function use to find associated book by name.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var list = getBookByName("Caculus"); //Retrieve all book that contain name "Calculus".<br />
+            var i = 0; //Initalized interator index.<br />
+            while(list[i] != null) //Check whether item in list which index i is null.<br />
+            document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> getBookByAuthor(author)<br />
-    Parameter:author as string.<br />
-    return value:Array of book object.<br />
-    Description:This function use to find associated book by author.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var list = getBookByAuthor("Dyson"); //Retrieve all book that contain author "Dyson".<br />
-        var i = 0; //Initalized interator index.<br />
-        while(list[i] != null) //Check whether item in list which index i is null.<br />
-        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    <div class="show-code-detail">
+        <b>function</b> getBookByAuthor(author)<br />
+        Parameter:author as string.<br />
+        return value:Array of book object.<br />
+        Description:This function use to find associated book by author.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var list = getBookByAuthor("Dyson"); //Retrieve all book that contain author "Dyson".<br />
+            var i = 0; //Initalized interator index.<br />
+            while(list[i] != null) //Check whether item in list which index i is null.<br />
+            document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> getBookByPublisher(publisher)<br />
-    Parameter:publisher as string.<br />
-    return value:Array of book object.<br />
-    Description:This function use to find associated book by publisher.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var list = getBookByAuthor("Maxy company"); //Retrieve all book that contain publisher "Maxy company".<br />
-        var i = 0; //Initalized interator index.<br />
-        while(list[i] != null) //Check whether item in list which index i is null.<br />
-        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    <div class="show-code-detail">
+        <b>function</b> getBookByPublisher(publisher)<br />
+        Parameter:publisher as string.<br />
+        return value:Array of book object.<br />
+        Description:This function use to find associated book by publisher.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var list = getBookByAuthor("Maxy company"); //Retrieve all book that contain publisher "Maxy company".<br />
+            var i = 0; //Initalized interator index.<br />
+            while(list[i] != null) //Check whether item in list which index i is null.<br />
+            document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> getBookByYear(year)<br />
-    Parameter:year as numeric string.<br />
-    return value:Array of book object.<br />
-    Description:This function use to find associated book by year.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var list = getBookByYear("2012"); //Retrieve all book that produced in 2012.<br />
-        var i = 0; //Initalized interator index.<br />
-        while(list[i] != null) //Check whether item in list which index i is null.<br />
-        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    <div class="show-code-detail">
+        <b>function</b> getBookByYear(year)<br />
+        Parameter:year as numeric string.<br />
+        return value:Array of book object.<br />
+        Description:This function use to find associated book by year.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var list = getBookByYear("2012"); //Retrieve all book that produced in 2012.<br />
+            var i = 0; //Initalized interator index.<br />
+            while(list[i] != null) //Check whether item in list which index i is null.<br />
+            document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> viewBookDetail(id)<br />
-    Parameter:id as string.<br />
-    return value:A single Book Object or null if prefer id is not found.<br />
-    Description:This function use to view detail of book which specified id.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var data = viewBookDetail(170); //Retrieve a book which book id is 170.<br />
-        document.getElementById("test").innerHTML = data.BookName; //Display book's name in element with id "test".<br />
-        document.getElementById("test1").innerHTML = data.Author;  //Display book's author in element with id "test1".
+    <div class="show-code-detail">
+        <b>function</b> viewBookDetail(id)<br />
+        Parameter:id as string.<br />
+        return value:A single Book Object or null if prefer id is not found.<br />
+        Description:This function use to view detail of book which specified id.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var data = viewBookDetail(170); //Retrieve a book which book id is 170.<br />
+            document.getElementById("test").innerHTML = data.BookName; //Display book's name in element with id "test".<br />
+            document.getElementById("test1").innerHTML = data.Author;  //Display book's author in element with id "test1".
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> getBookByAllProperties(name,author,publisher,year)<br />
-    Parameter:name,author,publisher as string.year as numeric string.<br />
-    return value:Array of book object.<br />
-    Description:This function use to find book which specified all properties.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var list = getBookByAllProperties("Caculus","Emma","Rysis,"2014"); //Retrieve related book which book name is Caculus,book's author is Emma,book's publisher is Rysis and produced in 2014.<br />
-        var i = 0; //Initalized interator index.<br />
-        while(list[i] != null) //Check whether item in list which index i is null.<br />
-        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    <div class="show-code-detail">
+        <b>function</b> getBookByAllProperties(name,author,publisher,year)<br />
+        Parameter:name,author,publisher as string.year as numeric string.<br />
+        return value:Array of book object.<br />
+        Description:This function use to find book which specified all properties.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var list = getBookByAllProperties("Caculus","Emma","Rysis,"2014"); //Retrieve related book which book name is Caculus,book's author is Emma,book's publisher is Rysis and produced in 2014.<br />
+            var i = 0; //Initalized interator index.<br />
+            while(list[i] != null) //Check whether item in list which index i is null.<br />
+            document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+        </div>
     </div>
-</div>
 
-<div class="show-code-detail">
-    <b>function</b> getBookStatus(value)<br />
-    Parameter:value as integer.<br />
-    return value:Book status as string or null if value is not exists(status value range is 0 to 3).<br />
-    Description:This function use to convert book status integer to status string.<br />
-    <b>Example:</b><br />
-    <div class="show-code-example">
-        var a = getBookStatus(0); // a = "Available" <br />
-        var b = getBookStatus(1); // b = "Borrowed" <br />
-        var c = getBookStatus(2); // c = "Reserved" <br />
-        var d = getBookStatus(3); // d = "Lost" <br />
-        var e = getBookStatus(323232); // invalid value -> e = null <br />
+    <div class="show-code-detail">
+        <b>function</b> getBookStatus(value)<br />
+        Parameter:value as integer.<br />
+        return value:Book status as string or null if value is not exists(status value range is 0 to 3).<br />
+        Description:This function use to convert book status integer to status string.<br />
+        <b>Example:</b><br />
+        <div class="show-code-example">
+            var a = getBookStatus(0); // a = "Available" <br />
+            var b = getBookStatus(1); // b = "Borrowed" <br />
+            var c = getBookStatus(2); // c = "Reserved" <br />
+            var d = getBookStatus(3); // d = "Lost" <br />
+            var e = getBookStatus(323232); // invalid value -> e = null <br />
+        </div>
     </div>
-</div>
-
 <h2>Jump start:Example 1</h2>
+<p class="real-paragraph">Learn to use by example and you can copy code to adapt it in your website!</p>
 <div class="show-code">
     <input type="text" placeholder="Search by name" id="inputBookName">
     <button id="bttBookName">Try it!</button><br />
@@ -466,7 +468,8 @@
 </div>
 <h2>Code for example 1</h2>
     <div class="show-code" style="white-space:pre-line">
-        @code2
+        <button class="show-code">Show code</button>
+        <span class="show-code">@code2</span>
     </div>
 
 <h2>Example 2</h2>
@@ -521,7 +524,8 @@
 </div>
 <h2>Code for example 2</h2>
 <div class="show-code" style="white-space:pre-line">
-    @code3
+    <button class="show-code">Show code</button>
+    <span class="show-code">@code3</span>
 </div>
 <h2>Example 3</h2>
 <div class="show-code">
@@ -529,6 +533,7 @@
     <button id="bttViewBook">Try it!</button>
     <div id="bookDetail">
     </div>
+
     <script type="text/javascript">
         $("#bttViewBook").click(function () {
             var bookToView = viewBookDetail($("#inputBookid").val());
@@ -546,12 +551,103 @@
                 $("#bookDetail").empty();
                 $("#bookDetail").append("No book that associcated with preferred book id.");
             }
+            
         });
     </script>
 </div>
 
 <h2>Code for example 3</h2>
 <div class="show-code" style="white-space:pre-line">
-    @code4
+    <button class="show-code">Show code</button>
+    <span class="show-code">@code4</span>
 </div>
+
+<h2>URI for custom functional(Advanced)</h2>
+<table class="api-adv">
+    <tr>
+        <th>
+            URI
+        </th>
+        <th>
+            Method
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+    <tr>
+        <td>
+            api/bookquery
+        </td>
+        <td>
+            GET
+        </td>
+        <td>
+            Retrieve all book like getAllBook()
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            api/bookquery/id
+        </td>
+        <td>
+            GET
+        </td>
+        <td>
+            Retrieve a single book like viewBookDetail(id)
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            api/bookquery?name={param}
+        </td>
+        <td>
+            GET
+        </td>
+        <td>
+            Retrieve related book by book name (where {param} is book name that you want to search) like getBookByName(name).
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            api/bookquery?author={param}
+        </td>
+        <td>
+            GET
+        </td>
+        <td>
+            Retrieve related book by author (where {param} is author that you want to search) like getBookByAuthor(author).
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            api/bookquery?publisher={param}
+        </td>
+        <td>
+            GET
+        </td>
+        <td>
+            Retrieve related book by publisher (where {param} is publisher that you want to search) like getBookByPublisher(publisher).
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            api/bookquery?year={param}
+        </td>
+        <td>
+            GET
+        </td>
+        <td>
+            Retrieve related book by year that producted book (where {param} is year that you want to search) like getBookByYear(year).
+        </td>
+    </tr>
+
+
+
+</table>
     @System.Web.Optimization.Scripts.Render("~/ApiBundles")
