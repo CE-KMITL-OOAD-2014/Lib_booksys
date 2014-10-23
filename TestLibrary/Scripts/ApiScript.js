@@ -38,6 +38,71 @@ function getAllBook() {
     return received_data;
 }
 
+function getBookByName(name) {
+    var received_data;
+    $.getJSON("/api/BookQuery/?name="+name).done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
+
+function getBookByAuthor(author) {
+    var received_data;
+    $.getJSON("/api/BookQuery/?author="+author).done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
+
+function getBookByPublisher(publisher) {
+    var received_data;
+    $.getJSON("/api/BookQuery/?publisher=" + publisher).done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
+
+function getBookByYear(year) {
+    var received_data;
+    $.getJSON("/api/BookQuery/?year=" + year).done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
+
+function getBookByAllProperties(name,author,publisher,year) {
+    var received_data;
+
+    var target = new Object();
+    target.BookName = name;
+    target.Author = author;
+    target.Publisher = publisher;
+    target.Year = year;
+
+    $.ajax({
+        type: "POST",
+        url: "/api/BookQuery/",
+        data: JSON.stringify(target),
+        contentType: "application/json"
+    }).done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
+
+
+
+
 function findBookByName() {
     $.getJSON("/api/BookQuery/?name=" + $("input[name='bookname']").val())
         .done(function (data) {
@@ -63,21 +128,6 @@ function view(id) {
             $("div.detail").children().remove();
             $("div.detail").append("<p><b>" + data.BookID + " " + data.BookName + "<br>Detail:" + data.Detail + "<br>Year:" + data.Year + "</p>");
         });
-}
-
-function findAuthor() {
-    var str = $("#in2").val();
-    $.post("/api/BookQuery/", { '': str }).fail(function (jQxCR, error, err) {
-        $("p.noti-msg").text(err);
-    }).done(function (data) {
-        $("p.noti-msg").text("");
-        $("table.list tr.test").remove();
-        $.each(data, function (key, item) {
-            $("table.list").append("<tr class=\"test\"><td>" + item.BookID + "</td><td>"
-            + item.BookName + "</td><td>" + item.Author + "</td>"
-            + "<td><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
-        });
-    });
 }
 
 function findBook() {

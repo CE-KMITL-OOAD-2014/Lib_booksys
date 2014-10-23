@@ -1,6 +1,114 @@
 ﻿@{
     ViewBag.Title = "Library Api";
     string str = "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/ApiScript.js\"></script>";
+    /*string code2 = "<input type=\"text\" placeholder=\"Search by name\" id=\"inputBookName\">"+
+    "<button id=\"bttBookName\">Try it!</button><br />"+
+    "<input type=\"text\" placeholder=\"Search by author\" id=\"inputAuthor\">"+
+    "<button id=\"bttAuthor\">Try it!</button><br />"+
+    "<input type=\"text\" placeholder=\"Search by publisher\" id=\"inputPublisher\">"+
+    "<button id=\"bttPublisher\">Try it!</button><br />"+
+    "<input type=\"text\" placeholder=\"Search by year\" id=\"inputYear\">"+
+    "<button id=\"bttYear\">Try it!</button><br /><br />"+
+    "<table id=\"showlist\" class=\"samplelist\">"+
+    "</table>"+
+    "<style>"+
+        "table.samplelist {"+
+            "border-collapse: collapse;"+
+        "}"+
+        "table.samplelist th{"+
+            "padding:5px;"
+            border:1px solid black;
+        }
+        table.samplelist td{
+            padding:5px;
+            border:1px solid black;
+        }
+    </style>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.1.js"></script>
+    <script type="text/javascript">
+    $("#bttBookName").click(function () {
+        var listBookName = getBookByName($("#inputBookName").val());
+        if (listBookName != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookName[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookName[i].BookID + '</td>' +
+                    '<td>' + listBookName[i].BookName + '</td>'+
+                    '<td>' + listBookName[i].Author + '</td>'+
+                    '<td>' + listBookName[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with name:" + $("#inputBookName").val());
+        }
+    });
+
+
+    $("#bttAuthor").click(function () {
+        var listBookAuthor = getBookByAuthor($("#inputAuthor").val());
+        if (listBookAuthor != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookAuthor[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookAuthor[i].BookID + '</td>' +
+                    '<td>' + listBookAuthor[i].BookName + '</td>' +
+                    '<td>' + listBookAuthor[i].Author + '</td>' +
+                    '<td>' + listBookAuthor[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with author:" + $("#inputAuthor").val());
+        }
+        $("#wth").select();
+    });
+
+
+    $("#bttPublisher").click(function () {
+        var listBookPublisher = getBookByPublisher($("#inputPublisher").val());
+        if (listBookPublisher != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookPublisher[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookPublisher[i].BookID + '</td>' +
+                    '<td>' + listBookPublisher[i].BookName + '</td>' +
+                    '<td>' + listBookPublisher[i].Author + '</td>' +
+                    '<td>' + listBookPublisher[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with publisher:" + $("#inputPublisher").val());
+        }
+    });
+
+    $("#bttYear").click(function () {
+        var listBookYear = getBookByYear($("#inputYear").val());
+        if (listBookYear != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookYear[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookYear[i].BookID + '</td>' +
+                    '<td>' + listBookYear[i].BookName + '</td>' +
+                    '<td>' + listBookYear[i].Author + '</td>' +
+                    '<td>' + listBookYear[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with year:" + $("#inputYear").val());
+        }
+    });
+    </script>"*/
 }
 
 <h1>LibraryApi</h1>
@@ -43,12 +151,82 @@
 </div>
 <h2>Preferred functions</h2>
 <div class="show-code-detail">
+    <b>function</b> getAllBook()<br />
+    Parameter:None.<br />
+    return value:Array of book object.<br />
+    Description:This function use to retrieve all book data in our library have.<br />
+    <b>Example:</b><br />
+    <div class="show-code-example">
+        var list = getAllBook(); //Retrieve all book.<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].Author; //Display book's author of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
+<div class="show-code-detail">
+    <b>function</b> getBookByName(name)<br />
+    Parameter:name as string.<br />
+    return value:Array of book object.<br />
+    Description:This function use to find associated book by name.<br />
+    <b>Example:</b><br />
+    <div class="show-code-example">
+        var list = getBookByName("Caculus"); //Retrieve all book that contain name "Calculus".<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
+<div class="show-code-detail">
+    <b>function</b> getBookByAuthor(author)<br />
+    Parameter:author as string.<br />
+    return value:Array of book object.<br />
+    Description:This function use to find associated book by author.<br />
+    <b>Example:</b><br />
+    <div class="show-code-example">
+        var list = getBookByAuthor("Dyson"); //Retrieve all book that contain author "Dyson".<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
+<div class="show-code-detail">
+    <b>function</b> getBookByPublisher(publisher)<br />
+    Parameter:publisher as string.<br />
+    return value:Array of book object.<br />
+    Description:This function use to find associated book by publisher.<br />
+    <b>Example:</b><br />
+    <div class="show-code-example">
+        var list = getBookByAuthor("Maxy company"); //Retrieve all book that contain publisher "Maxy company".<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
+<div class="show-code-detail">
+    <b>function</b> getBookByYear(year)<br />
+    Parameter:year as numeric string.<br />
+    return value:Array of book object.<br />
+    Description:This function use to find associated book by year.<br />
+    <b>Example:</b><br />
+    <div class="show-code-example">
+        var list = getBookByYear("2012"); //Retrieve all book that produced in 2012.<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
+<div class="show-code-detail">
     <b>function</b> viewBookDetail(id)<br />
-    Parameter:id as integer.<br />
+    Parameter:id as string.<br />
     return value:A single Book Object or null if prefer id is not found.<br />
     Description:This function use to view detail of book which specified id.<br />
     <b>Example:</b><br />
-    <div class="show-code">
+    <div class="show-code-example">
         var data = viewBookDetail(170); //Retrieve a book which book id is 170.<br />
         document.getElementById("test").innerHTML = data.BookName; //Display book's name in element with id "test".<br />
         document.getElementById("test1").innerHTML = data.Author;  //Display book's author in element with id "test1".
@@ -56,20 +234,135 @@
 </div>
 
 <div class="show-code-detail">
-    <b>function</b> getAllBook()<br />
-    Parameter:None.<br />
+    <b>function</b> getBookByAllProperties(name,author,publisher,year)<br />
+    Parameter:name,author,publisher as string.year as numeric string.<br />
     return value:Array of book object.<br />
-    Description:This function use to retrieve all book data in our library have.<br />
+    Description:This function use to find book which specified all properties.<br />
     <b>Example:</b><br />
-    <div class="show-code">
-        var list = getAllBook(); //Retrieve all book.<br />
+    <div class="show-code-example">
+        var list = getBookByAllProperties("Caculus","Emma","Rysis,"2014"); //Retrieve related book which book name is Caculus,book's author is Emma,book's publisher is Rysis and produced in 2014.<br />
         var i = 0; //Initalized interator index.<br />
         while(list[i] != null) //Check whether item in list which index i is null.<br />
         document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
     </div>
 </div>
 
+<h2>Jump start by example</h2>
+<div class="show-code">
+    <input type="text" placeholder="Search by name" id="inputBookName">
+    <button id="bttBookName">Try it!</button><br />
+    <input type="text" placeholder="Search by author" id="inputAuthor">
+    <button id="bttAuthor">Try it!</button><br />
+    <input type="text" placeholder="Search by publisher" id="inputPublisher">
+    <button id="bttPublisher">Try it!</button><br />
+    <input type="text" placeholder="Search by year" id="inputYear">
+    <button id="bttYear">Try it!</button><br /><br />
+    <table id="showlist" class="samplelist">
+    </table>
+    <p id="1234"></p>
+    <style>
+        table.samplelist {
+            border-collapse: collapse;
+        }
+        table.samplelist th{
+            padding:5px;
+            border:1px solid black;
+        }
+        table.samplelist td{
+            padding:5px;
+            border:1px solid black;
+        }
+    </style>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.1.js"></script>
+    <script type="text/javascript">
+    $("#bttBookName").click(function () {
+        var listBookName = getBookByName($("#inputBookName").val());
+        if (listBookName != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookName[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookName[i].BookID + '</td>' +
+                    '<td>' + listBookName[i].BookName + '</td>'+
+                    '<td>' + listBookName[i].Author + '</td>'+
+                    '<td>' + listBookName[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with name:" + $("#inputBookName").val());
+        }
+    });
 
+
+    $("#bttAuthor").click(function () {
+        var listBookAuthor = getBookByAuthor($("#inputAuthor").val());
+        if (listBookAuthor != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookAuthor[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookAuthor[i].BookID + '</td>' +
+                    '<td>' + listBookAuthor[i].BookName + '</td>' +
+                    '<td>' + listBookAuthor[i].Author + '</td>' +
+                    '<td>' + listBookAuthor[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with author:" + $("#inputAuthor").val());
+        }
+        $("#1234").text($("#showlist").html());
+    });
+
+
+    $("#bttPublisher").click(function () {
+        var listBookPublisher = getBookByPublisher($("#inputPublisher").val());
+        if (listBookPublisher != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookPublisher[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookPublisher[i].BookID + '</td>' +
+                    '<td>' + listBookPublisher[i].BookName + '</td>' +
+                    '<td>' + listBookPublisher[i].Author + '</td>' +
+                    '<td>' + listBookPublisher[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with publisher:" + $("#inputPublisher").val());
+        }
+    });
+
+    $("#bttYear").click(function () {
+        var listBookYear = getBookByYear($("#inputYear").val());
+        if (listBookYear != null) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th><th>Year</th></tr>');
+            while (listBookYear[i] != null) {
+                $("#showlist").append('<tr><td>' + listBookYear[i].BookID + '</td>' +
+                    '<td>' + listBookYear[i].BookName + '</td>' +
+                    '<td>' + listBookYear[i].Author + '</td>' +
+                    '<td>' + listBookYear[i].Year + '</td></tr>');
+                i++;
+            }
+        }
+        else {
+            $("#showlist").empty();
+            $("#showlist").append("No book with year:" + $("#inputYear").val());
+        }
+    });
+    </script>
+</div>
+<h2>Code for this example</h2>
+<div class="show-code">
+
+</div>
 <table class="list">
     <tr>
         <th>ID</th>

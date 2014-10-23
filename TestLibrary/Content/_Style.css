@@ -664,6 +664,19 @@ div.show-code-detail{
     min-width:260px;
 }
 
+div.show-code-example{
+    word-break:break-all;
+    margin-top:10px;
+    margin-bottom:10px;
+    padding:5px;
+    font-family:Courier New, Courier, monospace;
+    font-size:small;
+    background-color:#E6E6E6;
+    border:1px solid gray;
+    min-width:240px;
+}
+
+
 div.show-obj-detail{
     margin-top:10px;
     margin-bottom:10px;

@@ -20,7 +20,11 @@ namespace TestLibrary.Controllers
                         book => new Book(){
                         BookID = book.BookID,
                         BookName = book.BookName,
-                        Author = book.Author
+                        Author = book.Author,
+                        Publisher = book.Publisher,
+                        Year = book.Year,
+                        BookStatus = book.BookStatus,
+                        Detail = book.Detail
                         });
        }
 
@@ -36,7 +40,8 @@ namespace TestLibrary.Controllers
                               Author = book.Author,
                               Detail = book.Detail,
                               Publisher = book.Publisher,
-                              Year = book.Year
+                              Year = book.Year,
+                              BookStatus = book.BookStatus
                             };
             if (target == null)
                 return NotFound();
@@ -45,7 +50,82 @@ namespace TestLibrary.Controllers
             else
                 return NotFound();
         }
-        
+
+        public IHttpActionResult GetBookByAuthor(string author)
+        {
+            if (author == null)
+                return NotFound();
+            var target = from book in LibRepo.BookRepo.List()
+                         where StringUtil.IsContains(book.Author, author)
+                         select new Book
+                         {
+                             BookID = book.BookID,
+                             BookName = book.BookName,
+                             Author = book.Author,
+                             Detail = book.Detail,
+                             Publisher = book.Publisher,
+                             Year = book.Year,
+                             BookStatus = book.BookStatus
+                         };
+            if (target == null)
+                return NotFound();
+            else if (target.ToList().Count > 0)
+                return Ok(target);
+            else
+                return NotFound();
+        }
+
+        public IHttpActionResult GetBookByPublisher(string publisher)
+        {
+            if (publisher == null)
+                return NotFound();
+            var target = from book in LibRepo.BookRepo.List()
+                         where StringUtil.IsContains(book.Publisher, publisher)
+                         select new Book
+                         {
+                             BookID = book.BookID,
+                             BookName = book.BookName,
+                             Author = book.Author,
+                             Detail = book.Detail,
+                             Publisher = book.Publisher,
+                             Year = book.Year,
+                             BookStatus = book.BookStatus
+                         };
+            if (target == null)
+                return NotFound();
+            else if (target.ToList().Count > 0)
+                return Ok(target);
+            else
+                return NotFound();
+        }
+
+
+        public IHttpActionResult GetBookByYear(int? year)
+        {
+            if (year == null)
+                return NotFound();
+            var target = from book in LibRepo.BookRepo.List()
+                         where book.Year == year
+                         select new Book
+                         {
+                             BookID = book.BookID,
+                             BookName = book.BookName,
+                             Author = book.Author,
+                             Detail = book.Detail,
+                             Publisher = book.Publisher,
+                             Year = book.Year,
+                             BookStatus = book.BookStatus
+                         };
+            if (target == null)
+                return NotFound();
+            else if (target.ToList().Count > 0)
+                return Ok(target);
+            else
+                return NotFound();
+        }
+
+
+
 
         //Get book by ID to view Detail.
         public IHttpActionResult GetBookById(int id)
@@ -58,7 +138,8 @@ namespace TestLibrary.Controllers
                               Author = book.Author,
                               Detail = book.Detail,
                               Publisher = book.Publisher,
-                              Year = book.Year
+                              Year = book.Year,
+                              BookStatus = book.BookStatus
                           }).SingleOrDefault();
             if(target!=null)
                 return Ok(target);
@@ -85,7 +166,8 @@ namespace TestLibrary.Controllers
                                Author = book.Author,
                                Detail = book.Detail,
                                Publisher = book.Publisher,
-                               Year = book.Year
+                               Year = book.Year,
+                               BookStatus = book.BookStatus
                            };
             }
             else
@@ -103,7 +185,8 @@ namespace TestLibrary.Controllers
                            Author = book.Author,
                            Detail = book.Detail,
                            Publisher = book.Publisher,
-                           Year = book.Year
+                           Year = book.Year,
+                           BookStatus = book.BookStatus
                        };
                     }
                     catch(FormatException){   
