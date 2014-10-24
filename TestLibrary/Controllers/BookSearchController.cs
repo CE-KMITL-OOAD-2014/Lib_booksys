@@ -14,8 +14,6 @@ namespace TestLibrary.Controllers
         LibraryRepository libRepo = new LibraryRepository();
         public ActionResult Index()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
@@ -168,5 +166,18 @@ namespace TestLibrary.Controllers
                     }
             }
         }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    Session["LoginUser"] = HttpContext.User.Identity.Name;
+                else
+                    Session["LoginUser"] = null;
+            }
+        }
+
+
     }
 }

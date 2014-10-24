@@ -17,10 +17,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
-
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<Book> bookList = libRepo.BookRepo.List();
@@ -41,27 +37,10 @@ namespace TestLibrary.Controllers
             }
         }
 
-        //Will edit later
-        [Authorize]
-        public ActionResult ViewBook([DefaultValue(0)]int id)
-        {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
-            Book booktoview = libRepo.BookRepo.Find(id);
-            if (booktoview == null)
-                return HttpNotFound();
-            else
-                return View(booktoview);
-        }
-
 
         [Authorize]
         public ActionResult AddBook()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -84,9 +63,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult EditBook([DefaultValue(0)]int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             Book booktoedit = libRepo.BookRepo.Find(id);
             if (booktoedit == null)
                 return HttpNotFound();
@@ -147,9 +123,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult DeleteBook([DefaultValue(0)]int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             Book booktodelete = libRepo.BookRepo.Find(id);
             if (booktodelete == null)
                 return HttpNotFound();
@@ -178,5 +151,17 @@ namespace TestLibrary.Controllers
             return RedirectToAction("Index");
         }
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                {
+                    filterContext.Result = RedirectToAction("Index", "Account");
+                    return;
+                }
+            }
+        }
     }
 }

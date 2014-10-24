@@ -15,11 +15,15 @@ namespace TestLibrary.Controllers
         LibraryRepository libRepo = new LibraryRepository();
         public ActionResult View([DefaultValue(0)]int id)
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-            }
             return View(libRepo.BookRepo.Find(id));
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    Session["LoginUser"] = HttpContext.User.Identity.Name;
+                else
+                    Session["LoginUser"] = null;
         }
     }
 }

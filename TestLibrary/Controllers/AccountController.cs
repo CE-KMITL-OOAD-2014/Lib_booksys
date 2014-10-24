@@ -18,7 +18,7 @@ namespace TestLibrary.Controllers
         public ActionResult Index()
         {
             string userName;
-            Session["LoginUser"] = userName = HttpContext.User.Identity.Name;
+            userName = HttpContext.User.Identity.Name;
             userName = userName.Substring(2);
             Person CurrentLoginUser = libRepo.LibrarianRepo.ListWhere(target => target.UserName == userName).SingleOrDefault();
             if (CurrentLoginUser == null)
@@ -32,10 +32,10 @@ namespace TestLibrary.Controllers
             }
             return View(CurrentLoginUser);
         }
+
         [Authorize]
         public ActionResult ChangePassword()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
@@ -80,7 +80,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult EditAccount()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
             Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
             if (target == null)
                 target = libRepo.MemberRepo.ListWhere(member => member.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
@@ -129,11 +128,24 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult LibrarianPortal()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index");
             return View();
-        }        
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                if (filterContext.ActionDescriptor.ActionName == "LibrarianPortal")
+                {
+                    if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                    {
+                        filterContext.Result = RedirectToAction("Index");
+                        return;
+                    }
+                }
+            }
+        }
     }
 
 }

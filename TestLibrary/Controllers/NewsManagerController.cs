@@ -17,9 +17,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
@@ -43,9 +40,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult AddNews()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -69,9 +63,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult EditNews([DefaultValue(0)]int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             News newsToEdit = libRepo.NewsRepo.Find(id);
             if (newsToEdit != null)
                 return View(newsToEdit);
@@ -97,9 +88,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult DeleteNews(int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             News newsToDelete = libRepo.NewsRepo.Find(id);
             if (newsToDelete != null)
                 return View(newsToDelete);
@@ -119,5 +107,18 @@ namespace TestLibrary.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_"){
+                    filterContext.Result = RedirectToAction("Index", "Account");
+                    return;
+                }
+            }
+        }
+
     }
 }

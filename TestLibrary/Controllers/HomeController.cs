@@ -21,35 +21,25 @@ namespace TestLibrary.Controllers
 
         public ActionResult Index()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View(libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime));
         }
 
         public ActionResult About()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
         public ActionResult Contact()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
         public ActionResult ChangeLog()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
         public ActionResult TopTen()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             TopTenViewer viewer = new TopTenViewer();
             List<Member> topMember = libRepo.MemberRepo.List().OrderByDescending(member => member.GetRelatedBorrowEntry().Count).ToList();
             List<Book> topBorrowBook = libRepo.BookRepo.List().OrderByDescending(book => book.GetRelatedBorrowEntry().Count).ToList();
@@ -70,30 +60,30 @@ namespace TestLibrary.Controllers
 
         public ActionResult LibraryApi()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
         public ActionResult Error404()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
         public ActionResult Error400()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
             return View();
         }
 
         public ActionResult Error500()
         {
+            return View();
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
             if (HttpContext.User.Identity.IsAuthenticated)
                 Session["LoginUser"] = HttpContext.User.Identity.Name;
-            return View();
+            else
+                Session["LoginUser"] = null;
         }
     }
 }

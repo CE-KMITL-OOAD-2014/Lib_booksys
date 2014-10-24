@@ -17,11 +17,6 @@ namespace TestLibrary.Controllers
         LibraryRepository libRepo = new LibraryRepository();
         public ActionResult Login()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-                return RedirectToAction("Index", "Home");
-            }
             return View();
         }
         
@@ -37,6 +32,7 @@ namespace TestLibrary.Controllers
                     {
                         FormsAuthentication.SetAuthCookie("M_" + loginUser.UserName, submitData.Remember);
                         Session["LoginUser"] = "M_" + loginUser.UserName;
+                        Response.Cookies[FormsAuthentication.FormsCookieName].HttpOnly = false;
                         return RedirectToAction("Index", "Account");
                     }
                     else
@@ -46,6 +42,7 @@ namespace TestLibrary.Controllers
                         {
                             FormsAuthentication.SetAuthCookie("A_" + loginUser.UserName, submitData.Remember);
                             Session["LoginUser"] = "A_" + loginUser.UserName;
+                            Response.Cookies[FormsAuthentication.FormsCookieName].HttpOnly = false;
                             return RedirectToAction("Index", "Account");
                         }
                         TempData["ErrorNoti"] = "Login info is incorrect.";
@@ -65,11 +62,6 @@ namespace TestLibrary.Controllers
 
         public ActionResult Register()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-                return RedirectToAction("Index", "Home");
-            }
             return View();
         }
 
@@ -125,12 +117,6 @@ namespace TestLibrary.Controllers
 
         public ActionResult ForgotPassword()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-                return RedirectToAction("Index", "Home");
-            }
-            else
                 return View();
         }
 
@@ -178,6 +164,7 @@ namespace TestLibrary.Controllers
         {
             if(!HttpContext.User.Identity.IsAuthenticated)
             {
+                Session["LoginUser"] = null;
                 Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Password == token).SingleOrDefault();
                 if (userToRecover == null)
                 userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Password == token).SingleOrDefault();
@@ -252,6 +239,24 @@ namespace TestLibrary.Controllers
             {
                 TempData["ErrorNoti"] = "Please fill in the blank of password and comfirm password.";
                 return View();
+            }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                if (filterContext.ActionDescriptor.ActionName == "Login" || filterContext.ActionDescriptor.ActionName == "Register"
+                    || filterContext.ActionDescriptor.ActionName == "ForgotPassword")
+                {
+                    if (HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        Session["LoginUser"] = HttpContext.User.Identity.Name;
+                        filterContext.Result =  RedirectToAction("Index", "Home");
+                        return;
+                    }
+                    Session["LoginUser"] = null;
+                }
             }
         }
     }

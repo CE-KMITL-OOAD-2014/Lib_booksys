@@ -13,8 +13,6 @@ namespace TestLibrary.Controllers
         LibraryRepository libRepo = new LibraryRepository();
         public ActionResult View(int id)
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
             News newstoview = libRepo.NewsRepo.Find(id);
             if (newstoview != null)
                 return View(newstoview);
@@ -24,11 +22,6 @@ namespace TestLibrary.Controllers
 
         public ActionResult ViewAll(int page = 1,int pageSize = 10)
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-            }
-
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
@@ -47,6 +40,14 @@ namespace TestLibrary.Controllers
                         return View();
                     }
             }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+            else
+                Session["LoginUser"] = null;
         }
     }
 }

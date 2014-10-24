@@ -159,10 +159,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
-
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<BorrowEntry> borrowList = libRepo.BorrowEntryRepo.List();
@@ -188,8 +184,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Transaction()
         {
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -227,6 +221,19 @@ namespace TestLibrary.Controllers
             {
                 TempData["ErrorNoti"] = "Please enter Member ID";
                 return View();
+            }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                {
+                    filterContext.Result = RedirectToAction("Index", "Account");
+                    return;
+                }
             }
         }
     }

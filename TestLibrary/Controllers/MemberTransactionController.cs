@@ -16,9 +16,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) == "M_")
-            {
                 MemberTransactionViewer viewer = new MemberTransactionViewer();
                 viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(target => target.GetBorrower().UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2) &&
@@ -26,18 +23,12 @@ namespace TestLibrary.Controllers
                 viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.GetRequestUser().UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2))));
                 return View(viewer);
-            }
-            else
-                return RedirectToAction("Index", "Account");
+            
         }
 
         [Authorize]
         public ActionResult Renew(int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Account");
-
             BorrowEntry renewentry = libRepo.BorrowEntryRepo.ListWhere(target => target.ID == id &&
                                         target.ReturnDate == null).SingleOrDefault();
             if (renewentry == null)
@@ -88,9 +79,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Request()
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Account");
             return View();
         }
 
@@ -148,9 +136,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult CancelRequest(int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Account");
             RequestEntry wantedEntry = libRepo.RequestEntryRepo.Find(id);
             if (wantedEntry == null)
             {
@@ -199,9 +184,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult BorrowHistory(int page = 1,int pageSize = 10)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
-                return RedirectToAction("Index", "Account");
             string username;
             username = HttpContext.User.Identity.Name.ToString().Substring(2);
             Member currentMember = libRepo.MemberRepo.ListWhere(target => target.UserName == username).SingleOrDefault();
@@ -221,6 +203,19 @@ namespace TestLibrary.Controllers
                         TempData["ErrorNoti"] = "Invalid list view parameter please refresh this page to try again.";
                         return View();
                     }
+            }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.HttpMethod == "GET")
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "M_")
+                {
+                    filterContext.Result = RedirectToAction("Index", "Account");
+                    return;
+                }
             }
         }
     }

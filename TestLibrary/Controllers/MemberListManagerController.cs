@@ -16,9 +16,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             List<Member> memberList = libRepo.MemberRepo.List();
@@ -42,9 +39,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult View([DefaultValue(0)]int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             Member target = libRepo.MemberRepo.Find(id);
             if (target != null)
                 return View(target);
@@ -58,9 +52,6 @@ namespace TestLibrary.Controllers
         [Authorize]
         public ActionResult Delete([DefaultValue(0)]int id)
         {
-            Session["LoginUser"] = HttpContext.User.Identity.Name;
-            if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
-                return RedirectToAction("Index", "Account");
             Member target = libRepo.MemberRepo.Find(id);
             if (target != null)
                 return View(target);
@@ -113,6 +104,19 @@ namespace TestLibrary.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Request.HttpMethod == "GET")
+            {
+                Session["LoginUser"] = HttpContext.User.Identity.Name;
+                if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                {
+                    filterContext.Result = RedirectToAction("Index", "Account");
+                    return;
+                }
+            }
         }
     }
 }
