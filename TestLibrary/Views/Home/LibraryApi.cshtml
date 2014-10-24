@@ -183,7 +183,8 @@
                 "$(\"#bookDetail\").append(\"<b>Book author:</b>\" + bookToView.Author + \"<br>\");\n"+
                 "$(\"#bookDetail\").append(\"<b>Book publisher:</b>\" + bookToView.Publisher + \"<br>\");\n"+
                 "$(\"#bookDetail\").append(\"<b>Book year:</b>\" + bookToView.Year + \"<br>\");\n"+
-                "$(\"#bookDetail\").append(\"<b>Book status:</b>\" + getBookStatus(bookToView.BookStatus));"+
+                "$(\"#bookDetail\").append(\"<b>Book status:</b>\" + getBookStatus(bookToView.BookStatus) + \"<br>\");\n"+
+                "$(\"#bookDetail\").append(\"<b>Detail:</b>\" + bookToView.Detail);\n"+
             "}\n"+
             "else {\n"+
                 "$(\"#bookDetail\").empty();\n"+
@@ -197,7 +198,9 @@
 <h2>First of all</h2>
 <p class="real-paragraph"> Copy this script tag to your html page and then you can 
     you these function to display book values.</p>
-<div class="show-code" style="white-space:pre-line">@code
+<div class="show-code">
+    <span style="white-space:pre-line">@code
+    </span>
 </div>
 <h2>Structure of book JSON object</h2>
 <p class="real-paragraph">
@@ -316,11 +319,11 @@
         </div>
     </div>
 
-    <div class="show-code-detail">
+    <div class="show-code-detail-long">
         <b>function</b> getBookByAllProperties(name,author,publisher,year)<br />
         Parameter:name,author,publisher as string.year as numeric string.<br />
         return value:Array of book object.<br />
-        Description:This function use to find book which specified all properties.<br />
+        Description:This function use to find book which specified all properties.Use HTTPPOST to archive this.<br />
         <b>Example:</b><br />
         <div class="show-code-example">
             var list = getBookByAllProperties("Caculus","Emma","Rysis,"2014"); //Retrieve related book which book name is Caculus,book's author is Emma,book's publisher is Rysis and produced in 2014.<br />
@@ -545,7 +548,8 @@
                 $("#bookDetail").append("<b>Book author:</b>" + bookToView.Author + "<br>");
                 $("#bookDetail").append("<b>Book publisher:</b>" + bookToView.Publisher + "<br>");
                 $("#bookDetail").append("<b>Book year:</b>" + bookToView.Year + "<br>");
-                $("#bookDetail").append("<b>Book status:</b>" + getBookStatus(bookToView.BookStatus));
+                $("#bookDetail").append("<b>Book status:</b>" + getBookStatus(bookToView.BookStatus) + "<br>");
+                $("#bookDetail").append("<b>Detail:</b>" + bookToView.Detail);
             }
             else {
                 $("#bookDetail").empty();
@@ -576,73 +580,84 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td class="api-uri">
             api/bookquery
         </td>
         <td>
             GET
         </td>
+        <td class="api-detail">
+            Retrieve all book like getAllBook().
+        </td>
+    </tr>
+    <tr>
+        <td class="api-uri">
+            api/bookquery
+        </td>
         <td>
-            Retrieve all book like getAllBook()
+            POST
+        </td>
+        <td class="api-detail">
+            Retrieve all book which associated with all properties you provided like getBookByAllProperties(name,author,publisher,year).
         </td>
     </tr>
 
     <tr>
-        <td>
+        <td class="api-uri">
             api/bookquery/id
         </td>
         <td>
             GET
         </td>
-        <td>
-            Retrieve a single book like viewBookDetail(id)
+        <td class="api-detail">
+            Retrieve a single book like viewBookDetail(id).
         </td>
     </tr>
 
     <tr>
-        <td>
+        <td class="api-uri">
             api/bookquery?name={param}
         </td>
         <td>
             GET
         </td>
-        <td>
+        <td class="api-detail">
             Retrieve related book by book name (where {param} is book name that you want to search) like getBookByName(name).
         </td>
     </tr>
 
     <tr>
-        <td>
+        <td class="api-uri">
             api/bookquery?author={param}
         </td>
         <td>
             GET
         </td>
-        <td>
+        <td class="api-detail">
             Retrieve related book by author (where {param} is author that you want to search) like getBookByAuthor(author).
         </td>
     </tr>
 
     <tr>
-        <td>
+        <td class="api-uri">
             api/bookquery?publisher={param}
         </td>
         <td>
             GET
         </td>
-        <td>
+        <td class="api-detail">
             Retrieve related book by publisher (where {param} is publisher that you want to search) like getBookByPublisher(publisher).
         </td>
     </tr>
 
     <tr>
-        <td>
+        <td class="api-uri">
             api/bookquery?year={param}
         </td>
         <td>
             GET
         </td>
-        <td>
+        <td class="api-detail">
             Retrieve related book by year that producted book (where {param} is year that you want to search) like getBookByYear(year).
         </td>
     </tr>

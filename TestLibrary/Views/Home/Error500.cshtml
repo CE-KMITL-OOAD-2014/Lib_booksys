@@ -6,21 +6,4 @@
 <div class="noti-red">
     500 - เกิดความผิดพลาดขึ้นในระหว่างการประมวลผลของเซิฟเวอร์ กรุณาลองใหม่ในภายหลัง
 </div>
-<button id="test111">WTH</button>
-<p class="wtf">asd</p>
 
-@System.Web.Optimization.Scripts.Render("~/ApiBundles")
-    <script type="text/javascript">
-        $("button#test111").click(function () {
-            var data1 = getAllBook();
-            //$.each(data1, function (key, item) {
-            //for(var item in data1)
-            //data1 = JSON.parse(data1);
-            var i = 0;
-            while (data1[i] != null) {
-                $("p.wtf").append(data1[i].BookName + " ");
-                i = i+1;
-            }
-           // });
-        });
-</script>

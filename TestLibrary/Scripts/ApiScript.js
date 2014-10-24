@@ -2,18 +2,6 @@
     $.ajaxSetup({
         async: false
     });
-    $("table.list").on("click", "tr.test button.view-btt", function () {
-        view($(this).val());
-    });
-    $.getJSON("/api/BookQuery").done(function (data) {
-        $.each(data, function (key, item) {
-            $("table.list").append("<tr class=\"test\"><td>" + item.BookID + "</td><td>"
-            + item.BookName + "</td><td>" + item.Author + "</td>"
-            + "<td class=\"btt\"><button class=\"view-btt\" value=\"" + item.BookID + "\">View</button></td></tr>");
-        }).fail(function (jQxSR, error, err) {
-            $("#test").append(err);
-        });
-    });
 });
 
 function viewBookDetail(id) {
