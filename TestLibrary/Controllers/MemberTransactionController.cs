@@ -222,10 +222,7 @@ namespace TestLibrary.Controllers
                 }
                 else
                 {
-                    FormsAuthentication.SignOut();
-                    Session["LoginUser"] = null;
-                    TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
-                    filterContext.Result = RedirectToAction("Login", "Authenticate");
+                    AuthenticateController.OnInvalidSession(ref filterContext);
                     return;
                 }
             }

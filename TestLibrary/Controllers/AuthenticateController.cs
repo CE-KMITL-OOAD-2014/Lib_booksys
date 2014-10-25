@@ -16,6 +16,9 @@ namespace TestLibrary.Controllers
     {
         LibraryRepository libRepo = new LibraryRepository();
         static List<string> AuthorizedList = new List<string>();
+        static RedirectToRouteResult LoginRoute = new RedirectToRouteResult("",
+            new System.Web.Routing.RouteValueDictionary(new Dictionary<string, object>() { 
+            { "action", "Login" }, { "controller", "Authenticate" } }), false);
         public static void AddUser(string userName){
             AuthorizedList.Add(userName);
         }
@@ -285,10 +288,7 @@ namespace TestLibrary.Controllers
                         }
                         else
                         {
-                            FormsAuthentication.SignOut();
-                            Session["LoginUser"] = null;
-                            TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
-                            filterContext.Result = RedirectToAction("Login", "Authenticate");
+                            OnInvalidSession(ref filterContext);
                             return;
                         }
                     }
@@ -298,6 +298,14 @@ namespace TestLibrary.Controllers
                     }
                 }
             }
+        }
+
+        public static void OnInvalidSession(ref ActionExecutingContext action)
+        {
+            FormsAuthentication.SignOut(); 
+            action.HttpContext.Session["LoginUser"] = null;
+            action.Controller.TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
+            action.Result = LoginRoute;
         }
     }
 }

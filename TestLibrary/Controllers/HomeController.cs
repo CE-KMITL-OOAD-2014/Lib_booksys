@@ -35,6 +35,7 @@ namespace TestLibrary.Controllers
         }
         public ActionResult ChangeLog()
         {
+            RedirectToRouteResult n = RedirectToAction("Login", "Authenticate");
             return View();
         }
 
@@ -86,10 +87,7 @@ namespace TestLibrary.Controllers
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
                 else
                 {
-                    FormsAuthentication.SignOut();
-                    Session["LoginUser"] = null;
-                    TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
-                    filterContext.Result = RedirectToAction("Login", "Authenticate");
+                    AuthenticateController.OnInvalidSession(ref filterContext);
                     return;
                 }
             }
