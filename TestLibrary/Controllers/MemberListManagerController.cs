@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.ComponentModel;
-using System.Data.Entity;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using TestLibrary.ViewModels;
@@ -100,6 +100,7 @@ namespace TestLibrary.Controllers
                 //5.Delete member.
                 libRepo.MemberRepo.Remove(target);
                 libRepo.Save();
+                AuthenticateController.RemoveUser(target.UserName);
                 TempData["SuccessNoti"] = "Delete member " + target.UserName + " successfully.";
                 return RedirectToAction("Index");
             }
@@ -110,10 +111,21 @@ namespace TestLibrary.Controllers
         {
             if (Request.HttpMethod == "GET")
             {
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-                if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
                 {
-                    filterContext.Result = RedirectToAction("Index", "Account");
+                    Session["LoginUser"] = HttpContext.User.Identity.Name;
+                    if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
+                    {
+                        filterContext.Result = RedirectToAction("Index", "Account");
+                        return;
+                    }
+                }
+                else
+                {
+                    FormsAuthentication.SignOut();
+                    Session["LoginUser"] = null;
+                    TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
+                    filterContext.Result = RedirectToAction("Login", "Authenticate");
                     return;
                 }
             }

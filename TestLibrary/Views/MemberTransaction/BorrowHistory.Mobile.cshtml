@@ -6,7 +6,7 @@
 @model  TestLibrary.ViewModels.PageList<TestLibrary.Models.BorrowEntry>
 <h2>Borrow history</h2>
 @if(Model == null){
-    @if (TempData["ErrorNoti"] != null)
+    if(TempData["ErrorNoti"] != null)
     {
         <div class="noti-red">
             <img class="close-btt" src="~/Content/close-btt.png" />

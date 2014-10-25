@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TestLibrary.Models;
 using TestLibrary.DataAccess;
 using TestLibrary.ViewModels;
@@ -172,7 +173,18 @@ namespace TestLibrary.Controllers
             if (Request.HttpMethod == "GET")
             {
                 if (HttpContext.User.Identity.IsAuthenticated)
-                    Session["LoginUser"] = HttpContext.User.Identity.Name;
+                {
+                    if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
+                        Session["LoginUser"] = HttpContext.User.Identity.Name;
+                    else
+                    {
+                        FormsAuthentication.SignOut();
+                        Session["LoginUser"] = null;
+                        TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
+                        filterContext.Result = RedirectToAction("Login", "Authenticate");
+                        return;
+                    }
+                }
                 else
                     Session["LoginUser"] = null;
             }

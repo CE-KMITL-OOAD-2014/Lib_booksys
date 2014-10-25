@@ -20,10 +20,21 @@ namespace TestLibrary.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-                if (HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
                 else
+                {
+                    FormsAuthentication.SignOut();
                     Session["LoginUser"] = null;
+                    TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
+                    filterContext.Result = RedirectToAction("Login", "Authenticate");
+                    return;
+                }
+            }
+            else
+                Session["LoginUser"] = null;
         }
     }
 }

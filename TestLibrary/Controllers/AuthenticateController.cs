@@ -15,6 +15,21 @@ namespace TestLibrary.Controllers
     public class AuthenticateController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
+        static List<string> AuthorizedList = new List<string>();
+        public static void AddUser(string userName){
+            AuthorizedList.Add(userName);
+        }
+
+        public static void RemoveUser(string userName)
+        {
+            AuthorizedList.Remove(userName);
+        }
+
+        public static bool IsUserValid(string userName)
+        {
+            return AuthorizedList.Where(wantedUser => wantedUser == userName).SingleOrDefault() != null;
+        }
+
         public ActionResult Login()
         {
             return View();
@@ -32,7 +47,6 @@ namespace TestLibrary.Controllers
                     {
                         FormsAuthentication.SetAuthCookie("M_" + loginUser.UserName, submitData.Remember);
                         Session["LoginUser"] = "M_" + loginUser.UserName;
-                        Response.Cookies[FormsAuthentication.FormsCookieName].HttpOnly = false;
                         return RedirectToAction("Index", "Account");
                     }
                     else
@@ -42,7 +56,6 @@ namespace TestLibrary.Controllers
                         {
                             FormsAuthentication.SetAuthCookie("A_" + loginUser.UserName, submitData.Remember);
                             Session["LoginUser"] = "A_" + loginUser.UserName;
-                            Response.Cookies[FormsAuthentication.FormsCookieName].HttpOnly = false;
                             return RedirectToAction("Index", "Account");
                         }
                         TempData["ErrorNoti"] = "Login info is incorrect.";
@@ -96,6 +109,7 @@ namespace TestLibrary.Controllers
                                 Password = submitData.Password
                             });
                         libRepo.Save();
+                        AddUser(submitData.UserName);
                         TempData["SuccessNoti"] = "Register successful,please login for first use.";
                         return RedirectToAction("Login");
                     }
@@ -162,9 +176,6 @@ namespace TestLibrary.Controllers
         [HttpGet]
         public ActionResult ResetPassword(string token)
         {
-            if(!HttpContext.User.Identity.IsAuthenticated)
-            {
-                Session["LoginUser"] = null;
                 Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Password == token).SingleOrDefault();
                 if (userToRecover == null)
                 userToRecover = libRepo.LibrarianRepo.ListWhere(target => target.Password == token).SingleOrDefault();
@@ -179,13 +190,6 @@ namespace TestLibrary.Controllers
                     TempData["ErrorNoti"] = "Oops! Something went wrong.";
                     return RedirectToAction("Login", "Authenticate");
                 }
-            }
-            else
-            {
-                TempData["ErrorNoti"] = "Invalid operation.";
-                Session["LoginUser"] = HttpContext.User.Identity.Name;
-                return RedirectToAction("Index", "Account");
-            }
         }
 
         [HttpPost]
@@ -251,11 +255,47 @@ namespace TestLibrary.Controllers
                 {
                     if (HttpContext.User.Identity.IsAuthenticated)
                     {
-                        Session["LoginUser"] = HttpContext.User.Identity.Name;
-                        filterContext.Result =  RedirectToAction("Index", "Home");
-                        return;
+                        if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
+                        {
+                            Session["LoginUser"] = HttpContext.User.Identity.Name;
+                            filterContext.Result = RedirectToAction("Index", "Home");
+                            return;
+                        }
+                        else
+                        {
+                            FormsAuthentication.SignOut();
+                            Session["LoginUser"] = null;
+                            TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
+                            filterContext.Result = RedirectToAction("Login", "Authenticate");
+                            return;
+                        }
                     }
                     Session["LoginUser"] = null;
+                }
+                else if (filterContext.ActionDescriptor.ActionName == "ResetPassword")
+                {
+                    if (HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
+                        {
+                            TempData["ErrorNoti"] = "Invalid operation.";
+                            Session["LoginUser"] = HttpContext.User.Identity.Name;
+                            filterContext.Result = RedirectToAction("Index", "Account");
+                            return;
+                        }
+                        else
+                        {
+                            FormsAuthentication.SignOut();
+                            Session["LoginUser"] = null;
+                            TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
+                            filterContext.Result = RedirectToAction("Login", "Authenticate");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        Session["LoginUser"] = null;
+                    }
                 }
             }
         }

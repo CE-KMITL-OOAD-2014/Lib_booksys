@@ -32,7 +32,7 @@ else if (TempData["SuccessNoti"] != null)
             <td class="res-col">@record.GetBorrowBook().BookName</td>
             <td>@record.DueDate.ToShortDateString()</td>
             <td>@record.RenewCount</td>
-            @if (@record.RenewCount == 3) { 
+            @if (record.RenewCount == 3) { 
             <td></td>
             }
             else
