@@ -1,0 +1,70 @@
+﻿@model ParatabLib.ViewModels.PageList<ParatabLib.Models.BorrowEntry>
+@{
+    ViewBag.Title = "Librarian transaction manager";
+    int count;
+}
+<h1>Librarian transaction manager</h1>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
+<ul class="admin-panel">
+    <li><a href="/LibrarianTransaction/Transaction">Do Transaction</a></li>
+</ul><br />
+@if (Model != null){
+    count = (Model.GetCurrentPage() - 1) * int.Parse(TempData["pageSize"].ToString());
+<h2>Borrow tracking</h2>
+<table class="res-list">
+    <tr>
+        <th>No.</th>
+        <th>BookName</th>
+        <th>Borrower</th>
+        <th>Due</th>
+        <th>RT</th>
+    </tr>
+    @foreach (var item in Model.GetList())
+    {
+        <tr>
+            <td>@(++count)</td>
+            <td class="res-col">@item.GetBorrowBook().BookName</td>
+            <td class="res-col">@item.GetBorrower().UserName</td>
+            <td>@item.DueDate.Date.Day/@item.DueDate.Date.Month/@item.DueDate.Date.Year.ToString().Substring(2)</td>
+            <td>
+                @if (item.ReturnDate != null)
+                {
+                    <text>Y</text>
+                }
+                else
+                {
+                    <text>N</text>
+                }
+            </td>
+        </tr>
+    }
+    <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+</table>
+    <form class="page-portal" action="/LibrarianTransaction/Index/" method="post">
+    <label>Jump to page:</label>
+    <select class="autosubmit" name="page" size="1">
+        @for (int j = 1; j <= Model.GetPageSize(); j++)
+        {
+            <option value="@j" selected="@((int.Parse(TempData["page"].ToString()) == j)? "selected":null)">@j</option>
+        }
+    </select>
+    <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+</form>
+
+    <form class="page-portal" action="/LibrarianTransaction/Index/" method="post">
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
+            <option value="20" selected="@((int.Parse(TempData["pageSize"].ToString()) == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
+        </select>
+    </form>
+}
+<a class="account-btt" href="/Account/LibrarianPortal">Portal</a>

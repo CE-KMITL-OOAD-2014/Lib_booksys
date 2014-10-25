@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Login";
+
+}
+@model ParatabLib.ViewModels.LoginForm
+<h2>Login</h2>
+    <form class="account-form" action="/Authenticate/Login" method="post">
+        @Html.AntiForgeryToken()
+        @if (TempData["ErrorNoti"] != null)
+        {
+            <div class="noti-red">
+                <img class="close-btt" src="~/Content/close-btt.png" />
+                @TempData["ErrorNoti"]
+            </div>
+        }
+        else if (TempData["SuccessNoti"] != null)
+        {
+            <div class="noti-green">
+                <img class="close-btt" src="~/Content/close-btt.png" />
+                @TempData["SuccessNoti"]
+            </div>
+        }
+        <fieldset>
+            <legend>Login</legend>
+            @Html.TextBoxFor(model => model.UserName, new { @placeholder = "Username" })
+            @Html.ValidationMessageFor(model => model.UserName)
+            @Html.PasswordFor(model => model.Password, new { @placeholder = "Password" })
+            @Html.ValidationMessageFor(model => model.Password)
+            <input type="Submit" value="Login" /><br />
+            @Html.CheckBox("Remember")Remember me<br />
+            <center><a class="btt-inline" href="/Authenticate/ForgotPassword">Forgot pwd?</a><a class="btt-inline" href="/Authenticate/Register">Register</a></center>
+            </fieldset>
+    </form>

@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Borrow history";
+    int count;
+}
+@model  ParatabLib.ViewModels.PageList<ParatabLib.Models.BorrowEntry>
+<h2>Borrow history</h2>
+@if(Model == null){
+    if(TempData["ErrorNoti"] != null)
+    {
+        <div class="noti-red">
+            <img class="close-btt" src="~/Content/close-btt.png" />
+            @TempData["ErrorNoti"]
+        </div>
+    }
+}
+else
+{
+    count = (Model.GetCurrentPage() - 1) * Model.GetListPerPage();
+    <table class="res-list">
+        <tr>
+            <th>
+                No.
+            </th>
+            <th>
+                Bookname
+            </th>
+            <th>
+                BorrowDate
+            </th>
+        </tr>
+
+        @foreach (var item in Model.GetList())
+        {
+            <tr>
+                <td>@(++count)</td>
+                <td class="res-col">@item.GetBorrowBook().BookName</td>
+                <td>@item.BorrowDate.ToShortDateString()</td>
+            </tr>
+        }
+        <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+    </table>
+    <form class="page-portal" action="/MemberTransaction/BorrowHistory/" method="post">
+        @Html.AntiForgeryToken()
+        <label>Jump to page:</label>
+        <select class="autosubmit" name="page" size="1">
+            @for (int j = 1; j <= Model.GetPageSize(); j++)
+            {
+                <option value="@j" selected="@((Model.GetCurrentPage() == j)? "selected":null)">@j</option>
+            }
+        </select>
+        <input type="hidden" value="@Model.GetListPerPage()" name="pageSize" />
+    </form>
+
+    <form class="page-portal" action="/MemberTransaction/BorrowHistory/" method="post">
+        @Html.AntiForgeryToken()
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((Model.GetListPerPage() == 10) ? "selected" : null)">10</option>
+            <option value="20" selected="@((Model.GetListPerPage() == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((Model.GetListPerPage() == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((Model.GetListPerPage() == 100) ? "selected" : null)">100</option>
+        </select>
+    </form>
+}
+<a class="account-btt" href="/MemberTransaction/">Back</a>
+

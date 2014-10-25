@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Member transaction viewer";
+}
+@model ParatabLib.ViewModels.MemberTransactionViewer
+<h1>Member transaction</h1>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
+else if (TempData["SuccessNoti"] != null)
+{
+<div class="noti-green">
+    <img class="close-btt" src="~/Content/close-btt.png" />
+    @TempData["SuccessNoti"]
+</div>
+}
+<h2>Book that you borrowed</h2>
+@if (Model.GetBorrowEntryViews().Count != 0) { 
+<table class="list">
+    <tr>
+        <th>Book name</th>
+        <th>Borrow date</th>
+        <th>Due date</th>
+        <th>Renew count</th>
+        <th></th>
+    </tr>
+    @foreach (var record in Model.GetBorrowEntryViews())
+    {
+        <tr>
+            <td>@record.GetBorrowBook().BookName</td>
+            <td>@record.BorrowDate.ToShortDateString()</td>
+            <td>@record.DueDate.ToShortDateString()</td>
+            <td>@record.RenewCount</td>
+            @if (record.RenewCount == 3) { 
+            <td></td>
+            }
+            else
+            {
+                <td><a class="norm" href="/MemberTransaction/Renew/@record.ID">Renew</a></td>
+            }
+            
+        </tr>
+    }
+</table>
+}
+else
+{
+    <div class="noti-red">
+        No book that you borrowed now.
+    </div>
+}
+
+<h2>Book that you requested</h2>
+@if (Model.GetRequestEntryViews().Count != 0)
+{
+    <table class="list">
+        <tr>
+            <th>Book name</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Expire Date</th>
+            <th></th>
+        </tr>
+        @foreach (var record in Model.GetRequestEntryViews())
+        {
+            <tr>
+            <td>
+                @record.GetRequestBook().BookName
+            </td>
+            <td>
+                @record.RequestDate.ToShortDateString()
+            </td>
+                @if (record.ExpireDate != null) { 
+                <td>
+                    Available
+                </td>
+                    <td>
+                @record.ExpireDate.Value.ToShortDateString()
+                        </td>
+                }
+                else
+                {
+                    <td>
+                    Not Available
+                    </td>
+                    <td>@Html.DisplayFor(target => target.GetRequestEntryViews().Single(rec => rec == record).ExpireDate)</td>
+                }
+                <td>
+                    <a class="operation-link" href="/MemberTransaction/CancelRequest/@record.BookID">Cancel</a>
+                        </td>
+                </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="noti-red">
+        No book that you requested now.
+    </div>
+}
+
+<a class="account-btt" href="/MemberTransaction/Request">Request Book</a>
+<a class="account-btt" href="/MemberTransaction/BorrowHistory/">Borrow history</a>
+<a class="account-btt" href="/Account/Index">Back</a>

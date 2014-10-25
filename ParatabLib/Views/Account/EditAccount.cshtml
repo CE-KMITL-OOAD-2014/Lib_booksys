@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Edit account";
+}
+@model ParatabLib.ViewModels.AccountEditor
+<h2>Edit Account for @Session["LoginUser"].ToString().Substring(2)</h2>
+<form class="news-form" action="/Account/EditAccount" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        @if (TempData["ErrorNoti"] != null)
+        {
+            <div class="noti-red">
+                <img class="close-btt" src="~/Content/close-btt.png" />
+                @TempData["ErrorNoti"]
+            </div>
+        }
+        <label>UserName:</label>
+        <input type="text" disabled="disabled" value="@Session["LoginUser"].ToString().Substring(2)"/><br />
+        <label>Name:</label>
+        @Html.TextBoxFor(model => model.Name, new { @placeholder = "Account Name"})
+        @Html.ValidationMessageFor(model => model.Name)<br />
+        <label>Email:</label>
+        @Html.TextBoxFor(model => model.Email, new { @placeholder = "E-mail" })
+        @Html.ValidationMessageFor(model => model.Email)<br />
+        <input type="submit" value="Edit"/>
+
+    </fieldset>
+</form>
+<a class="account-btt" href="/Account/">Back</a>

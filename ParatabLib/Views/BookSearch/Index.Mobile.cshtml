@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+@model ParatabLib.ViewModels.PageList<ParatabLib.Models.Book>
+<h1>Search</h1>
+@if (TempData["ErrorNoti"] != null)
+{
+        <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+        </div>
+}
+<h2>Basic search</h2>
+<form class="book-search" action="/BookSearch/Basic" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+    <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@ViewBag.Keyword"/><br />
+    <label>Search by</label><select size="1" name="SearchType">
+    <option value="" selected="@((ViewBag.SearchType=="")?"selected":null)">Select...</option>
+    <option value="BookName" selected="@((ViewBag.SearchType=="BookName")?"selected":null)">Book name</option>
+    <option value="Author" selected="@((ViewBag.SearchType=="Author")?"selected":null)">Author</option>
+    <option value="Publisher" selected="@((ViewBag.SearchType=="Publisher")?"selected":null)">Publisher</option>
+    <option value="Year" selected="@((ViewBag.SearchType=="Year")?"selected":null)">Year</option>
+</select><br />
+    <input type="submit" value="Search" /></fieldset>
+</form>
+@if (Model != null && TempData["AdvanceSearch"]!="Advance")
+{
+    <table class="res-list">
+        <tr>
+            <th>ID</th>
+            <th>BookName</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        @foreach(var item in Model.GetList())
+        {
+            <tr>
+                <th>@item.BookID</th>
+                <td class="res-col">@item.BookName</td>
+                <td class="res-col">@item.Author</td>
+                <td>@item.BookStatus</td>
+                <td class="center-col"><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png"/></a></td>
+            </tr>
+        }
+        <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+    </table>
+    <form class="page-portal" action="/BookSearch/Basic/" method="post">
+        @Html.AntiForgeryToken()
+        <label>Jump to page:</label>
+        <select class="autosubmit" name="page" size="1">
+        @for (int j = 1; j <= Model.GetPageSize(); j++)
+        {
+            <option value="@j" selected="@((int.Parse(TempData["page"].ToString()) == j)? "selected":null)">@j</option>
+        }
+        </select>
+        <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+        <input type="hidden" name="Keyword" value="@ViewBag.Keyword" />
+        <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />     
+    </form>
+
+    <form class="page-portal" action="/BookSearch/Basic/" method="post">
+        @Html.AntiForgeryToken()
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
+            <option value="20" selected="@((int.Parse(TempData["pageSize"].ToString()) == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
+        </select>
+        <input type="hidden" name="Keyword" value="@ViewBag.Keyword" />
+        <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />
+    </form>
+}
+
+
+    <h2>Advance search</h2>
+    <form class="book-search" action="/BookSearch/Advance" method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <label>Book name</label><input type="text" placeholder="Book name" name="BookName" value="@TempData["BookName"]" /><br />
+        <label>Author</label><input type="text" placeholder="Author" name="Author" value="@TempData["Author"]" /><br />
+        <label>Publisher</label><input type="text" placeholder="Publisher" name="Publisher" value="@TempData["Publisher"]" /><br />
+        <label>Year</label><input type="text" placeholder="Year" name="Year" value="@TempData["Year"]" /><br />
+        <input type="submit" value="Search" />
+    </fieldset>
+</form>
+
+@if (Model != null && TempData["AdvanceSearch"] == "Advance")
+{
+        <table class="res-list">
+            <tr>
+                <th>ID</th>
+                <th>Book name</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.GetList())
+            {
+                <tr>
+                    <th>@item.BookID</th>
+                    <td class="res-col">@item.BookName</td>
+                    <td class="res-col">@item.Author</td>
+                    <td>@item.BookStatus</td>
+                    <td class="center-col"><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
+                </tr>
+            }
+            <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+        </table>
+    
+        <form class="page-portal" action="/BookSearch/Advance/" method="post">
+        @Html.AntiForgeryToken()
+        <label>Jump to page:</label>
+        <select class="autosubmit" name="page" size="1">
+        @for (int j = 1; j <= Model.GetPageSize(); j++)
+        {
+            <option value="@j" selected="@((int.Parse(TempData["page"].ToString()) == j)? "selected":null)">@j</option>
+        }
+        </select>
+        <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+        <input type="hidden" name="BookName" value="@TempData["BookName"]" />
+        <input type="hidden" name="Author" value="@TempData["Author"]" /> 
+        <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
+        <input type="hidden" name="Year" value="@TempData["Year"]" />
+    </form>
+
+    <form class="page-portal" action="/BookSearch/Advance/" method="post">
+        @Html.AntiForgeryToken()
+        <label>List per page:</label>
+        <select class="autosubmit" name="pageSize" size="1">
+            <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
+            <option value="20" selected="@((int.Parse(TempData["pageSize"].ToString()) == 20) ? "selected" : null)">20</option>
+            <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
+            <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
+        </select>
+        <input type="hidden" name="BookName" value="@TempData["BookName"]" />
+        <input type="hidden" name="Author" value="@TempData["Author"]" />
+        <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
+        <input type="hidden" name="Year" value="@TempData["Year"]" />
+    </form>
+}

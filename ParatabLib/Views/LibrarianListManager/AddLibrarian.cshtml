@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Add librarian";
+}
+@model ParatabLib.Models.Librarian
+<h2>Add new librarian</h2>
+<form class="account-form" action="/LibrarianListManager/AddLibrarian" method="post">
+    @Html.AntiForgeryToken()
+    @if (TempData["ErrorNoti"] != null)
+    {
+        <div class="noti-red">
+            <img class="close-btt" src="~/Content/close-btt.png" />
+            @TempData["ErrorNoti"]
+        </div>
+    }
+    <fieldset>
+        <legend>Add new librarian</legend>
+        @Html.TextBoxFor(model => model.UserName, new { placeholder = "Username" })
+        @Html.ValidationMessageFor(model => model.UserName)
+        @Html.TextBoxFor(model => model.Name, new { placeholder = "Name" })
+        @Html.ValidationMessageFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Email, new { placeholder = "E-mail" })
+        @Html.ValidationMessageFor(model => model.Email)
+        @Html.PasswordFor(model => model.Password, new { placeholder = "Password" })
+        @Html.ValidationMessageFor(model => model.Password)
+        <input type="submit" value="Add librarian"/>
+    </fieldset>
+</form>

@@ -1,0 +1,19 @@
+﻿@model ParatabLib.Models.News
+@{
+    ViewBag.Title = "Add news";
+}
+
+<script src="/Scripts/ckeditor/ckeditor.js" type="text/javascript"></script>
+<h2>AddNews</h2>
+<form class="news-form" action="/NewsManager/AddNews" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <label>News Title</label><br />
+    @Html.TextBoxFor(model => model.Title, new { @placeholder = "Title" })
+    @Html.ValidationMessageFor(model => model.Title)<br />
+    <label>Detail</label><br />
+    @Html.ValidationMessageFor(model => model.Detail)
+    <textarea class="ckeditor" name="Detail">@Html.DisplayFor(model => model.Detail)</textarea>
+    <input type="hidden" value="@DateTime.Now" name="PostTime" />
+    <input type="submit" value="Add news"/>
+</form>
