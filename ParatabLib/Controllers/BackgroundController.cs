@@ -20,7 +20,7 @@ namespace ParatabLib.Controllers
                 entryToRemove = entryToRemove.Where(target => target.ExpireDate.Value.Date < DateTime.Now.Date).ToList();
                 foreach (RequestEntry entry in entryToRemove)
                 {
-                    Book requestBook = entry.GetRequestBook();
+                    Book requestBook = entry.GetRequestBook(ref libRepo);
                     requestBook.BookStatus = Status.Available;
                     libRepo.BookRepo.Update(requestBook);
                 }

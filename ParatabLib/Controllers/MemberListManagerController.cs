@@ -88,7 +88,7 @@ namespace ParatabLib.Controllers
                 {
                     foreach (var item in RequestListToDelete.Where(entry => entry.ExpireDate != null).ToList())
                     {
-                        Book bookToUpdate = item.GetRequestBook();
+                        Book bookToUpdate = item.GetRequestBook(ref libRepo);
                              bookToUpdate.BookStatus = Status.Available;
                              libRepo.BookRepo.Update(bookToUpdate);
                     }

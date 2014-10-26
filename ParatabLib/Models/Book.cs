@@ -54,9 +54,21 @@ namespace ParatabLib.Models
             return libRepo.BorrowEntryRepo.ListWhere(entry => entry.BookID == BookID);
         }
 
+        public List<BorrowEntry> GetRelatedBorrowEntry(ref LibraryRepository libRepo)
+        {
+            return libRepo.BorrowEntryRepo.ListWhere(entry => entry.BookID == BookID);
+        }
+
+
         public RequestEntry GetRelatedRequestEntry()
         {
             LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.RequestEntryRepo.ListWhere(entry => entry.BookID == BookID).SingleOrDefault();
+        }
+
+
+        public RequestEntry GetRelatedRequestEntry(ref LibraryRepository libRepo)
+        {
             return libRepo.RequestEntryRepo.ListWhere(entry => entry.BookID == BookID).SingleOrDefault();
         }
     }

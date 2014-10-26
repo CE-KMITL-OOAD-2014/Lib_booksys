@@ -24,18 +24,18 @@ else if (TempData["SuccessNoti"] != null)
 <table class="list">
     <tr>
         <th>ID</th>
+        <th>Call No.</th>
         <th>Book name</th>
         <th>Author</th>
-        <th>Publisher</th>
         <th></th><th></th><th></th>
     </tr>
     @foreach (var item in Model.GetList())
     {
         <tr>
             <th>@item.BookID</th>
+            <td>@item.CallNumber</td>
             <td>@item.BookName</td>
             <td>@item.Author</td>
-            <td>@item.Publisher</td>
             <td><a href="/Book/View/@item.BookID" target="_blank"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
             <td><a href="/BookManager/EditBook/@item.BookID"><img class="edit-btt" src="/Content/edit-gray-btt.png" /></a></td>
             <td><a href="/BookManager/DeleteBook/@item.BookID"><img class="delete-btt" src="/Content/delete-gray-btt.png" /></a></td>

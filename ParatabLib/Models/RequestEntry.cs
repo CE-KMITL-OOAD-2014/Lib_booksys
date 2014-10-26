@@ -31,9 +31,19 @@ namespace ParatabLib.Models
             return libRepo.BookRepo.ListWhere(book => book.BookID == BookID).SingleOrDefault();
         }
 
+        public Book GetRequestBook(ref LibraryRepository libRepo)
+        {
+            return libRepo.BookRepo.ListWhere(book => book.BookID == BookID).SingleOrDefault();
+        }
+
         public Member GetRequestUser()
         {
             LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.MemberRepo.ListWhere(member => member.UserID == UserID).SingleOrDefault();
+        }
+
+        public Member GetRequestUser(ref LibraryRepository libRepo)
+        {
             return libRepo.MemberRepo.ListWhere(member => member.UserID == UserID).SingleOrDefault();
         }
     }

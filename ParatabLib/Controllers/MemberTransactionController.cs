@@ -12,15 +12,26 @@ namespace ParatabLib.Controllers
     public class MemberTransactionController : Controller
     {
 
-        LibraryRepository libRepo = new LibraryRepository();
+        LibraryRepository libRepo;
+
+        public MemberTransactionController(LibraryRepository libRepo)
+        {
+            this.libRepo = libRepo;
+        }
+
+        public MemberTransactionController()
+        {
+            libRepo = new LibraryRepository();
+        }
+
         [Authorize]
         public ActionResult Index()
         {
                 MemberTransactionViewer viewer = new MemberTransactionViewer();
-                viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(target => target.GetBorrower().UserName ==
+                viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(target => target.GetBorrower(ref libRepo).UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2) &&
                                            target.ReturnDate == null));
-                viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.GetRequestUser().UserName ==
+                viewer.SetRequestEntryViews((libRepo.RequestEntryRepo.ListWhere(target => target.GetRequestUser(ref libRepo).UserName ==
                                            HttpContext.User.Identity.Name.ToString().Substring(2))));
                 return View(viewer);
             
@@ -37,7 +48,7 @@ namespace ParatabLib.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (renewentry.GetBorrower().UserName != Session["LoginUser"].ToString().Substring(2))
+            if (renewentry.GetBorrower(ref libRepo).UserName != Session["LoginUser"].ToString().Substring(2))
             {
                 TempData["ErrorNoti"] = "Invalid renew operation.";
                 return RedirectToAction("Index");
@@ -45,7 +56,7 @@ namespace ParatabLib.Controllers
 
             if (renewentry.RenewCount == 3)
             {
-                TempData["ErrorNoti"] = "Your renew of book ID." + renewentry.GetBorrowBook().BookID + " is exceed maximum!";
+                TempData["ErrorNoti"] = "Your renew of book ID." + renewentry.GetBorrowBook(ref libRepo).BookID + " is exceed maximum!";
                 return RedirectToAction("Index");
             }
             return View(renewentry);
@@ -113,7 +124,7 @@ namespace ParatabLib.Controllers
                                                 HttpContext.User.Identity.Name.ToString().Substring(2)).Single();
 
                 if (libRepo.BorrowEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID &&
-                                                        target.GetBorrower() == request_member && target.ReturnDate == null) != null)
+                                                        target.GetBorrower(ref libRepo) == request_member && target.ReturnDate == null) != null)
                 {
                     TempData["ErrorNoti"] = "Can't request your current borrowed book.";
                     return View();
@@ -143,7 +154,7 @@ namespace ParatabLib.Controllers
                 return RedirectToAction("Index");
             }
             Member preferMember = libRepo.MemberRepo.ListWhere(target => target.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();
-            if (wantedEntry.GetRequestUser().UserID != preferMember.UserID)
+            if (wantedEntry.GetRequestUser(ref libRepo).UserID != preferMember.UserID)
             {
                 TempData["ErrorNoti"] = "Can't cancel other member's book request.";
                 return RedirectToAction("Index");
@@ -187,7 +198,7 @@ namespace ParatabLib.Controllers
             string username;
             username = HttpContext.User.Identity.Name.ToString().Substring(2);
             Member currentMember = libRepo.MemberRepo.ListWhere(target => target.UserName == username).SingleOrDefault();
-            List<BorrowEntry> EntryList = currentMember.GetRelatedBorrowEntry();
+            List<BorrowEntry> EntryList = currentMember.GetRelatedBorrowEntry(ref libRepo);
             PageList<BorrowEntry> pglist = new PageList<BorrowEntry>(EntryList,page,pageSize);
             TempData["BorrowCount"] = EntryList.Count();
             switch (pglist.Categorized())

@@ -11,13 +11,6 @@ namespace ParatabLib.Controllers
     public class HomeController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
-       // public HomeController() : this(new LibraryRepository()) { }
-       /* public HomeController(IRepository libRepo)
-        {
-            this.libRepo = libRepo;
-        }
-        */
-
         public ActionResult Index()
         {
             return View(libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime));
@@ -41,8 +34,8 @@ namespace ParatabLib.Controllers
         public ActionResult TopTen()
         {
             TopTenViewer viewer = new TopTenViewer();
-            List<Member> topMember = libRepo.MemberRepo.List().OrderByDescending(member => member.GetRelatedBorrowEntry().Count).ToList();
-            List<Book> topBorrowBook = libRepo.BookRepo.List().OrderByDescending(book => book.GetRelatedBorrowEntry().Count).ToList();
+            List<Member> topMember = libRepo.MemberRepo.List().OrderByDescending(member => member.GetRelatedBorrowEntry(ref libRepo).Count).ToList();
+            List<Book> topBorrowBook = libRepo.BookRepo.List().OrderByDescending(book => book.GetRelatedBorrowEntry(ref libRepo).Count).ToList();
             if (topMember.Count > 10)
                 topMember = topMember.GetRange(0, 10);
             else

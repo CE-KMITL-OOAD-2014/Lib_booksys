@@ -18,9 +18,19 @@ namespace ParatabLib.Models
             return libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == UserID);
         }
 
+        public List<BorrowEntry> GetRelatedBorrowEntry(ref LibraryRepository libRepo)
+        {
+            return libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == UserID);
+        }
+
         public List<RequestEntry> GetRelatedRequestEntry()
         {
             LibraryRepository libRepo = new LibraryRepository();
+            return libRepo.RequestEntryRepo.ListWhere(entry => entry.UserID == UserID);
+        }
+
+        public List<RequestEntry> GetRelatedRequestEntry(ref LibraryRepository libRepo)
+        {
             return libRepo.RequestEntryRepo.ListWhere(entry => entry.UserID == UserID);
         }
     }

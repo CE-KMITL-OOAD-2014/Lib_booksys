@@ -70,7 +70,7 @@ namespace ParatabLib.Controllers
 
                     else if (booktoborrow.BookStatus == Status.Reserved)
                     {
-                        RequestEntry reqentry = booktoborrow.GetRelatedRequestEntry();
+                        RequestEntry reqentry = booktoborrow.GetRelatedRequestEntry(ref libRepo);
                         if (reqentry.ExpireDate.Value.Date < DateTime.Now.Date)
                         {
                             libRepo.RequestEntryRepo.Remove(reqentry);
@@ -125,10 +125,10 @@ namespace ParatabLib.Controllers
             }
             else
             {
-                RequestEntry reqToCheck = returnentry.GetBorrowBook().GetRelatedRequestEntry();
+                RequestEntry reqToCheck = returnentry.GetBorrowBook(ref libRepo).GetRelatedRequestEntry(ref libRepo);
                 if (reqToCheck != null)
                 {
-                    Book bookToUpdate = returnentry.GetBorrowBook();
+                    Book bookToUpdate = returnentry.GetBorrowBook(ref libRepo);
                     bookToUpdate.BookStatus = Status.Reserved;
                     reqToCheck.ExpireDate = DateTime.Now.Date.AddDays(3);
                     libRepo.BookRepo.Update(bookToUpdate);
@@ -136,7 +136,7 @@ namespace ParatabLib.Controllers
                 }
                 else
                 {
-                    Book bookToUpdate = returnentry.GetBorrowBook();
+                    Book bookToUpdate = returnentry.GetBorrowBook(ref libRepo);
                     bookToUpdate.BookStatus = Status.Available;
                     libRepo.BookRepo.Update(bookToUpdate);
                 }

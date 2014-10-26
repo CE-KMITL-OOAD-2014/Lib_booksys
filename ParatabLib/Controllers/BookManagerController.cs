@@ -92,7 +92,7 @@ namespace ParatabLib.Controllers
                     if (entry != null)
                     {
                         entry.ReturnDate = DateTime.Now.Date;
-                        RequestEntry removeEntry = entry.GetBorrowBook().GetRelatedRequestEntry();
+                        RequestEntry removeEntry = entry.GetBorrowBook(ref libRepo).GetRelatedRequestEntry(ref libRepo);
                         if (removeEntry != null)
                             libRepo.RequestEntryRepo.Remove(removeEntry);
                     }
@@ -166,7 +166,7 @@ namespace ParatabLib.Controllers
                 TempData["SuccessNoti"] = "Delete " + bookToDelete.BookName + " successfully.";
                 List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToDelete.BookID).ToList();
                 Book bookToDel = libRepo.BookRepo.Find(bookToDelete.BookID);
-                RequestEntry entryToCheck = bookToDel.GetRelatedRequestEntry();
+                RequestEntry entryToCheck = bookToDel.GetRelatedRequestEntry(ref libRepo);
                 if (entryToCheck != null)
                     libRepo.RequestEntryRepo.Remove(entryToCheck);
                 libRepo.BorrowEntryRepo.Remove(removeBorrowEntry);

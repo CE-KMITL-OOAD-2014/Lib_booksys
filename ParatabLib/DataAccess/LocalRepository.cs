@@ -15,45 +15,42 @@ namespace ParatabLib.DataAccess
             this.context = context;
             db = context.Set<TEntity>();
         }
-        public List<TEntity> List()
+        public virtual List<TEntity> List()
         {
-            return db.AsNoTracking().ToList();
+            return db.AsNoTracking<TEntity>().ToList();
         }
 
-        public List<TEntity> ListWhere(Func<TEntity, bool> condition)
+        public virtual List<TEntity> ListWhere(Func<TEntity, bool> condition)
         {
             return db.AsNoTracking().ToList().Where(condition).ToList();
         }
 
-        public TEntity Find(int id)
+        public virtual TEntity Find(int id)
         {
             return db.Find(id);
         }
 
-        public void Add(TEntity item)
+        public virtual void Add(TEntity item)
         {
             db.Add(item);
         }
 
-        public void Update(TEntity item)
+        public virtual void Update(TEntity item)
         {
             db.Attach(item);
             context.Entry(item).State = EntityState.Modified;
         }
 
-        public void Remove(TEntity item)
+        public virtual void Remove(TEntity item)
         {
-
             db.Attach(item);
             db.Remove(item);
         }
 
-        public void Remove(List<TEntity> removeList)
+        public virtual void Remove(List<TEntity> removeList)
         {
             foreach (var item in removeList)
                 Remove(item);
         }
-
-
     }
 }
