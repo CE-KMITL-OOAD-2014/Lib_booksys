@@ -161,10 +161,8 @@ namespace ParatabLib.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteBook(Book bookToDelete, string answer)
+        public ActionResult DeleteBook(Book bookToDelete)
         {
-            if (answer == "Yes")
-            {
                 TempData["SuccessNoti"] = "Delete " + bookToDelete.BookName + " successfully.";
                 List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToDelete.BookID).ToList();
                 Book bookToDel = libRepo.BookRepo.Find(bookToDelete.BookID);
@@ -175,8 +173,6 @@ namespace ParatabLib.Controllers
                 libRepo.BookRepo.Remove(bookToDel);
                 libRepo.Save();
                 return RedirectToAction("Index");
-            }
-            return RedirectToAction("Index");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

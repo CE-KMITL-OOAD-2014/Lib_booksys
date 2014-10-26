@@ -101,9 +101,9 @@ namespace ParatabLib.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Librarian target,string answer)
+        public ActionResult Delete(Librarian target)
         {
-            if (answer == "Yes" && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (libRepo.LibrarianRepo.List().Count == 1)
                 {

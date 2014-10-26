@@ -4,7 +4,7 @@
 @model ParatabLib.Models.News
 
 <h2>EditNews</h2>
-
+<a class=" account-btt" href="/NewsManager/">Back</a>
 <form class="news-form" action="/NewsManager/EditNews" method="post">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

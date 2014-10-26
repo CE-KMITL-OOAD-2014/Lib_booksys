@@ -153,7 +153,9 @@ form.account-form input[type="submit"]{
     font-size:x-large;
     background-color:#99CCFF;
     border:none;
-    width:100%
+    width:100%;
+    padding-top:2px;
+    padding-bottom:2px;
 }
 
 form.account-form textarea{
@@ -299,8 +301,15 @@ a.account-btt{
     margin-bottom:15px;
     padding-top:3px;
     padding-bottom:3px;
-    width:150px
+    width:150px;
 }
+
+a.account-btt-in-form{
+    margin-top:5px;
+    margin-bottom:0px;
+    width:100%
+}
+
 a.btt-inline:link{
     color:black;
     display:inline-block;

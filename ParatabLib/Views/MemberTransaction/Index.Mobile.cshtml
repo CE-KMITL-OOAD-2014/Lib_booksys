@@ -37,7 +37,7 @@ else if (TempData["SuccessNoti"] != null)
             }
             else
             {
-                <td class="center-col"><a class="operation-link" href="/MemberTransaction/Renew/@record.ID">Renew</a></td>
+                <td class="center-col"><a class="norm" href="/MemberTransaction/Renew/@record.ID">Renew</a></td>
             }
             
         </tr>
@@ -83,7 +83,7 @@ else
                     <td>@Html.DisplayFor(target => target.GetRequestEntryViews().Single(rec => rec == record).ExpireDate)</td>
                 }
                 <td class="center-col">
-                    <a class="operation-link" href="/MemberTransaction/CancelRequest/@record.BookID">Cancel</a>
+                    <a class="norm" href="/MemberTransaction/CancelRequest/@record.BookID">Cancel</a>
                         </td>
                 </tr>
         }

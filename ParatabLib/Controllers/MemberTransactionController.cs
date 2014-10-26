@@ -55,9 +55,9 @@ namespace ParatabLib.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Renew(BorrowEntry entry, string answer)
+        public ActionResult Renew(BorrowEntry entry)
         {
-            if (ModelState.IsValid && answer == "Yes")
+            if (ModelState.IsValid)
             {
                 if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID && target.ExpireDate == null) != null)
                 {

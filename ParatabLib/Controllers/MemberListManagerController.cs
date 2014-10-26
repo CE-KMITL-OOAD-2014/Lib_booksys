@@ -65,9 +65,9 @@ namespace ParatabLib.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Delete(Member target,string answer)
+        public ActionResult Delete(Member target)
         {
-            if (ModelState.IsValid && answer == "Yes")
+            if (ModelState.IsValid)
             {
                 //1.Check whether member has remain book if yes do not delete.
                 //2.Delete related borrowlist.

@@ -8,8 +8,8 @@
     <fieldset>
         <legend>Renew book</legend>
         Are you sure want to renew this book?<br />
-        <input type="submit" value="Yes" name="answer" /><br />
-        <input type="submit" value="No" name="answer" />
+        <input type="submit" value="Renew" name="answer" />
+        <a class=" account-btt account-btt-in-form" href="/MemberTransaction/">Back</a>
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.UserID)
         @Html.HiddenFor(model => model.BookID)

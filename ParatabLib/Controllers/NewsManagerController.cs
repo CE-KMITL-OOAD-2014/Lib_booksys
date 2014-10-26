@@ -96,15 +96,12 @@ namespace ParatabLib.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteNews(News newsToDelete, string answer)
+        public ActionResult DeleteNews(News newsToDelete)
         {
-            if (answer == "Yes")
-            {
                 libRepo.NewsRepo.Remove(newsToDelete);
                 TempData["SuccessNoti"] = "Delete news successfully.";
                 libRepo.Save();
-            }
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
