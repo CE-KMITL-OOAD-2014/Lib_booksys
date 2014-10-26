@@ -2,8 +2,16 @@
     ViewBag.Title = "Edit book";
 }
 @model ParatabLib.Models.Book
+<h2>Edit book</h2>
 <form class="account-form" action="/BookManager/EditBook/" method="post">
     @Html.AntiForgeryToken()
+    @if (TempData["ErrorNoti"] != null)
+    {
+        <div class="noti-red">
+            <img class="close-btt" src="~/Content/close-btt.png" />
+            @TempData["ErrorNoti"]
+        </div>
+    }
     <fieldset>
         <legend>Edit book</legend>
         @Html.HiddenFor(model => model.BookID)
@@ -22,6 +30,8 @@
         }
         @Html.TextBoxFor(model => model.BookName, new { @placeholder = "Book name" })
         @Html.ValidationMessageFor(model => model.BookName)
+        @Html.TextBoxFor(model => model.CallNumber, new { @placeholder = "Call No." })
+        @Html.ValidationMessageFor(model => model.CallNumber)
         @Html.TextBoxFor(model => model.Author, new { @placeholder = "Author" })
         @Html.TextBoxFor(model => model.Publisher, new { @placeholder = "Publisher" })
         @Html.TextBoxFor(model => model.Year, new { @placeholder = "Year" })

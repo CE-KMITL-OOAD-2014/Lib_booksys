@@ -17,9 +17,9 @@ else
 <table class="list">
     <tr>
         <th>ID</th>
+        <th>Call No.</th>
         <th>Book name</th>
         <th>Author</th>
-        <th>Publisher</th>
         <th>Status</th>
         <th></th>
     </tr>
@@ -27,9 +27,9 @@ else
     {
         <tr>
             <th>@book.BookID</th>
+            <td>@book.CallNumber</td>
             <td>@book.BookName</td>
             <td>@book.Author</td>
-            <td>@book.Publisher</td>
             <td>@book.BookStatus</td>
             <td><a href="/Book/View/@book.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
         </tr>

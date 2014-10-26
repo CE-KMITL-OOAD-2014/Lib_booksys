@@ -17,6 +17,7 @@
     <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@ViewBag.Keyword"/><br />
     <label>Search by</label><select size="1" name="SearchType">
     <option value="" selected="@((ViewBag.SearchType=="")?"selected":null)">Select...</option>
+    <option value="Callno" selected="@((ViewBag.SearchType=="Callno")?"selected":null)">Call No.</option>
     <option value="BookName" selected="@((ViewBag.SearchType=="BookName")?"selected":null)">Book name</option>
     <option value="Author" selected="@((ViewBag.SearchType=="Author")?"selected":null)">Author</option>
     <option value="Publisher" selected="@((ViewBag.SearchType=="Publisher")?"selected":null)">Publisher</option>
@@ -29,9 +30,9 @@
     <table class="list">
         <tr>
             <th>ID</th>
+            <th>Call No.</th>
           <th>Book name</th>
             <th>Author</th>
-            <th>Publisher</th>
             <th>Status</th>
             <th></th>
         </tr>
@@ -39,9 +40,9 @@
         {
             <tr>
                 <th>@item.BookID</th>
+                <td>@item.CallNumber</td>
                 <td>@item.BookName</td>
                 <td>@item.Author</td>
-                <td>@item.Publisher</td>
                 <td>@item.BookStatus</td>
                 <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png"/></a></td>
             </tr>
@@ -76,11 +77,11 @@
     </form>
 }
 
-
     <h2>Advance search</h2>
     <form class="book-search" action="/BookSearch/Advance" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
+        <label>Call No.</label><input type="text" placeholder="Call No." name="CallNumber" value="@TempData["Callno"]" /><br />
         <label>Book name</label><input type="text" placeholder="Book name" name="BookName" value="@TempData["BookName"]" /><br />
         <label>Author</label><input type="text" placeholder="Author" name="Author" value="@TempData["Author"]" /><br />
         <label>Publisher</label><input type="text" placeholder="Publisher" name="Publisher" value="@TempData["Publisher"]" /><br />
@@ -94,9 +95,9 @@
         <table class="list">
             <tr>
                 <th>ID</th>
+                <th>Call No.</th>
                 <th>Book name</th>
                 <th>Author</th>
-                <th>Publisher</th>
                 <th>Status</th>
                 <th></th>
             </tr>
@@ -104,9 +105,9 @@
             {
                 <tr>
                     <th>@item.BookID</th>
+                    <td>@item.CallNumber</td>
                     <td>@item.BookName</td>
                     <td>@item.Author</td>
-                    <td>@item.Publisher</td>
                     <td>@item.BookStatus</td>
                     <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
                 </tr>
@@ -124,6 +125,7 @@
         }
         </select>
         <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+        <input type="hidden" name="CallNumber" value="@TempData["Callno"]" />
         <input type="hidden" name="BookName" value="@TempData["BookName"]" />
         <input type="hidden" name="Author" value="@TempData["Author"]" /> 
         <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
@@ -139,6 +141,7 @@
             <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
             <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
         </select>
+        <input type="hidden" name="CallNumber" value="@TempData["Callno"]" />
         <input type="hidden" name="BookName" value="@TempData["BookName"]" />
         <input type="hidden" name="Author" value="@TempData["Author"]" />
         <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />

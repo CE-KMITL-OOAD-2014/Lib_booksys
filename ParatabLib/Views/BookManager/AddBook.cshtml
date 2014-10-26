@@ -5,11 +5,19 @@
 <h2>AddBook</h2>
 <form class="account-form" action="/BookManager/AddBook" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @if (TempData["ErrorNoti"] != null)
+    {
+        <div class="noti-red">
+            <img class="close-btt" src="~/Content/close-btt.png" />
+            @TempData["ErrorNoti"]
+        </div>
+    }
     <fieldset>
         <legend>Add new book</legend>
         @Html.TextBoxFor(model => model.BookName, new { @placeholder = "Book name" })
         @Html.ValidationMessageFor(model => model.BookName)
+        @Html.TextBoxFor(model => model.CallNumber, new { @placeholder = "Call No." })
+        @Html.ValidationMessageFor(model => model.CallNumber)
         @Html.TextBoxFor(model => model.Author, new { @placeholder = "Author" })
         @Html.TextBoxFor(model => model.Publisher, new { @placeholder = "Publisher" })
         @Html.TextBoxFor(model => model.Year, new { @placeholder = "Year" })

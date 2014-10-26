@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using ParatabLib.Models;
 using ParatabLib.DataAccess;
 using ParatabLib.ViewModels;
@@ -43,7 +42,10 @@ namespace ParatabLib.Controllers
             {
                 bookList = libRepo.BookRepo.ListWhere(target => StringUtil.IsContains(target.Publisher, keyword)).OrderBy(booksort => booksort.BookName).ToList();
             }
-
+            else if (searchType == "Callno")
+            {
+                bookList = libRepo.BookRepo.ListWhere(target => target.CallNumber.ToLower().Contains(keyword.ToLower())).OrderBy(booksort => booksort.CallNumber).ToList();
+            }
             else if (searchType == "Year")
             {
                 try
@@ -91,32 +93,37 @@ namespace ParatabLib.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year")]Book bookToSearch,int page = 1,int pageSize = 10)
+        public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year,CallNumber")]Book bookToSearch,int page = 1,int pageSize = 10)
         {
             ModelState.Remove("BookName");
+            ModelState.Remove("CallNumber");
             TempData["BookName"] = bookToSearch.BookName;
             TempData["Author"] = bookToSearch.Author;
             TempData["Publisher"] = bookToSearch.Publisher;
             TempData["Year"] = bookToSearch.Year;
+            TempData["Callno"] = bookToSearch.CallNumber;
             if (ModelState.IsValid)
             {
-
                 List<Book> bookList;
                 bookToSearch.BookName = (bookToSearch.BookName == null) ? "" : bookToSearch.BookName;
                 bookToSearch.Author = (bookToSearch.Author == null) ? "" : bookToSearch.Author;
                 bookToSearch.Publisher = (bookToSearch.Publisher == null) ? "" : bookToSearch.Publisher;
-
+                bookToSearch.CallNumber = (bookToSearch.CallNumber == null) ? "" : bookToSearch.CallNumber.ToLower();
                 if (bookToSearch.Year != null)
                 {
                     bookList = libRepo.BookRepo.ListWhere(target => (target.BookName.Contains(bookToSearch.BookName)) &&
-                    (StringUtil.IsContains(target.Author, bookToSearch.Author)) && (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher)) &&
+                        (target.CallNumber.ToLower().Contains(bookToSearch.CallNumber)) &&
+                        (StringUtil.IsContains(target.Author, bookToSearch.Author)) &&
+                       (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher)) &&
                      (target.Year == bookToSearch.Year)).ToList();
                 }
 
                 else
                 {
                     bookList = libRepo.BookRepo.ListWhere(target => (target.BookName.Contains(bookToSearch.BookName)) &&
-                    (StringUtil.IsContains(target.Author, bookToSearch.Author)) && (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher))).ToList();
+                    (target.CallNumber.ToLower().Contains(bookToSearch.CallNumber)) &&
+                    (StringUtil.IsContains(target.Author, bookToSearch.Author)) && 
+                    (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher))).ToList();
                 }
                 TempData["AdvanceSearch"] = "Advance";
                 TempData["pageSize"] = pageSize;

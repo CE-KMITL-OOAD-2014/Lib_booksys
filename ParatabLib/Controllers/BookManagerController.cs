@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using ParatabLib.Models;
 using ParatabLib.DataAccess;
 using ParatabLib.ViewModels;
-using System.Data.Entity;
 using System.ComponentModel;
+using ParatabLib.Utilities;
 namespace ParatabLib.Controllers
 {
     public class BookManagerController : Controller
@@ -52,10 +51,18 @@ namespace ParatabLib.Controllers
         {
             if (ModelState.IsValid)
             {
-                libRepo.BookRepo.Add(bookToAdd);
-                libRepo.Save();
-                TempData["SuccessNoti"] = "Add new book successfully.";
-                return RedirectToAction("Index");
+                if (libRepo.BookRepo.ListWhere(target =>  target.CallNumber.ToLower() == bookToAdd.CallNumber.ToLower()).SingleOrDefault() == null)
+                {
+                    libRepo.BookRepo.Add(bookToAdd);
+                    libRepo.Save();
+                    TempData["SuccessNoti"] = "Add new book successfully.";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorNoti"] = "This call number is already exists.";
+                    return View(bookToAdd);
+                }
             }
             return View(bookToAdd);
         }
@@ -93,29 +100,49 @@ namespace ParatabLib.Controllers
                 //If book is available make sure that book is not reserve or borrowed//
                 else if (bookToEdit.BookStatus == Status.Available)
                 {
+                    if (libRepo.BookRepo.ListWhere(target => (target.CallNumber.ToLower() == bookToEdit.CallNumber.ToLower())
+                    && target.BookID != bookToEdit.BookID).SingleOrDefault() == null)
+                    {
                     Book bookToFind = libRepo.BookRepo.Find(bookToEdit.BookID);
                     if (bookToFind.BookStatus == Status.Borrowed || bookToFind.BookStatus == Status.Reserved)
                     {
                         TempData["ErrorNoti"] = "Can't edit book status due to this book is " + bookToFind.BookStatus.ToString()+".";
                         return RedirectToAction("Index");
                     }
-                    bookToFind.BookName = bookToEdit.BookName;
-                    bookToFind.Author = bookToEdit.Author;
-                    bookToFind.Publisher = bookToEdit.Publisher;
-                    bookToFind.Year = bookToEdit.Year;
-                    bookToFind.Detail = bookToEdit.Detail;
-                    bookToFind.BookStatus = bookToEdit.BookStatus;
-                    libRepo.BookRepo.Update(bookToFind);
+                        bookToFind.BookName = bookToEdit.BookName;
+                        bookToFind.CallNumber = bookToEdit.CallNumber;
+                        bookToFind.Author = bookToEdit.Author;
+                        bookToFind.Publisher = bookToEdit.Publisher;
+                        bookToFind.Year = bookToEdit.Year;
+                        bookToFind.Detail = bookToEdit.Detail;
+                        bookToFind.BookStatus = bookToEdit.BookStatus;
+                        libRepo.BookRepo.Update(bookToFind);
+                        TempData["SuccessNoti"] = "Edit book successfully.";
+                        libRepo.Save();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["ErrorNoti"] = "This call number is already exists.";
+                        return View(bookToEdit);
+                    }
+                }
+
+                //Another check???? Avail -> Borrowed? Avail -> Req.
+                if (libRepo.BookRepo.ListWhere(target => (target.CallNumber.ToLower() == bookToEdit.CallNumber.ToLower())
+                && target.BookID != bookToEdit.BookID).SingleOrDefault() == null)
+                {
+                    libRepo.BookRepo.Update(bookToEdit);
                     TempData["SuccessNoti"] = "Edit book successfully.";
                     libRepo.Save();
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    TempData["ErrorNoti"] = "This call number is already exists.";
+                    return View(bookToEdit);
+                }
 
-                //Another check???? Avail -> Borrowed? Avail -> Req.
-                libRepo.BookRepo.Update(bookToEdit);
-                TempData["SuccessNoti"] = "Edit book successfully.";
-                libRepo.Save();
-                return RedirectToAction("Index");
             }
             return View(bookToEdit);
         }

@@ -17,8 +17,11 @@ namespace ParatabLib.Models
         private int _BookID;
         [Key]
         public int BookID { get { return _BookID; } set { _BookID = value; } }
-        
-        //Add call number
+
+        private string _CallNumber;
+        [Required(ErrorMessage="Call number is required.")]
+        public string CallNumber { get { return _CallNumber; } set { _CallNumber = value; } }
+
         private string _BookName;
         [Required(ErrorMessage="Book name is required.")]
         public string BookName { get { return _BookName; } set { _BookName = value; } }

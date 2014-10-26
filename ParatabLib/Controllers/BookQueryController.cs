@@ -19,6 +19,7 @@ namespace ParatabLib.Controllers
             return LibRepo.BookRepo.List().Select(
                         book => new Book(){
                         BookID = book.BookID,
+                        CallNumber = book.CallNumber,
                         BookName = book.BookName,
                         Author = book.Author,
                         Publisher = book.Publisher,
@@ -36,6 +37,7 @@ namespace ParatabLib.Controllers
                           where book.BookName.Contains(name)
                           select new Book(){
                               BookID = book.BookID,
+                              CallNumber = book.CallNumber,
                               BookName = book.BookName,
                               Author = book.Author,
                               Detail = book.Detail,
@@ -60,6 +62,7 @@ namespace ParatabLib.Controllers
                          select new Book
                          {
                              BookID = book.BookID,
+                             CallNumber = book.CallNumber,
                              BookName = book.BookName,
                              Author = book.Author,
                              Detail = book.Detail,
@@ -84,6 +87,7 @@ namespace ParatabLib.Controllers
                          select new Book
                          {
                              BookID = book.BookID,
+                             CallNumber = book.CallNumber,
                              BookName = book.BookName,
                              Author = book.Author,
                              Detail = book.Detail,
@@ -109,6 +113,7 @@ namespace ParatabLib.Controllers
                          select new Book
                          {
                              BookID = book.BookID,
+                             CallNumber = book.CallNumber,
                              BookName = book.BookName,
                              Author = book.Author,
                              Detail = book.Detail,
@@ -134,6 +139,7 @@ namespace ParatabLib.Controllers
                           where book.BookID == id
                           select new Book(){
                               BookID = book.BookID,
+                              CallNumber = book.CallNumber,
                               BookName = book.BookName,
                               Author = book.Author,
                               Detail = book.Detail,
@@ -146,22 +152,49 @@ namespace ParatabLib.Controllers
             return NotFound();
         }
 
+        public IHttpActionResult GetBookByCallNumber(string callno)
+        {
+            if (callno == null)
+                return NotFound();
+            var target = from book in LibRepo.BookRepo.List()
+                         where book.CallNumber.ToLower() == callno.ToLower()
+                         select new Book()
+                         {
+                             BookID = book.BookID,
+                             CallNumber = book.CallNumber,
+                             BookName = book.BookName,
+                             Author = book.Author,
+                             Detail = book.Detail,
+                             Publisher = book.Publisher,
+                             Year = book.Year,
+                             BookStatus = book.BookStatus
+                         };
+
+            if (target == null)
+                return NotFound();
+            else if (target.ToList().Count != 0)
+                return Ok(target);
+            else
+                return NotFound();
+        }
+
         public IHttpActionResult PostBook([FromBody]JObject target)
         {
             Book bookToFind = new Book();
             bookToFind.BookName = target["BookName"].ToString();
             bookToFind.Author = target["Author"].ToString();
             bookToFind.Publisher = target["Publisher"].ToString();
-
+            bookToFind.CallNumber = target["CallNumber"].ToString().ToLower();
             IEnumerable<Book> list;
             if (target["Year"].ToString() == "")
             {
                 list = from book in LibRepo.BookRepo.List()
                            where StringUtil.IsContains(book.Author,bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
-                                 StringUtil.IsContains(book.Publisher, bookToFind.Publisher)
+                                 StringUtil.IsContains(book.Publisher, bookToFind.Publisher) && book.CallNumber.ToLower().Contains(bookToFind.CallNumber)
                            select new Book()
                            {
                                BookID = book.BookID,
+                               CallNumber = book.CallNumber,
                                BookName = book.BookName,
                                Author = book.Author,
                                Detail = book.Detail,
@@ -178,9 +211,11 @@ namespace ParatabLib.Controllers
                 list = from book in LibRepo.BookRepo.List()
                        where StringUtil.IsContains(book.Author, bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
                                  StringUtil.IsContains(book.Publisher, bookToFind.Publisher) && book.Year == bookToFind.Year
+                                 && book.CallNumber.ToLower().Contains(bookToFind.CallNumber)
                        select new Book()
                        {
                            BookID = book.BookID,
+                           CallNumber = book.CallNumber,
                            BookName = book.BookName,
                            Author = book.Author,
                            Detail = book.Detail,

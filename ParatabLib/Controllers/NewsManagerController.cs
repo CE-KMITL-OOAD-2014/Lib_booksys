@@ -4,7 +4,6 @@ using System.Linq;
 using System.ComponentModel;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using ParatabLib.Models;
 using ParatabLib.DataAccess;
 using ParatabLib.ViewModels;
