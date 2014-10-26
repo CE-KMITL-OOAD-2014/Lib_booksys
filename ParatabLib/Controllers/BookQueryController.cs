@@ -157,7 +157,7 @@ namespace ParatabLib.Controllers
             if (callno == null)
                 return NotFound();
             var target = from book in LibRepo.BookRepo.List()
-                         where book.CallNumber.ToLower() == callno.ToLower()
+                         where book.CallNumber.ToLower().Contains(callno.ToLower())
                          select new Book()
                          {
                              BookID = book.BookID,

@@ -67,7 +67,18 @@ function getBookByYear(year) {
     return received_data;
 }
 
-function getBookByAllProperties(name,author,publisher,year) {
+function getBookByCallNo(callno) {
+    var received_data;
+    $.getJSON("/api/BookQuery/?callno=" + callno).done(function (data) {
+        received_data = data;
+    }).fail(function () {
+        received_data = null;
+    });
+    return received_data;
+}
+
+
+function getBookByAllProperties(callno,name,author,publisher,year) {
     var received_data;
 
     var target = new Object();
@@ -75,7 +86,7 @@ function getBookByAllProperties(name,author,publisher,year) {
     target.Author = author;
     target.Publisher = publisher;
     target.Year = year;
-
+    target.CallNumber = callno;
     $.ajax({
         type: "POST",
         url: "/api/BookQuery/",

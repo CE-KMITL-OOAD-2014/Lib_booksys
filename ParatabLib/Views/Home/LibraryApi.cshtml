@@ -2,125 +2,108 @@
     ViewBag.Title = "Library Api";
     string code = "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/jquery-2.1.1.js\"></script>\n"+
         "<script type=\"text/javascript\" src=\"http://paratabplus.cloudapp.net/Scripts/ApiScript.js\"></script>";
-    string code2 = "<input type=\"text\" placeholder=\"Search by name\" id=\"inputBookName\">\n" +
-    "<button id=\"bttBookName\">Try it!</button><br />\n" +
-    "<input type=\"text\" placeholder=\"Search by author\" id=\"inputAuthor\">\n" +
-    "<button id=\"bttAuthor\">Try it!</button><br />\n" +
-    "<input type=\"text\" placeholder=\"Search by publisher\" id=\"inputPublisher\">\n" +
-    "<button id=\"bttPublisher\">Try it!</button><br />\n" +
-    "<input type=\"text\" placeholder=\"Search by year\" id=\"inputYear\">\n" +
-    "<button id=\"bttYear\">Try it!</button><br /><br />\n" +
-    "<table id=\"showlist\" class=\"samplelist\">\n" +
-    "</table>\n" +
-    "<style>\n" +
-        "table.samplelist {\n" +
-            "border-collapse: collapse;\n" +
-        "}\n" +
-        "table.samplelist th{\n" +
-            "padding:5px;\n" +
-            "border:1px solid black;\n" +
-        "}\n" +
-        "table.samplelist td{\n" +
-            "padding:5px;\n" +
-            "border:1px solid black;\n" +
-        "}\n" +
-    "</style>\n" +
-    "<script type=\"text/javascript\">\n" +
-    "$(\"#bttBookName\").click(function () {\n" +
-        "var listBookName = getBookByName($(\"#inputBookName\").val());\n" +
-        "if (listBookName != null) {\n" +
-            "var i = 0;\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+\n"+
+    string code2 = "<input type=\"text\" placeholder=\"Search by Call No.\" id=\"inputCallNo\">\n"+
+    "<button id=\"bttCallNo\">Try it!</button><br />\n"+
+    "<input type=\"text\" placeholder=\"Search by name\" id=\"inputBookName\">\n"+
+    "<button id=\"bttBookName\">Try it!</button><br />\n"+
+    "<input type=\"text\" placeholder=\"Search by author\" id=\"inputAuthor\">\n"+
+    "<button id=\"bttAuthor\">Try it!</button><br />\n"+
+    "<input type=\"text\" placeholder=\"Search by publisher\" id=\"inputPublisher\">\n"+
+    "<button id=\"bttPublisher\">Try it!</button><br />\n"+
+    "<input type=\"text\" placeholder=\"Search by year\" id=\"inputYear\">\n"+
+    "<button id=\"bttYear\">Try it!</button><br /><br />\n"+
+    "<table id=\"showlist\" class=\"samplelist\">\n"+
+    "</table>\n"+
+    "<style>\n"+
+        "table.samplelist {\n"+
+            "border-collapse: collapse;\n"+
+        "}\n"+
+        "table.samplelist th{\n"+
+            "padding:5px;\n"+
+            "border:1px solid black;\n"+
+        "}\n"+
+        "table.samplelist td{\n"+
+            "padding:5px;\n"+
+            "border:1px solid black;\n"+
+        "}\n"+
+    "</style>\n"+
+    "<script type=\"text/javascript\">\n"+
+        "function showTableResult(list) {\n"+
+            "var i = 0;\n"+
+            "$(\"#showlist\").empty();\n"+
+            "$(\"#showlist\").append('<tr><th>ID</th><th>Call No.</th><th>Book name</th><th>Author</th>' +\n"+
                 "'<th>Publisher</th><th>Year</th><th>Status</th></tr>');\n"+
-                "while (listBookName[i] != null) {\n" +
-                "$(\"#showlist\").append('<tr><td>' + listBookName[i].BookID + '</td>' +\n" +
-                    "'<td>' + listBookName[i].BookName + '</td>'+\n" +
-                    "'<td>' + listBookName[i].Author + '</td>'+\n" +
-                    "'<td>' + listBookName[i].Publisher + '</td>' +\n"+
-                    "'<td>' + listBookName[i].Year + '</td>'+\n"+
-                    "'<td>' + getBookStatus(listBookName[i].BookStatus) + '</td></tr>');\n"+
-                "i++;\n" +
-            "}\n" +
-        "}\n" +
-        "else {\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append(\"No book with name:\" + $(\"#inputBookName\").val());\n" +
-        "}\n" +
-    "});\n" +
+            "while (list != null) {\n"+
+                "$(\"#showlist\").append('<tr><td>' + list[i].BookID + '</td>' +\n"+
+                    "'<td>' + list[i].CallNumber + '</td>' +\n"+
+                    "'<td>' + list[i].BookName + '</td>' +\n"+
+                    "'<td>' + list[i].Author + '</td>' +\n"+
+                    "'<td>' + list[i].Publisher + '</td>' +\n"+
+                    "'<td>' + list[i].Year + '</td>' +\n"+
+                    "'<td>' + getBookStatus(list[i].BookStatus) + '</td></tr>');\n"+
+                "i++;\n"+
+            "}\n"+
+        "}\n"+
+
+        "$(\"#bttCallNo\").click(function () {\n"+
+            "var listBookCallno = getBookByCallNo($(\"#inputCallNo\").val());\n"+
+            "if (listBookCallno != null) {\n"+
+                "showTableResult(listBookCallno);\n"+
+            "}\n"+
+            "else {\n"+
+                "$(\"#showlist\").empty();\n"+
+                "$(\"#showlist\").append(\"No book with call no.:\" + $(\"#inputCallNo\").val());\n"+
+            "}\n"+
+        "});\n"+
+    "$(\"#bttBookName\").click(function () {\n"+
+        "var listBookName = getBookByName($(\"#inputBookName\").val());\n"+
+        "if (listBookName != null) {\n"+
+            "showTableResult(listBookName);\n"+
+        "}\n"+
+        "else {\n"+
+            "$(\"#showlist\").empty();\n"+
+            "$(\"#showlist\").append(\"No book with name:\" + $(\"#inputBookName\").val());\n"+
+        "}\n"+
+    "});\n"+
 
 
-    "$(\"#bttAuthor\").click(function () {\n" +
-        "var listBookAuthor = getBookByAuthor($(\"#inputAuthor\").val());\n" +
-        "if (listBookAuthor != null) {\n" +
-            "var i = 0;\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+\n"+
-                "'<th>Publisher</th><th>Year</th><th>Status</th></tr>');\n"+
-                "while (listBookAuthor[i] != null) {\n" +
-                "$(\"#showlist\").append('<tr><td>' + listBookAuthor[i].BookID + '</td>' +\n" +
-                    "'<td>' + listBookAuthor[i].BookName + '</td>' +\n" +
-                    "'<td>' + listBookAuthor[i].Author + '</td>' +\n" +
-                    "'<td>' + listBookAuthor[i].Publisher + '</td>' +\n"+
-                    "'<td>' + listBookAuthor[i].Year + '</td>' +\n"+
-                    "'<td>' + getBookStatus(listBookAuthor[i].BookStatus) + '</td></tr>');\n"+
-                "i++;\n" +
-            "}\n" +
-        "}\n" +
-        "else {\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append(\"No book with author:\" + $(\"#inputAuthor\").val());\n" +
-        "}\n" +
-    "});\n" +
+    "$(\"#bttAuthor\").click(function () {\n"+
+        "var listBookAuthor = getBookByAuthor($(\"#inputAuthor\").val());\n"+
+        "if (listBookAuthor != null) {\n"+
+            "showTableResult(listBookAuthor);\n"+
+        "}\n"+
+        "else {\n"+
+            "$(\"#showlist\").empty();\n"+
+            "$(\"#showlist\").append(\"No book with author:\" + $(\"#inputAuthor\").val());\n"+
+        "}\n"+
+    "});\n"+
 
 
-    "$(\"#bttPublisher\").click(function () {\n" +
-        "var listBookPublisher = getBookByPublisher($(\"#inputPublisher\").val());\n" +
-        "if (listBookPublisher != null) {\n" +
-            "var i = 0;\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+\n"+
-                "'<th>Publisher</th><th>Year</th><th>Status</th></tr>');\n"+
-            "while (listBookPublisher[i] != null) {\n" +
-                "$(\"#showlist\").append('<tr><td>' + listBookPublisher[i].BookID + '</td>' +\n" +
-                    "'<td>' + listBookPublisher[i].BookName + '</td>' +\n" +
-                    "'<td>' + listBookPublisher[i].Author + '</td>' +\n" +
-                    "'<td>' + listBookPublisher[i].Publisher + '</td>' +\n"+
-                    "'<td>' + listBookPublisher[i].Year + '</td>' +\n"+
-                    "'<td>' + getBookStatus(listBookPublisher[i].BookStatus) + '</td></tr>');\n"+
-                "i++;\n" +
-            "}\n" +
-        "}\n" +
-        "else {\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append(\"No book with publisher:\" + $(\"#inputPublisher\").val());\n" +
-        "}\n" +
-    "});\n" +
-    "$(\"#bttYear\").click(function () {\n" +
-        "var listBookYear = getBookByYear($(\"#inputYear\").val());\n" +
-        "if (listBookYear != null) {\n" +
-            "var i = 0;\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+\n"+
-                "'<th>Publisher</th><th>Year</th><th>Status</th></tr>');\n"+
-            "while (listBookYear[i] != null) {\n" +
-                "$(\"#showlist\").append('<tr><td>' + listBookYear[i].BookID + '</td>' +\n" +
-                    "'<td>' + listBookYear[i].BookName + '</td>' +\n" +
-                    "'<td>' + listBookYear[i].Author + '</td>' +\n" +
-                    "'<td>' + listBookYear[i].Publisher + '</td>' +\n"+
-                    "'<td>' + listBookYear[i].Year + '</td>' +\n"+
-                    "'<td>' + getBookStatus(listBookYear[i].BookStatus) + '</td></tr>');\n"+
-                "i++;\n" +
-            "}\n" +
-        "}\n" +
-        "else {\n" +
-            "$(\"#showlist\").empty();\n" +
-            "$(\"#showlist\").append(\"No book with year:\" + $(\"#inputYear\").val());\n" +
-        "}\n" +
-    "});\n" +
+    "$(\"#bttPublisher\").click(function () {\n"+
+        "var listBookPublisher = getBookByPublisher($(\"#inputPublisher\").val());\n"+
+        "if (listBookPublisher != null) {\n"+
+            "showTableResult(listBookPublisher);\n"+
+        "}\n"+
+        "else {\n"+
+            "$(\"#showlist\").empty();\n"+
+            "$(\"#showlist\").append(\"No book with publisher:\" + $(\"#inputPublisher\").val());\n"+
+        "}\n"+
+    "});\n"+
+
+    "$(\"#bttYear\").click(function () {\n"+
+        "var listBookYear = getBookByYear($(\"#inputYear\").val());\n"+
+        "if (listBookYear != null) {\n"+
+            "showTableResult(listBookYear);\n"+
+        "}\n"+
+        "else {\n"+
+            "$(\"#showlist\").empty();\n"+
+            "$(\"#showlist\").append(\"No book with year:\" + $(\"#inputYear\").val());\n"+
+        "}\n"+
+    "});\n"+
     "</script>";
 
-    string code3 = "<input type=\"text\" placeholder=\"Enter book name\" id=\"inputBookName2\"><br />\n"+
+    string code3 = "<input type=\"text\" placeholder=\"Enter Call No.\" id=\"inputCallNo2\"><br />\n"+
+    "<input type=\"text\" placeholder=\"Enter book name\" id=\"inputBookName2\"><br />\n"+
     "<input type=\"text\" placeholder=\"Enter author\" id=\"inputAuthor2\"><br />\n"+
     "<input type=\"text\" placeholder=\"Enter publisher\" id=\"inputPublisher2\"><br />\n"+
     "<input type=\"text\" placeholder=\"Enter year\" id=\"inputYear2\">\n"+
@@ -144,15 +127,16 @@
     "</style>\n"+
     "<script type=\"text/javascript\">\n"+
         "$(\"#bttPostBook\").click(function () {\n"+
-            "var wantedList = getBookByAllProperties($(\"#inputBookName2\").val(),$(\"#inputAuthor2\").val()\n"+
-                ",$(\"#inputPublisher2\").val(), $(\"#inputYear2\").val());\n"+
+            "var wantedList = getBookByAllProperties($(\"#inputCallNo2\").val(), $(\"#inputBookName2\").val(),\n"+
+            "$(\"#inputAuthor2\").val(),$(\"#inputPublisher2\").val(), $(\"#inputYear2\").val());\n"+
             "if (wantedList != null) {\n"+
-                "$(\"#showlist2\").empty();\n"+
+            "$(\"#showlist2\").empty();\n"+
                 "var i = 0;\n"+
-                "$(\"#showlist2\").append('<tr><th>ID</th><th>Book name</th><th>Author</th>' +\n"+
+                "$(\"#showlist2\").append('<tr><th>ID</th><th>Call No.</th><th>Book name</th><th>Author</th>' +\n"+
                     "'<th>Publisher</th><th>Year</th><th>Status</th></tr>');\n"+
-                    "while (wantedList[i] != null) {\n"+
-                    "$(\"#showlist2\").append('<tr><td>' + wantedList[i].BookID + '</td>' +\n"+
+                "while (wantedList[i] != null) {\n"+
+                "$(\"#showlist2\").append('<tr><td>' + wantedList[i].BookID + '</td>' +\n"+
+                        "'<td>' + wantedList[i].CallNumber + '</td>' +\n"+
                         "'<td>' + wantedList[i].BookName + '</td>' +\n"+
                         "'<td>' + wantedList[i].Author + '</td>' +\n"+
                         "'<td>' + wantedList[i].Publisher + '</td>' +\n"+
@@ -179,6 +163,7 @@
                 "$(\"#bookDetail\").empty();\n"+
                 "$(\"#bookDetail\").append(\"<u><b>Book detail</b></u><br>\");\n"+
                 "$(\"#bookDetail\").append(\"<b>Book ID:</b>\" + bookToView.BookID + \"<br>\");\n"+
+                "$(\"#bookDetail\").append(\"<b>Call No.:</b>\" + bookToView.CallNumber + \"<br>\");"+
                 "$(\"#bookDetail\").append(\"<b>Book name:</b>\" + bookToView.BookName + \"<br>\");\n"+
                 "$(\"#bookDetail\").append(\"<b>Book author:</b>\" + bookToView.Author + \"<br>\");\n"+
                 "$(\"#bookDetail\").append(\"<b>Book publisher:</b>\" + bookToView.Publisher + \"<br>\");\n"+
@@ -250,6 +235,20 @@
         </div>
     </div>
 
+<div class="show-code-detail">
+    <b>function</b> getBookByCallNo(callno)<br />
+    Parameter:callno as string.<br />
+    return value:Array of book object.<br />
+    Description:This function use to find associated book by call number.<br />
+    <b>Example:</b><br />
+    <div class="show-code-example">
+        var list = getBookByCallNo("SCI-FL1-1"); //Retrieve all book that contain call no. "SCI-FL1-1".<br />
+        var i = 0; //Initalized interator index.<br />
+        while(list[i] != null) //Check whether item in list which index i is null.<br />
+        document.getElementById("test").innerHTML = list[i].BookName; //Display book's name of list[i] where i is iterator index in element with id "test".<br />
+    </div>
+</div>
+
     <div class="show-code-detail">
         <b>function</b> getBookByName(name)<br />
         Parameter:name as string.<br />
@@ -320,8 +319,8 @@
     </div>
 
     <div class="show-code-detail-long">
-        <b>function</b> getBookByAllProperties(name,author,publisher,year)<br />
-        Parameter:name,author,publisher as string.year as numeric string.<br />
+        <b>function</b> getBookByAllProperties(callno,name,author,publisher,year)<br />
+        Parameter:callno,name,author,publisher as string.year as numeric string.<br />
         return value:Array of book object.<br />
         Description:This function use to find book which specified all properties.Use HTTPPOST to archive this.<br />
         <b>Example:</b><br />
@@ -350,6 +349,8 @@
 <h2>Jump start:Example 1</h2>
 <p class="real-paragraph">Learn to use by example and you can copy code to adapt it in your website!</p>
 <div class="show-code">
+    <input type="text" placeholder="Search by Call No." id="inputCallNo">
+    <button id="bttCallNo">Try it!</button><br />
     <input type="text" placeholder="Search by name" id="inputBookName">
     <button id="bttBookName">Try it!</button><br />
     <input type="text" placeholder="Search by author" id="inputAuthor">
@@ -374,22 +375,37 @@
         }
     </style>
     <script type="text/javascript">
+        function showTableResult(list) {
+            var i = 0;
+            $("#showlist").empty();
+            $("#showlist").append('<tr><th>ID</th><th>Call No.</th><th>Book name</th><th>Author</th>' +
+                '<th>Publisher</th><th>Year</th><th>Status</th></tr>');
+            while (list != null) {
+                $("#showlist").append('<tr><td>' + list[i].BookID + '</td>' +
+                    '<td>' + list[i].CallNumber + '</td>' +
+                    '<td>' + list[i].BookName + '</td>' +
+                    '<td>' + list[i].Author + '</td>' +
+                    '<td>' + list[i].Publisher + '</td>' +
+                    '<td>' + list[i].Year + '</td>' +
+                    '<td>' + getBookStatus(list[i].BookStatus) + '</td></tr>');
+                i++;
+            }
+        }
+
+        $("#bttCallNo").click(function () {
+            var listBookCallno = getBookByCallNo($("#inputCallNo").val());
+            if (listBookCallno != null) {
+                showTableResult(listBookCallno);
+            }
+            else {
+                $("#showlist").empty();
+                $("#showlist").append("No book with call no.:" + $("#inputCallNo").val());
+            }
+        });
     $("#bttBookName").click(function () {
         var listBookName = getBookByName($("#inputBookName").val());
         if (listBookName != null) {
-            var i = 0;
-            $("#showlist").empty();
-            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+
-                '<th>Publisher</th><th>Year</th><th>Status</th></tr>');
-            while (listBookName[i] != null) {
-                $("#showlist").append('<tr><td>' + listBookName[i].BookID + '</td>' +
-                    '<td>' + listBookName[i].BookName + '</td>'+
-                    '<td>' + listBookName[i].Author + '</td>' +
-                    '<td>' + listBookName[i].Publisher + '</td>' +
-                    '<td>' + listBookName[i].Year + '</td>'+
-                    '<td>' + getBookStatus(listBookName[i].BookStatus) + '</td></tr>');
-                i++;
-            }
+            showTableResult(listBookName);
         }
         else {
             $("#showlist").empty();
@@ -401,19 +417,7 @@
     $("#bttAuthor").click(function () {
         var listBookAuthor = getBookByAuthor($("#inputAuthor").val());
         if (listBookAuthor != null) {
-            var i = 0;
-            $("#showlist").empty();
-            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+
-                '<th>Publisher</th><th>Year</th><th>Status</th></tr>');
-            while (listBookAuthor[i] != null) {
-                $("#showlist").append('<tr><td>' + listBookAuthor[i].BookID + '</td>' +
-                    '<td>' + listBookAuthor[i].BookName + '</td>' +
-                    '<td>' + listBookAuthor[i].Author + '</td>' +
-                    '<td>' + listBookAuthor[i].Publisher + '</td>' +
-                    '<td>' + listBookAuthor[i].Year + '</td>' +
-                    '<td>' + getBookStatus(listBookAuthor[i].BookStatus) + '</td></tr>');
-                i++;
-            }
+            showTableResult(listBookAuthor);
         }
         else {
             $("#showlist").empty();
@@ -425,19 +429,7 @@
     $("#bttPublisher").click(function () {
         var listBookPublisher = getBookByPublisher($("#inputPublisher").val());
         if (listBookPublisher != null) {
-            var i = 0;
-            $("#showlist").empty();
-            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+
-                         '<th>Publisher</th><th>Year</th><th>Status</th></tr>');
-            while (listBookPublisher[i] != null) {
-                $("#showlist").append('<tr><td>' + listBookPublisher[i].BookID + '</td>' +
-                    '<td>' + listBookPublisher[i].BookName + '</td>' +
-                    '<td>' + listBookPublisher[i].Author + '</td>' +
-                    '<td>' + listBookPublisher[i].Publisher + '</td>' +
-                    '<td>' + listBookPublisher[i].Year + '</td>' +
-                    '<td>' + getBookStatus(listBookPublisher[i].BookStatus) + '</td></tr>');
-                i++;
-            }
+            showTableResult(listBookPublisher);
         }
         else {
             $("#showlist").empty();
@@ -448,19 +440,7 @@
     $("#bttYear").click(function () {
         var listBookYear = getBookByYear($("#inputYear").val());
         if (listBookYear != null) {
-            var i = 0;
-            $("#showlist").empty();
-            $("#showlist").append('<tr><th>ID</th><th>Book name</th><th>Author</th>'+
-                              '<th>Publisher</th><th>Year</th><th>Status</th></tr>');
-            while (listBookYear[i] != null) {
-                $("#showlist").append('<tr><td>' + listBookYear[i].BookID + '</td>' +
-                    '<td>' + listBookYear[i].BookName + '</td>' +
-                    '<td>' + listBookYear[i].Author + '</td>' +
-                    '<td>' + listBookYear[i].Publisher + '</td>' +
-                    '<td>' + listBookYear[i].Year + '</td>' +
-                    '<td>' + getBookStatus(listBookYear[i].BookStatus) + '</td></tr>');
-                i++;
-            }
+            showTableResult(listBookYear);
         }
         else {
             $("#showlist").empty();
@@ -477,6 +457,7 @@
 
 <h2>Example 2</h2>
 <div class="show-code">
+    <input type="text" placeholder="Enter Call No." id="inputCallNo2"><br />
     <input type="text" placeholder="Enter book name" id="inputBookName2"><br />
     <input type="text" placeholder="Enter author" id="inputAuthor2"><br />
     <input type="text" placeholder="Enter publisher" id="inputPublisher2"><br />
@@ -501,15 +482,16 @@
     </style>
     <script type="text/javascript">
         $("#bttPostBook").click(function () {
-            var wantedList = getBookByAllProperties($("#inputBookName2").val(),$("#inputAuthor2").val()
-                ,$("#inputPublisher2").val(), $("#inputYear2").val());
+            var wantedList = getBookByAllProperties($("#inputCallNo2").val(), $("#inputBookName2").val(),
+                $("#inputAuthor2").val(),$("#inputPublisher2").val(), $("#inputYear2").val());
             if (wantedList != null) {
                 $("#showlist2").empty();
                 var i = 0;
-                $("#showlist2").append('<tr><th>ID</th><th>Book name</th><th>Author</th>' +
+                $("#showlist2").append('<tr><th>ID</th><th>Call No.</th><th>Book name</th><th>Author</th>' +
                     '<th>Publisher</th><th>Year</th><th>Status</th></tr>');
                 while (wantedList[i] != null) {
                     $("#showlist2").append('<tr><td>' + wantedList[i].BookID + '</td>' +
+                        '<td>' + wantedList[i].CallNumber + '</td>' +
                         '<td>' + wantedList[i].BookName + '</td>' +
                         '<td>' + wantedList[i].Author + '</td>' +
                         '<td>' + wantedList[i].Publisher + '</td>' +
@@ -544,6 +526,7 @@
                 $("#bookDetail").empty();
                 $("#bookDetail").append("<u><b>Book detail</b></u><br>");
                 $("#bookDetail").append("<b>Book ID:</b>" + bookToView.BookID + "<br>");
+                $("#bookDetail").append("<b>Call No.:</b>" + bookToView.CallNumber + "<br>");
                 $("#bookDetail").append("<b>Book name:</b>" + bookToView.BookName + "<br>");
                 $("#bookDetail").append("<b>Book author:</b>" + bookToView.Author + "<br>");
                 $("#bookDetail").append("<b>Book publisher:</b>" + bookToView.Publisher + "<br>");
@@ -613,7 +596,17 @@
             Retrieve a single book like viewBookDetail(id).
         </td>
     </tr>
-
+    <tr>
+        <td class="api-uri">
+            api/bookquery?callno={param}
+        </td>
+        <td>
+            GET
+        </td>
+        <td class="api-detail">
+            Retrieve related book by call number (where {param} is call number that you want to search) like getBookByCallNo(callno).
+        </td>
+    </tr>
     <tr>
         <td class="api-uri">
             api/bookquery?name={param}
