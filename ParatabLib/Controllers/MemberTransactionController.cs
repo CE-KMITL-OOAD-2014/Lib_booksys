@@ -165,12 +165,10 @@ namespace ParatabLib.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelRequest(RequestEntry entry, string answer)
+        public ActionResult CancelRequest(RequestEntry entry)
         {
             if (ModelState.IsValid)
             {
-                if (answer == "Yes")
-                {
                     Book bookToCheck = libRepo.BookRepo.Find(entry.BookID);
                     if (bookToCheck == null)
                     {
@@ -185,8 +183,7 @@ namespace ParatabLib.Controllers
                     libRepo.RequestEntryRepo.Remove(entry);
                     libRepo.Save();
                     TempData["SuccessNoti"] = "Cancel request successfully.";
-                }
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
             }
             TempData["ErrorNoti"] = "Something went wrong,please try again.";
             return RedirectToAction("Index");
