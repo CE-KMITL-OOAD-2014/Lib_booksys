@@ -11,7 +11,18 @@ namespace ParatabLib.Controllers
 {
     public class BookSearchController : Controller
     {
-        LibraryRepository libRepo = new LibraryRepository();
+        LibraryRepository libRepo;
+
+        public BookSearchController()
+        {
+            libRepo = new LibraryRepository();
+        }
+
+        public BookSearchController(LibraryRepository libRepo)
+        {
+            this.libRepo = libRepo;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -21,7 +32,7 @@ namespace ParatabLib.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Basic(string keyword, string searchType,int page = 1,int pageSize = 10)
         {
-            ViewBag.Keyword = keyword;
+            TempData["Keyword"] = keyword;
             ViewBag.SearchType = searchType;
             List<Book> bookList;
             if (searchType == "")

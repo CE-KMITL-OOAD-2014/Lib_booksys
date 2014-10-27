@@ -14,7 +14,7 @@
 <form class="book-search" action="/BookSearch/Basic" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
-    <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@ViewBag.Keyword"/><br />
+    <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@TempData["Keyword"]"/><br />
     <label>Search by</label><select size="1" name="SearchType">
     <option value="" selected="@((ViewBag.SearchType=="")?"selected":null)">Select...</option>
     <option value="Callno" selected="@((ViewBag.SearchType=="Callno")?"selected":null)">Call No.</option>
@@ -59,7 +59,7 @@
         }
         </select>
         <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
-        <input type="hidden" name="Keyword" value="@ViewBag.Keyword" />
+        <input type="hidden" name="Keyword" value="@TempData["Keyword"]" />
         <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />     
     </form>
 
@@ -72,7 +72,7 @@
             <option value="50" selected="@((int.Parse(TempData["pageSize"].ToString()) == 50) ? "selected" : null)">50</option>
             <option value="100" selected="@((int.Parse(TempData["pageSize"].ToString()) == 100) ? "selected" : null)">100</option>
         </select>
-        <input type="hidden" name="Keyword" value="@ViewBag.Keyword" />
+        <input type="hidden" name="Keyword" value="@TempData["Keyword"]" />
         <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />
     </form>
 }
