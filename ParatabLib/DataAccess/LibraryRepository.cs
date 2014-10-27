@@ -8,12 +8,12 @@ namespace ParatabLib.DataAccess
     public class LibraryRepository:IRepository
     {
         private LibraryContext context;
-        private LocalRepository<Book> bookRepository;
-        private LocalRepository<News> newsRepository;
-        private LocalRepository<BorrowEntry> borrowEntryRepository;
-        private LocalRepository<RequestEntry> requestEntryRepository;
-        private LocalRepository<Member> memberRepository;
-        private LocalRepository<Librarian> librarianRepository;
+        private IGenericRepository<Book> bookRepository;
+        private IGenericRepository<News> newsRepository;
+        private IGenericRepository<BorrowEntry> borrowEntryRepository;
+        private IGenericRepository<RequestEntry> requestEntryRepository;
+        private IGenericRepository<Member> memberRepository;
+        private IGenericRepository<Librarian> librarianRepository;
 
         public LibraryRepository(LibraryContext context)
         {
@@ -25,7 +25,7 @@ namespace ParatabLib.DataAccess
             this.context = new LibraryContext();
         }
 
-        public LocalRepository<Book> BookRepo
+        public virtual IGenericRepository<Book> BookRepo
         {
             get {
                 if (bookRepository == null)
@@ -34,7 +34,7 @@ namespace ParatabLib.DataAccess
                     return bookRepository;
             }
         }
-        public virtual LocalRepository<News> NewsRepo
+        public virtual IGenericRepository<News> NewsRepo
         {
             get
             {
@@ -44,7 +44,7 @@ namespace ParatabLib.DataAccess
                     return newsRepository;
             }
         }
-        public virtual LocalRepository<BorrowEntry> BorrowEntryRepo
+        public virtual IGenericRepository<BorrowEntry> BorrowEntryRepo
         {
             get
             {
@@ -54,7 +54,7 @@ namespace ParatabLib.DataAccess
                     return borrowEntryRepository;
             }
         }
-        public virtual LocalRepository<RequestEntry> RequestEntryRepo
+        public virtual IGenericRepository<RequestEntry> RequestEntryRepo
         {
             get
             {
@@ -64,7 +64,7 @@ namespace ParatabLib.DataAccess
                     return requestEntryRepository;
             }
         }
-        public virtual LocalRepository<Member> MemberRepo
+        public virtual IGenericRepository<Member> MemberRepo
         {
             get
             {
@@ -74,7 +74,7 @@ namespace ParatabLib.DataAccess
                     return memberRepository;
             }
         }
-        public LocalRepository<Librarian> LibrarianRepo
+        public IGenericRepository<Librarian> LibrarianRepo
         {
             get
             {
