@@ -86,7 +86,7 @@ namespace LibraryTester
                 CallNumber = "ETC-FL1-0174",
                 BookName = "Harry Potter and the Deathly Hallows",
                 Author = "J.K. Rowling",
-                Publisher = " 	Bloomsbury Publishing",
+                Publisher = "Bloomsbury Publishing",
                 Year = 2006,
                 BookStatus = Status.Borrowed
             },
@@ -229,7 +229,7 @@ namespace LibraryTester
             new Book{BookID = 24,
                 CallNumber = "MAT-FL1-1023",
                 BookName = "Mathematics in daily life",
-                Author = "Ngamcherd danpattanamongkhol",
+                Author = "Ngamcherd Danpattanamongkhol",
                 Publisher = "KMITL",
                 Year = 2014,
                 BookStatus = Status.Available,
@@ -422,6 +422,205 @@ namespace LibraryTester
             Assert.AreEqual("The magic of java", result.TempData["Keyword"]);
         }
 
-        //Test with advance in many case of search.
+        [TestMethod]
+        public void TestBasicSearchAction7()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Basic("PHY", "Callno", 1, 10) as ViewResult;
+            Assert.AreEqual(2,(result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("PHY",result.TempData["Keyword"]);
+            Assert.AreEqual("PHY-FL1-8830",(result.Model as PageList<Book>).GetList().
+                Where(target => target.BookName == "Fundamental statistics in psychology and education").Single().CallNumber);
+            Assert.AreEqual("PHY-FL1-8831", (result.Model as PageList<Book>).GetList().
+                Where(target => target.BookName == "The four fundamental concepts of psycho-analysis").Single().CallNumber);
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+        }
+
+        [TestMethod]
+        public void TestBasicSearchAction8()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Basic("J.K. Rowling", "Author", 1, 10) as ViewResult;
+            Assert.AreEqual(7, (result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("J.K. Rowling", result.TempData["Keyword"]);
+            Assert.AreEqual(2002, (result.Model as PageList<Book>).GetList().
+                Where(target => target.BookName == "Harry Potter and the Order of the Phoenix").Single().Year);
+            Assert.AreEqual(2005, (result.Model as PageList<Book>).GetList().
+            Where(target => target.BookName == "Harry Potter and the Half-Blood Prince").Single().Year);
+            Assert.AreEqual(7, (result.Model as PageList<Book>).GetList().
+                Where(target => target.Publisher == "Bloomsbury Publishing").ToList().Count);
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+        }
+
+        [TestMethod]
+        public void TestBasicSearchAction9()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Basic("KMITL", "Publisher", 1, 10) as ViewResult;
+            Assert.AreEqual(7, (result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("KMITL", result.TempData["Keyword"]);
+            Assert.AreEqual(2, (result.Model as PageList<Book>).GetList().
+                Where(target => target.Publisher == "KMITL publisher").ToList().Count);
+            Assert.IsNotNull((result.Model as PageList<Book>).GetList().
+                Where(target => target.BookName == "Image Processing").SingleOrDefault());
+            Assert.AreEqual(6,(result.Model as PageList<Book>).GetList().
+                Where(target => target.BookStatus == Status.Available).ToList().Count);
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+        }
+
+        [TestMethod]
+        public void TestBasicSearchAction10()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Basic("2014a", "Year", 1, 10) as ViewResult;
+            Assert.IsNull(result.Model);
+            Assert.AreEqual("2014a", result.TempData["Keyword"]);
+            Assert.AreEqual("Input string was not in a correct format.", result.TempData["ErrorNoti"]);
+        }
+
+        [TestMethod]
+        public void TestBasicSearchAction11()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Basic("wronginput", "Year", 1, 10) as ViewResult;
+            Assert.IsNull(result.Model);
+            Assert.AreEqual("wronginput", result.TempData["Keyword"]);
+            Assert.AreEqual("Input string was not in a correct format.", result.TempData["ErrorNoti"]);
+        }
+
+        [TestMethod]
+        public void TestBasicSearchAction12()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Basic("2014", "Year", 1, 10) as ViewResult;
+            Assert.AreEqual(2, (result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("2014",result.TempData["Keyword"]);
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+        }
+
+
+        [TestMethod]
+        public void TestAdvanceSearchAction1()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Advance(new Book {
+                BookName = "",
+                Author = "",
+                CallNumber = "",
+                Publisher = "", 
+                Year = null}, 1, 50) as ViewResult;
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+            Assert.AreEqual(30, (result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("", result.TempData["BookName"]);
+            Assert.AreEqual("", result.TempData["Author"]);
+            Assert.AreEqual("", result.TempData["Publisher"]);
+            Assert.AreEqual(null, result.TempData["Year"]);
+            Assert.AreEqual("", result.TempData["Callno"]);
+        }
+
+        [TestMethod]
+        public void TestAdvanceSearchAction2()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Advance(new Book
+            {
+                BookName = "Doraemon",
+                Author = "Fujiko F. Fujio",
+                CallNumber = "",
+                Publisher = "",
+                Year = null
+            }, 1, 50) as ViewResult;
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+            Assert.AreEqual(9, (result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("Doraemon", result.TempData["BookName"]);
+            Assert.AreEqual("Fujiko F. Fujio", result.TempData["Author"]);
+            Assert.AreEqual("", result.TempData["Publisher"]);
+            Assert.AreEqual(null, result.TempData["Year"]);
+            Assert.AreEqual("", result.TempData["Callno"]);
+        }
+
+        [TestMethod]
+        public void TestAdvanceSearchAction3()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Advance(new Book
+            {
+                BookName = "Computer Organization",
+                Author = "Surin",
+                CallNumber = "HWA",
+                Publisher = "KMITL",
+                Year = 2012 
+            }, 1, 50) as ViewResult;
+            Assert.AreEqual("No book result found.", result.TempData["ErrorNoti"]);
+            Assert.IsNull((result.Model as PageList<Book>));
+            Assert.AreEqual("Computer Organization", result.TempData["BookName"]);
+            Assert.AreEqual("Surin", result.TempData["Author"]);
+            Assert.AreEqual("KMITL", result.TempData["Publisher"]);
+            Assert.AreEqual(2012, result.TempData["Year"]);
+            Assert.AreEqual("HWA", result.TempData["Callno"]);
+        }
+
+        [TestMethod]
+        public void TestAdvanceSearchAction4()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Advance(new Book
+            {
+                BookName = "Doraemon",
+                Author = "",
+                CallNumber = "",
+                Publisher = "Shogakukan",
+                Year = null
+            }, 100, 100) as ViewResult;
+            Assert.AreEqual("Invalid list view parameter please refresh this page to try again.", result.TempData["ErrorNoti"]);
+            Assert.IsNull((result.Model as PageList<Book>));
+            Assert.AreEqual("Doraemon", result.TempData["BookName"]);
+            Assert.AreEqual("", result.TempData["Author"]);
+            Assert.AreEqual("Shogakukan", result.TempData["Publisher"]);
+            Assert.AreEqual(null, result.TempData["Year"]);
+            Assert.AreEqual("", result.TempData["Callno"]);
+        }
+
+        [TestMethod]
+        public void TestAdvanceSearchAction5()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Advance(new Book
+            {
+                BookName = "Digital circuit with VHDL",
+                Author = "Charoen Vongchumyen",
+                CallNumber = "HWA-FL2-2014",
+                Publisher = "SE-ED",
+                Year = 2009
+            }, 1, 10) as ViewResult;
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+            Assert.AreEqual(1,(result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("Digital circuit with VHDL", result.TempData["BookName"]);
+            Assert.AreEqual("Charoen Vongchumyen", result.TempData["Author"]);
+            Assert.AreEqual("SE-ED", result.TempData["Publisher"]);
+            Assert.AreEqual(2009, result.TempData["Year"]);
+            Assert.AreEqual("HWA-FL2-2014", result.TempData["Callno"]);
+        }
+
+        [TestMethod]
+        public void TestAdvanceSearchAction6()
+        {
+            InitialController("M_ce51benz", libRepo.Object);
+            ViewResult result = controller.Advance(new Book
+            {
+                BookName = "Harry Potter",
+                Author = "",
+                CallNumber = "ETC",
+                Publisher = "Bloomsbury Publishing",
+                Year = null
+            }, 1, 10) as ViewResult;
+            Assert.IsNull(result.TempData["ErrorNoti"]);
+            Assert.AreEqual(7, (result.Model as PageList<Book>).GetList().Count);
+            Assert.AreEqual("Harry Potter", result.TempData["BookName"]);
+            Assert.AreEqual("", result.TempData["Author"]);
+            Assert.AreEqual("Bloomsbury Publishing", result.TempData["Publisher"]);
+            Assert.AreEqual(null, result.TempData["Year"]);
+            Assert.AreEqual("ETC", result.TempData["Callno"]);
+        }
     }
 }
