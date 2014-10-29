@@ -6,7 +6,6 @@ using ParatabLib.Controllers;
 using ParatabLib.ViewModels;
 using MvcContrib.TestHelper;
 using SpecsFor.Mvc;
-
 namespace LibraryIntegrationTest
 {
     [TestClass]
@@ -19,260 +18,413 @@ namespace LibraryIntegrationTest
             app = new MvcWebApp();
         }
 
+
         [TestMethod]
-        public void HomeIndex()
+        public void GeneralUserBrowsing()
         {
-            app.NavigateTo<HomeController>(c => c.Index());
-            app.Route.ShouldMapTo<HomeController>(c => c.Index());
+            HomeIndex();
+            HomeTopTen();
+            HomeAboutUs();
+            HomeContact();
+            HomeChangeLog();
+            HomeLibraryApi();
+            AuthenticateRegister();
+            AuthenticateForgotPwd();
+            AuthenticateResetPwd();
+            AuthenticateLogin();
+            AccountIndex();
+            AccountChangePassword();
+            AccountEditAccount();
+            BookMntIndex();
+            BookMntAddBook();
+            BookMntEditBook();
+            BookMntDeleteBook();
+            LibrarianListIndex();
+            LibrarianListAddLibrarian();
+            LibrarianListView();
+            LibrarianListDelete();
+            LibTransactionIndex();
+            LibTransactionTransaction();
+            MemberListIndex();
+            MemberListView();
+            MemberListDelete();
+            MemberTransactionIndex();
+            MemberTransactionRenew();
+            MemberTransactionRequest();
+            MemberTransactionCancelReq();
+            MemberTransactionBrHistory();
+            NewsMntIndex();
+            NewsMntAddNews();
+            NewsMntEditNews();
+            NewsMntDeleteNews();
+            BackToHome();
+            QuickSearch();
+            BookSearchAndView();
         }
 
         [TestMethod]
-        public void HomeTopTen()
+        public void MemberBrowsing()
+        {
+            app.NavigateTo<AuthenticateController>(c => c.Login());
+            app.FindFormFor<LoginForm>().Field(f => f.UserName).SetValueTo("benchbb05").
+                                         Field(f => f.Password).SetValueTo("12345678").
+                                         Submit();
+            app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            HomeIndex();
+            HomeTopTen();
+            HomeAboutUs();
+            HomeContact();
+            HomeChangeLog();
+            HomeLibraryApi();
+            AuthenticateRegister();
+            AuthenticateForgotPwd();
+            AuthenticateResetPwd();
+            AuthenticateLogin();
+            AccountIndex();
+            AccountChangePassword();
+            AccountEditAccount();
+            BookMntIndex();
+            BookMntAddBook();
+            BookMntEditBook();
+            BookMntDeleteBook();
+            LibrarianListIndex();
+            LibrarianListAddLibrarian();
+            LibrarianListView();
+            LibrarianListDelete();
+            LibTransactionIndex();
+            LibTransactionTransaction();
+            MemberListIndex();
+            MemberListView();
+            MemberListDelete();
+            MemberTransactionIndex();
+            MemberTransactionRenew();
+            MemberTransactionRequest();
+            MemberTransactionCancelReq();
+            MemberTransactionBrHistory();
+            NewsMntIndex();
+            NewsMntAddNews();
+            NewsMntEditNews();
+            NewsMntDeleteNews();
+            BackToHome();
+            QuickSearch();
+            BookSearchAndView();
+            UserSignout();
+        }
+
+        [TestMethod]
+        public void GeneralLibrarianBrowsing()
+        {
+            app.NavigateTo<AuthenticateController>(c => c.Login());
+            app.FindFormFor<LoginForm>().Field(f => f.UserName).SetValueTo("paratabadmin")
+                                        .Field(f => f.Password).SetValueTo("surawits").Submit();
+            app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            HomeIndex();
+            HomeTopTen();
+            HomeAboutUs();
+            HomeContact();
+            HomeChangeLog();
+            HomeLibraryApi();
+            AuthenticateRegister();
+            AuthenticateForgotPwd();
+            AuthenticateResetPwd();
+            AuthenticateLogin();
+            AccountIndex();
+            AccountChangePassword();
+            AccountEditAccount();
+            BookMntIndex();
+            BookMntAddBook();
+            BookMntEditBook();
+            BookMntDeleteBook();
+            LibrarianListIndex();
+            LibrarianListAddLibrarian();
+            LibrarianListView();
+            LibrarianListDelete();
+            LibTransactionIndex();
+            LibTransactionTransaction();
+            MemberListIndex();
+            MemberListView();
+            MemberListDelete();
+            MemberTransactionIndex();
+            MemberTransactionRenew();
+            MemberTransactionRequest();
+            MemberTransactionCancelReq();
+            MemberTransactionBrHistory();
+            NewsMntIndex();
+            NewsMntAddNews();
+            NewsMntEditNews();
+            NewsMntDeleteNews();
+            BackToHome();
+            QuickSearch();
+            BookSearchAndView();
+            UserSignout();
+        }
+        private void IsRedirectToRightPathForMember<Controller>(System.Linq.Expressions.Expression<Func<Controller,System.Web.Mvc.ActionResult>>action) 
+            where Controller : System.Web.Mvc.Controller
+        {
+            IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
+            if (userfield.Text.Contains("Librarian portal"))
+                app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            else if (userfield.Text.Contains("My account"))
+                app.Route.ShouldMapTo<Controller>(action);
+            else
+                app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+        }
+
+        private void IsRedirectToRightPathForLibrarian<Controller>(System.Linq.Expressions.Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
+                        where Controller : System.Web.Mvc.Controller
+        {
+            IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
+            if (userfield.Text.Contains("Librarian portal"))
+                app.Route.ShouldMapTo<Controller>(action);
+            else if (userfield.Text.Contains("My account"))
+                app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            else
+                app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+        }
+
+
+        private void IsRedirectToRightPathForBoth<Controller>(System.Linq.Expressions.Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
+        where Controller : System.Web.Mvc.Controller
+        {
+            IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
+            if (userfield.Text.Contains("Librarian portal") || userfield.Text.Contains("My account"))
+                app.Route.ShouldMapTo<Controller>(action);
+            else
+                app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+        }
+
+
+        private void IsRedirectToRightPathForGenUser<Controller>(System.Linq.Expressions.Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
+                where Controller : System.Web.Mvc.Controller
+        {
+            IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
+            if (userfield.Text.Contains("Librarian portal") || userfield.Text.Contains("My account"))
+                app.Route.ShouldMapTo<HomeController>(c => c.Index());
+            else
+                app.Route.ShouldMapTo<Controller>(action);
+        }
+
+        private void HomeIndex()
+        {
+           app.NavigateTo<HomeController>(c => c.Index());
+           app.Route.ShouldMapTo<HomeController>(c => c.Index());
+        }
+
+        private void HomeTopTen()
         {
             app.NavigateTo<HomeController>(c => c.TopTen());
             app.Route.ShouldMapTo<HomeController>(c => c.TopTen());
         }
 
-        [TestMethod]
-        public void HomeAboutUs()
+        private void HomeAboutUs()
         {
             app.NavigateTo<HomeController>(c => c.About());
             app.Route.ShouldMapTo<HomeController>(c => c.About());
         }
 
-        [TestMethod]
-        public void HomeContact()
+        private void HomeContact()
         {
             app.NavigateTo<HomeController>(c => c.Contact());
             app.Route.ShouldMapTo<HomeController>(c => c.Contact());
         }
 
-        [TestMethod]
-        public void HomeChangeLog()
+        private void HomeChangeLog()
         {
             app.NavigateTo<HomeController>(c => c.ChangeLog());
             app.Route.ShouldMapTo<HomeController>(c => c.ChangeLog());
         }
-
-        [TestMethod]
-        public void HomeLibraryApi()
+        
+        private void HomeLibraryApi()
         {
             app.NavigateTo<HomeController>(c => c.LibraryApi());
             app.Route.ShouldMapTo<HomeController>(c => c.LibraryApi());
         }
 
-        [TestMethod]
-        public void AuthenticateRegister()
+        private void AuthenticateRegister()
         {
             app.NavigateTo<AuthenticateController>(c => c.Register());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Register());
+            IsRedirectToRightPathForGenUser<AuthenticateController>(c => c.Register());
         }
 
-        [TestMethod]
-        public void AuthenticateForgotPwd()
+        private void AuthenticateForgotPwd()
         {
             app.NavigateTo<AuthenticateController>(c => c.ForgotPassword());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.ForgotPassword());
+            IsRedirectToRightPathForGenUser<AuthenticateController>(c => c.ForgotPassword());
         }
 
-        [TestMethod]
-        public void AuthenticateResetPwd()
+        private void AuthenticateResetPwd()
         {
             app.NavigateTo<AuthenticateController>(c => c.ResetPassword(""));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
+            if (userfield.Text.Contains("Librarian portal") || userfield.Text.Contains("My account"))
+                app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            else
+                app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
         }
 
-        [TestMethod]
-        public void AuthenticateLogin()
+        private void AuthenticateLogin()
         {
             app.NavigateTo<AuthenticateController>(c => c.Login());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForGenUser<AuthenticateController>(c => c.Login());
         }
 
-        [TestMethod]
-        public void AccountIndex()
+        private void AccountIndex()
         {
             app.NavigateTo<AccountController>(c => c.Index());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForBoth<AccountController>(c => c.Index());
         }
 
-        [TestMethod]
-        public void AccountChangePassword()
+        private void AccountChangePassword()
         {
             app.NavigateTo<AccountController>(c => c.ChangePassword());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForBoth<AccountController>(c => c.ChangePassword());
         }
 
-        [TestMethod]
-        public void AccountEditAccount()
+        private void AccountEditAccount()
         {
             app.NavigateTo<AccountController>(c => c.EditAccount());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForBoth<AccountController>(c => c.EditAccount());
         }
 
-        [TestMethod]
-        public void BookMntIndex()
+        private void BookMntIndex()
         {
             app.NavigateTo<BookManagerController>(c => c.Index(1, 10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.Index(1, 10));
         }
 
-        [TestMethod]
-        public void BookMntAddBook()
+        private void BookMntAddBook()
         {
             app.NavigateTo<BookManagerController>(c => c.AddBook());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.AddBook());
         }
 
-        [TestMethod]
-        public void BookMntEditBook()
+        private void BookMntEditBook()
         {
             app.NavigateTo<BookManagerController>(c => c.EditBook(1));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.EditBook(1));
         }
 
-        [TestMethod]
-        public void BookMntDeleteBook()
+        private void BookMntDeleteBook()
         {
             app.NavigateTo<BookManagerController>(c => c.DeleteBook(1));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.DeleteBook(1));
         }
 
-        [TestMethod]
-        public void LibrarianListIndex()
+        private void LibrarianListIndex()
         {
             app.NavigateTo<LibrarianListManagerController>(c => c.Index(1, 10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<LibrarianListManagerController>(c => c.Index(1, 10));
         }
 
-        [TestMethod]
-        public void LibrarianListAddLibrarian()
+        private void LibrarianListAddLibrarian()
         {
             app.NavigateTo<LibrarianListManagerController>(c => c.AddLibrarian());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<LibrarianListManagerController>(c => c.AddLibrarian());
         }
 
-        [TestMethod]
-        public void LibrarianListView()
+        private void LibrarianListView()
         {
             app.NavigateTo<LibrarianListManagerController>(c => c.View(8));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<LibrarianListManagerController>(c => c.View(8));
         }
 
-        [TestMethod]
-        public void LibrarianListDelete()
+        private void LibrarianListDelete()
         {
             app.NavigateTo<LibrarianListManagerController>(c => c.Delete(8));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<LibrarianListManagerController>(c => c.Delete(8));
         }
 
-        [TestMethod]
-        public void LibTransactionIndex()
+        private void LibTransactionIndex()
         {
             app.NavigateTo<LibrarianTransactionController>(c => c.Index(1, 10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<LibrarianTransactionController>(c => c.Index(1, 10));
         }
 
-        [TestMethod]
-        public void LibTransactionTransaction()
+        private void LibTransactionTransaction()
         {
             app.NavigateTo<LibrarianTransactionController>(c => c.Transaction());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<LibrarianTransactionController>(c => c.Transaction());
         }
 
-        [TestMethod]
-        public void MemberListIndex()
+        private void MemberListIndex()
         {
             app.NavigateTo<MemberListManagerController>(c => c.Index(1, 10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<MemberListManagerController>(c => c.Index(1, 10));
         }
 
-        [TestMethod]
-        public void MemberListView()
+        private void MemberListView()
         {
             app.NavigateTo<MemberListManagerController>(c => c.View(23));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<MemberListManagerController>(c => c.View(23));
         }
 
-        [TestMethod]
-        public void MemberListDelete()
+        private void MemberListDelete()
         {
             app.NavigateTo<MemberListManagerController>(c => c.Delete(23));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<MemberListManagerController>(c => c.Delete(23));
         }
 
-        [TestMethod]
-        public void MemberTransactionIndex()
+        private void MemberTransactionIndex()
         {
             app.NavigateTo<MemberTransactionController>(c => c.Index());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Index());
         }
 
-        [TestMethod]
-        public void MemberTransactionRenew()
+        private void MemberTransactionRenew()
         {
             app.NavigateTo<MemberTransactionController>(c => c.Renew(30));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Index());
         }
 
-        [TestMethod]
-        public void MemberTransactionRequest()
+        private void MemberTransactionRequest()
         {
             app.NavigateTo<MemberTransactionController>(c => c.Request());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Request());
         }
 
-        [TestMethod]
-        public void MemberTransactionCancelReq()
+        private void MemberTransactionCancelReq()
         {
             app.NavigateTo<MemberTransactionController>(c => c.CancelRequest(100));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Index());
         }
 
-        [TestMethod]
-        public void MemberTransactionBrHistory()
+        private void MemberTransactionBrHistory()
         {
             app.NavigateTo<MemberTransactionController>(c => c.BorrowHistory(1, 10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.BorrowHistory(1, 10));
         }
 
-        [TestMethod]
-        public void NewsMntIndex()
+        private void NewsMntIndex()
         {
             app.NavigateTo<NewsManagerController>(c => c.Index(1, 10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.Index(1, 10));
         }
 
-        [TestMethod]
-        public void NewsMntAddNews()
+        private void NewsMntAddNews()
         {
             app.NavigateTo<NewsManagerController>(c => c.AddNews());
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.AddNews());
         }
 
-        [TestMethod]
-        public void NewsMntEditNews()
+        private void NewsMntEditNews()
         {
             app.NavigateTo<NewsManagerController>(c => c.EditNews(10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.EditNews(10));
         }
 
-        [TestMethod]
-        public void NewsMntDeleteNews()
+        private void NewsMntDeleteNews()
         {
             app.NavigateTo<NewsManagerController>(c => c.DeleteNews(10));
-            app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
+            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.DeleteNews(10));
         }
 
-        [TestMethod]
-        public void BackToHome()
+        private void BackToHome()
         {
             app.NavigateTo<HomeController>(c => c.Index());
             app.Route.ShouldMapTo<HomeController>(c => c.Index());
         }
-        
-        [TestMethod]
-        public void QuickSearch()
+
+        private void QuickSearch()
         {
             app.NavigateTo<HomeController>(c => c.Index());
             app.Browser.FindElement(By.CssSelector("form.search-bar input[value=\"Search\"]")).Submit();
@@ -280,8 +432,7 @@ namespace LibraryIntegrationTest
             app.Browser.Title.AssertSameStringAs("Search result");
         }
 
-        [TestMethod]
-        public void BookSearchAndView()
+        private void BookSearchAndView()
         {
             app.NavigateTo<BookSearchController>(c => c.Index());
             app.Browser.FindElement(By.CssSelector("form select[name=\"SearchType\"]")).Click();
@@ -289,14 +440,19 @@ namespace LibraryIntegrationTest
             app.Browser.FindElement(By.CssSelector("form select[name=\"SearchType\"]")).Click();
             app.Browser.FindElement(By.CssSelector("form[action=\"/BookSearch/Basic\"]")).Submit();
             app.Route.ShouldMapTo<BookSearchController>();
-            IReadOnlyCollection<IWebElement> test = app.Browser.FindElements(By.ClassName("view-btt"));
-            IEnumerator<IWebElement> it = test.GetEnumerator();
+            IReadOnlyCollection<IWebElement> viewbttlist = app.Browser.FindElements(By.ClassName("view-btt"));
+            IEnumerator<IWebElement> it = viewbttlist.GetEnumerator();
             it.MoveNext();
             it.Current.Click();
             app.Route.ShouldMapTo<BookController>();
         }
 
-        [TestMethod]
+        private void UserSignout()
+        {
+            app.NavigateTo<AuthenticateController>(c => c.Logout());
+            app.Route.ShouldMapTo<HomeController>(c => c.Index());
+        }
+      /*  [TestMethod]
         public void MemberLogin()
         {
             app.NavigateTo<AuthenticateController>(c => c.Login());
@@ -304,8 +460,16 @@ namespace LibraryIntegrationTest
                                         .Field<string>(c => c.Password).SetValueTo("12345678")
                                         .Submit();
             app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            AuthenticateRegister();
         }
 
+        
+
+
+        private void TravelEveryPage()
+        {
+
+        }*/
         //Test view news
         //Loopback to test all browsing
     }
