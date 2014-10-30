@@ -22,44 +22,7 @@ namespace LibraryIntegrationTest
         [TestMethod]
         public void GeneralUserBrowsing()
         {
-            HomeIndex();
-            HomeTopTen();
-            HomeAboutUs();
-            HomeContact();
-            HomeChangeLog();
-            HomeLibraryApi();
-            AuthenticateRegister();
-            AuthenticateForgotPwd();
-            AuthenticateResetPwd();
-            AuthenticateLogin();
-            AccountIndex();
-            AccountChangePassword();
-            AccountEditAccount();
-            BookMntIndex();
-            BookMntAddBook();
-            BookMntEditBook();
-            BookMntDeleteBook();
-            LibrarianListIndex();
-            LibrarianListAddLibrarian();
-            LibrarianListView();
-            LibrarianListDelete();
-            LibTransactionIndex();
-            LibTransactionTransaction();
-            MemberListIndex();
-            MemberListView();
-            MemberListDelete();
-            MemberTransactionIndex();
-            MemberTransactionRenew();
-            MemberTransactionRequest();
-            MemberTransactionCancelReq();
-            MemberTransactionBrHistory();
-            NewsMntIndex();
-            NewsMntAddNews();
-            NewsMntEditNews();
-            NewsMntDeleteNews();
-            BackToHome();
-            QuickSearch();
-            BookSearchAndView();
+            BrowseEveryPage();
         }
 
         [TestMethod]
@@ -70,44 +33,7 @@ namespace LibraryIntegrationTest
                                          Field(f => f.Password).SetValueTo("12345678").
                                          Submit();
             app.Route.ShouldMapTo<AccountController>(c => c.Index());
-            HomeIndex();
-            HomeTopTen();
-            HomeAboutUs();
-            HomeContact();
-            HomeChangeLog();
-            HomeLibraryApi();
-            AuthenticateRegister();
-            AuthenticateForgotPwd();
-            AuthenticateResetPwd();
-            AuthenticateLogin();
-            AccountIndex();
-            AccountChangePassword();
-            AccountEditAccount();
-            BookMntIndex();
-            BookMntAddBook();
-            BookMntEditBook();
-            BookMntDeleteBook();
-            LibrarianListIndex();
-            LibrarianListAddLibrarian();
-            LibrarianListView();
-            LibrarianListDelete();
-            LibTransactionIndex();
-            LibTransactionTransaction();
-            MemberListIndex();
-            MemberListView();
-            MemberListDelete();
-            MemberTransactionIndex();
-            MemberTransactionRenew();
-            MemberTransactionRequest();
-            MemberTransactionCancelReq();
-            MemberTransactionBrHistory();
-            NewsMntIndex();
-            NewsMntAddNews();
-            NewsMntEditNews();
-            NewsMntDeleteNews();
-            BackToHome();
-            QuickSearch();
-            BookSearchAndView();
+            BrowseEveryPage();
             UserSignout();
         }
 
@@ -118,6 +44,12 @@ namespace LibraryIntegrationTest
             app.FindFormFor<LoginForm>().Field(f => f.UserName).SetValueTo("paratabadmin")
                                         .Field(f => f.Password).SetValueTo("surawits").Submit();
             app.Route.ShouldMapTo<AccountController>(c => c.Index());
+            BrowseEveryPage();
+            UserSignout();
+        }
+
+        private void BrowseEveryPage()
+        {
             HomeIndex();
             HomeTopTen();
             HomeAboutUs();
@@ -156,7 +88,8 @@ namespace LibraryIntegrationTest
             BackToHome();
             QuickSearch();
             BookSearchAndView();
-            UserSignout();
+            BrowseNews();
+            BrowseAllNews();
         }
         private void IsRedirectToRightPathForMember<Controller>(System.Linq.Expressions.Expression<Func<Controller,System.Web.Mvc.ActionResult>>action) 
             where Controller : System.Web.Mvc.Controller
@@ -300,14 +233,14 @@ namespace LibraryIntegrationTest
 
         private void BookMntEditBook()
         {
-            app.NavigateTo<BookManagerController>(c => c.EditBook(1));
-            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.EditBook(1));
+            app.NavigateTo<BookManagerController>(c => c.EditBook(33));
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.EditBook(33));
         }
 
         private void BookMntDeleteBook()
         {
-            app.NavigateTo<BookManagerController>(c => c.DeleteBook(1));
-            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.DeleteBook(1));
+            app.NavigateTo<BookManagerController>(c => c.DeleteBook(33));
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.DeleteBook(33));
         }
 
         private void LibrarianListIndex()
@@ -452,25 +385,22 @@ namespace LibraryIntegrationTest
             app.NavigateTo<AuthenticateController>(c => c.Logout());
             app.Route.ShouldMapTo<HomeController>(c => c.Index());
         }
-      /*  [TestMethod]
-        public void MemberLogin()
+
+        private void BrowseNews()
         {
-            app.NavigateTo<AuthenticateController>(c => c.Login());
-            app.FindFormFor<LoginForm>().Field<string>(c => c.UserName).SetValueTo("benchbb05")
-                                        .Field<string>(c => c.Password).SetValueTo("12345678")
-                                        .Submit();
-            app.Route.ShouldMapTo<AccountController>(c => c.Index());
-            AuthenticateRegister();
+            app.NavigateTo<HomeController>(c => c.Index());
+            IReadOnlyCollection<IWebElement> newslink = app.Browser.FindElements(By.ClassName("news-link"));
+            IEnumerator<IWebElement> it = newslink.GetEnumerator(); 
+            it.MoveNext();
+            it.Current.Click();
+            app.Route.ShouldMapTo<NewsController>();
         }
 
-        
-
-
-        private void TravelEveryPage()
+        private void BrowseAllNews()
         {
-
-        }*/
-        //Test view news
-        //Loopback to test all browsing
+            app.NavigateTo<HomeController>(c => c.Index());
+            app.Browser.FindElement(By.CssSelector("a[href=\"/News/ViewAll\"]")).Click();
+            app.Route.ShouldMapTo<NewsController>();
+        }
     }
 }
