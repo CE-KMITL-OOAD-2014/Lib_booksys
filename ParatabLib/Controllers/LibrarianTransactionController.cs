@@ -59,7 +59,7 @@ namespace ParatabLib.Controllers
                         libRepo.BookRepo.Update(booktoborrow);
                         libRepo.BorrowEntryRepo.Add(entry);
                         libRepo.Save();
-                        TempData["SuccessNoti"] = "OK";
+                        TempData["SuccessNoti"] = "Borrow for member#"+entry.UserID+" success.";
                         return Check(entry);
                     }
                     else if (booktoborrow.BookStatus == Status.Lost)

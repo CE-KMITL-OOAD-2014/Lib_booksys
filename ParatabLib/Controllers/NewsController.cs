@@ -16,8 +16,8 @@ namespace ParatabLib.Controllers
             News newstoview = libRepo.NewsRepo.Find(id);
             if (newstoview != null)
                 return View(newstoview);
-            else
-                return HttpNotFound();
+            TempData["ErrorNoti"] = "No news with that ID exists.";
+            return RedirectToAction("ViewAll");
         }
 
         public ActionResult ViewAll(int page = 1,int pageSize = 10)

@@ -72,9 +72,10 @@ namespace ParatabLib.Controllers
         public ActionResult EditBook([DefaultValue(0)]int id)
         {
             Book booktoedit = libRepo.BookRepo.Find(id);
-            if (booktoedit == null)
-                return HttpNotFound();
-            return View(booktoedit);
+            if (booktoedit != null)
+                return View(booktoedit);
+            TempData["ErrorNoti"] = "Please specify correct newsID.";
+            return RedirectToAction("Index");
         }
 
 
@@ -152,9 +153,11 @@ namespace ParatabLib.Controllers
         public ActionResult DeleteBook([DefaultValue(0)]int id)
         {
             Book booktodelete = libRepo.BookRepo.Find(id);
-            if (booktodelete == null)
-                return HttpNotFound();
-            return View(booktodelete);
+            if (booktodelete != null)
+                return View(booktodelete);
+            TempData["ErrorNoti"] = "Please specify correct newsID.";
+            return RedirectToAction("Index");
+
         }
 
 

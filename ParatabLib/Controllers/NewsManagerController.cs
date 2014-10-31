@@ -65,7 +65,8 @@ namespace ParatabLib.Controllers
             News newsToEdit = libRepo.NewsRepo.Find(id);
             if (newsToEdit != null)
                 return View(newsToEdit);
-            return HttpNotFound();
+            TempData["ErrorNoti"] = "Please specify correct newsID.";
+            return RedirectToAction("Index");
 
         }
 
@@ -90,7 +91,8 @@ namespace ParatabLib.Controllers
             News newsToDelete = libRepo.NewsRepo.Find(id);
             if (newsToDelete != null)
                 return View(newsToDelete);
-            return HttpNotFound();
+            TempData["ErrorNoti"] = "Please specify correct newsID.";
+            return RedirectToAction("Index");
         }
 
         [Authorize]

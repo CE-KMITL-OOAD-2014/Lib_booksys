@@ -8,7 +8,7 @@ function viewBookDetail(id) {
     if (id == "")
         return null;
     var received_data;
-    $.getJSON("/api/BookQuery/" + id)
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/" + id)
         .done(function (data) {
             received_data = data;
         }).fail(function () {
@@ -19,7 +19,7 @@ function viewBookDetail(id) {
 
 function getAllBook() {
     var received_data;
-    $.getJSON("/api/BookQuery/").done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/").done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -29,7 +29,7 @@ function getAllBook() {
 
 function getBookByName(name) {
     var received_data;
-    $.getJSON("/api/BookQuery/?name="+name).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?name=" + name).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -39,7 +39,7 @@ function getBookByName(name) {
 
 function getBookByAuthor(author) {
     var received_data;
-    $.getJSON("/api/BookQuery/?author="+author).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?author=" + author).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -49,7 +49,7 @@ function getBookByAuthor(author) {
 
 function getBookByPublisher(publisher) {
     var received_data;
-    $.getJSON("/api/BookQuery/?publisher=" + publisher).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?publisher=" + publisher).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -59,7 +59,7 @@ function getBookByPublisher(publisher) {
 
 function getBookByYear(year) {
     var received_data;
-    $.getJSON("/api/BookQuery/?year=" + year).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?year=" + year).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -69,7 +69,7 @@ function getBookByYear(year) {
 
 function getBookByCallNo(callno) {
     var received_data;
-    $.getJSON("/api/BookQuery/?callno=" + callno).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?callno=" + callno).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -89,7 +89,7 @@ function getBookByAllProperties(callno,name,author,publisher,year) {
     target.CallNumber = callno;
     $.ajax({
         type: "POST",
-        url: "/api/BookQuery/",
+        url: "http://paratabplus.cloudapp.net/api/BookQuery/",
         data: JSON.stringify(target),
         contentType: "application/json"
     }).done(function (data) {
