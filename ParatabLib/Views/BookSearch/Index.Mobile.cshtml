@@ -27,6 +27,9 @@
 </form>
 @if (Model != null && TempData["AdvanceSearch"]!="Advance")
 {
+     <div class="result-display">
+        Total result:<span id="total-result">@TempData["TotalResult"] (</span><span id="find-time">@TempData["FindTime"]</span> second(s))
+    </div>
     <table class="res-list">
         <tr>
             <th>ID</th>
@@ -91,6 +94,9 @@
 
 @if (Model != null && TempData["AdvanceSearch"] == "Advance")
 {
+    <div class="result-display">
+        Total result:<span id="total-result">@TempData["TotalResult"] (</span><span id="find-time">@TempData["FindTime"]</span> second(s))
+    </div>
         <table class="res-list">
             <tr>
                 <th>ID</th>

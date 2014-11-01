@@ -32,6 +32,8 @@ namespace ParatabLib.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Basic(string keyword, string searchType,int page = 1,int pageSize = 10)
         {
+            DateTime finish;
+            DateTime start = DateTime.Now;
             TempData["Keyword"] = keyword;
             ViewBag.SearchType = searchType;
             List<Book> bookList;
@@ -82,13 +84,19 @@ namespace ParatabLib.Controllers
                 TempData["ErrorNoti"] = "Something was error.";
                 return View("Index");
             }
+            finish = DateTime.Now;
 
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
             switch (pglist.Categorized())
             {
-                case PageListResult.Ok: { return View("Index", pglist); }
+                case PageListResult.Ok: {
+                    TimeSpan diff = finish - start;
+                    TempData["TotalResult"] = bookList.Count;
+                    TempData["FindTime"] = diff.Minutes + diff.Seconds + (diff.Milliseconds / 1000.0);
+                    return View("Index", pglist); 
+                }
                 case PageListResult.Empty:
                     {
                         TempData["ErrorNoti"] = "No book result found.";
@@ -113,6 +121,8 @@ namespace ParatabLib.Controllers
             TempData["Publisher"] = bookToSearch.Publisher;
             TempData["Year"] = bookToSearch.Year;
             TempData["Callno"] = bookToSearch.CallNumber;
+            DateTime finish;
+            DateTime start = DateTime.Now;
             if (ModelState.IsValid)
             {
                 List<Book> bookList;
@@ -136,13 +146,19 @@ namespace ParatabLib.Controllers
                     (StringUtil.IsContains(target.Author, bookToSearch.Author)) && 
                     (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher))).ToList();
                 }
+                finish = DateTime.Now;
                 TempData["AdvanceSearch"] = "Advance";
                 TempData["pageSize"] = pageSize;
                 TempData["page"] = page;
                 PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
                 switch (pglist.Categorized())
                 {
-                    case PageListResult.Ok: { return View("Index", pglist); }
+                    case PageListResult.Ok: {
+                        TimeSpan diff = finish - start;
+                        TempData["TotalResult"] = bookList.Count;
+                        TempData["FindTime"] = diff.Minutes + diff.Seconds + (diff.Milliseconds / 1000.0);
+                        return View("Index", pglist); 
+                    }
                     case PageListResult.Empty:
                         {
                             TempData["ErrorNoti"] = "No book result found.";
@@ -166,13 +182,21 @@ namespace ParatabLib.Controllers
         public ActionResult QuickSearch(string bookName,int page = 1,int pageSize = 10)
         {
             TempData["quicksearchkey"] = bookName;
+            DateTime finish;
+            DateTime start = DateTime.Now;
             List<Book> bookList = libRepo.BookRepo.ListWhere(target => target.BookName.Contains(bookName));
+            finish = DateTime.Now;
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
             switch (pglist.Categorized())
             {
-                case PageListResult.Ok: { return View(pglist); }
+                case PageListResult.Ok: {
+                    TimeSpan diff = finish - start;
+                    TempData["TotalResult"] = bookList.Count;
+                    TempData["FindTime"] = diff.Minutes + diff.Seconds + (diff.Milliseconds / 1000.0);    
+                    return View(pglist); 
+                }
                 case PageListResult.Empty:
                     {
                         TempData["ErrorNoti"] = "No book result found.";
