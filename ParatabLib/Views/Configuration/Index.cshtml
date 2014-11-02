@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Configuration</h2>
+@if (TempData["ErrorNoti"] != null)
+{
+    <div class="noti-red">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["ErrorNoti"]
+    </div>
+}
+else if (TempData["SuccessNoti"] != null)
+{
+    <div class="noti-green">
+        <img class="close-btt" src="~/Content/close-btt.png" />
+        @TempData["SuccessNoti"]
+    </div>
+}
+<div class="conf-detail">
+    @if(TempData["Operation"] != "Edit"){
+    <b>Fine:</b>@TempData["Fine"] <text>baht</text> <a href="/Configuration/EditFine"><button>Edit</button></a>
+    }
+    else
+    {
+        <form action="/Configuration/UpdateFine" method="post">
+            @Html.AntiForgeryToken()
+            <b>Fine:</b><input type="text" size="5" name="newfine" value="@TempData["Fine"]"/>
+            <input type="submit" value="Update"/><a href="/Configuration/"><button type="button">Back</button></a>
+        </form>
+              }
+
+</div>
+<a class="account-btt" href="/Account/LibrarianPortal">Portal</a>
+

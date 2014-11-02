@@ -143,7 +143,7 @@ namespace ParatabLib.Controllers
                 if(returnentry.DueDate.Date < DateTime.Now.Date){
                     int dif = DateTime.Now.Subtract(returnentry.DueDate.Date).Days;
                     //Warn noti
-                    TempData["WarnNoti"] = "Return successfully.Fine " + (dif * 5) + " baht.";
+                    TempData["WarnNoti"] = "Return successfully.Fine " + (dif * ConfigurationController.getFine()) + " baht.";
                     }
                 else
                     TempData["SuccessNoti"] = "Return successfully.";

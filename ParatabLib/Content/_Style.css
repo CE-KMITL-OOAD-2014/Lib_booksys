@@ -299,6 +299,16 @@ div.news-area{
     border:1px solid #808080;
 }
 /*--------------------------*/
+div.conf-detail {
+    margin:15px 0 15px 0;
+    font-family: Single;
+    font-size: x-large;
+}
+
+div.conf-detail button{
+    margin-left:5px;
+     margin-right:5px;
+}
 a.account-btt{
     clear:both;
     display:block;

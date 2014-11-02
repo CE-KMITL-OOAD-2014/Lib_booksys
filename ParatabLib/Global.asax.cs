@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Optimization;
+using System.IO;
 using ParatabLib.Models;
 namespace ParatabLib
 {
@@ -24,6 +25,16 @@ namespace ParatabLib
                 Controllers.AuthenticateController.AddUser(member.UserName);
             foreach (Librarian librarian in libRepo.LibrarianRepo.List())
                 Controllers.AuthenticateController.AddUser(librarian.UserName);
+            if (!File.Exists(HttpRuntime.AppDomainAppPath+"/lib-config"))
+            {
+
+                File.AppendAllText(HttpRuntime.AppDomainAppPath + "/lib-config", "5");
+            }
+            else
+            {
+                Controllers.ConfigurationController.setFine(int.Parse
+                    (File.ReadAllText(HttpRuntime.AppDomainAppPath + "/lib-config")));
+            }
         }
     }
 }
