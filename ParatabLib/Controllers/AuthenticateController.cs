@@ -33,19 +33,6 @@ namespace ParatabLib.Controllers
             return AuthorizedList.Where(wantedUser => wantedUser == userName).SingleOrDefault() != null;
         }
 
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            filterContext.ExceptionHandled = true;
-            if (filterContext.Exception.GetType().Name == typeof(HttpAntiForgeryException).Name)
-            {
-                filterContext.Result = RedirectToAction("Index", "Account");
-            }
-            else
-            {
-                throw filterContext.Exception;
-            }    
-            
-        }
 
         public ActionResult Login()
         {
@@ -322,6 +309,20 @@ namespace ParatabLib.Controllers
             action.HttpContext.Session["LoginUser"] = null;
             action.Controller.TempData["ErrorNoti"] = "Your session is invalid or your account is deleted while you logged in.";
             action.Result = LoginRoute;
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+            if (filterContext.Exception.GetType().Name == typeof(HttpAntiForgeryException).Name)
+            {
+                filterContext.Result = RedirectToAction("Index", "Account");
+            }
+            else
+            {
+                throw filterContext.Exception;
+            }
+
         }
     }
 }

@@ -124,5 +124,18 @@ namespace ParatabLib.Controllers
                 }
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+            if (filterContext.Exception.GetType().Name == typeof(HttpAntiForgeryException).Name)
+            {
+                filterContext.Result = RedirectToAction("Index", "Account");
+            }
+            else
+            {
+                throw filterContext.Exception;
+            }
+
+        }
     }
 }
