@@ -180,8 +180,6 @@ namespace ParatabLib.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Request.HttpMethod == "GET")
-            {
                 if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
                 {
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
@@ -196,7 +194,6 @@ namespace ParatabLib.Controllers
                     AuthenticateController.OnInvalidSession(ref filterContext);
                     return;
                 }
-            }
         }
     }
 }

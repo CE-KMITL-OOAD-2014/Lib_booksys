@@ -30,7 +30,6 @@ namespace ParatabLib.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Basic(string keyword, string searchType,int page = 1,int pageSize = 10)
         {
             Stopwatch Timer = new Stopwatch();
@@ -110,7 +109,6 @@ namespace ParatabLib.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year,CallNumber")]Book bookToSearch,int page = 1,int pageSize = 10)
         {
             ModelState.Remove("BookName");
@@ -176,7 +174,6 @@ namespace ParatabLib.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult QuickSearch(string bookName,int page = 1,int pageSize = 10)
         {
             TempData["quicksearchkey"] = bookName;
@@ -209,8 +206,6 @@ namespace ParatabLib.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Request.HttpMethod == "GET")
-            {
                 if (HttpContext.User.Identity.IsAuthenticated)
                 {
                     if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
@@ -223,7 +218,6 @@ namespace ParatabLib.Controllers
                 }
                 else
                     Session["LoginUser"] = null;
-            }
         }
     }
 }

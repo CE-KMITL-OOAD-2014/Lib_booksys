@@ -12,7 +12,6 @@
 }
 <h2>Basic search</h2>
 <form class="book-search" action="/BookSearch/Basic" method="post">
-    @Html.AntiForgeryToken()
     <fieldset>
     <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@ViewBag.Keyword"/><br />
     <label>Search by</label><select size="1" name="SearchType">
@@ -51,7 +50,6 @@
         <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
     </table>
     <form class="page-portal" action="/BookSearch/Basic/" method="post">
-        @Html.AntiForgeryToken()
         <label>Jump to page:</label>
         <select class="autosubmit" name="page" size="1">
         @for (int j = 1; j <= Model.GetPageSize(); j++)
@@ -65,7 +63,6 @@
     </form>
 
     <form class="page-portal" action="/BookSearch/Basic/" method="post">
-        @Html.AntiForgeryToken()
         <label>List per page:</label>
         <select class="autosubmit" name="pageSize" size="1">
             <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>
@@ -81,7 +78,6 @@
 
     <h2>Advance search</h2>
     <form class="book-search" action="/BookSearch/Advance" method="post">
-    @Html.AntiForgeryToken()
     <fieldset>
         <label>Call No.</label><input type="text" placeholder="Call No." name="CallNumber" value="@TempData["Callno"]" /><br />
         <label>Book name</label><input type="text" placeholder="Book name" name="BookName" value="@TempData["BookName"]" /><br />
@@ -119,7 +115,6 @@
         </table>
     
         <form class="page-portal" action="/BookSearch/Advance/" method="post">
-        @Html.AntiForgeryToken()
         <label>Jump to page:</label>
         <select class="autosubmit" name="page" size="1">
         @for (int j = 1; j <= Model.GetPageSize(); j++)
@@ -136,7 +131,6 @@
     </form>
 
     <form class="page-portal" action="/BookSearch/Advance/" method="post">
-        @Html.AntiForgeryToken()
         <label>List per page:</label>
         <select class="autosubmit" name="pageSize" size="1">
             <option value="10" selected="@((int.Parse(TempData["pageSize"].ToString()) == 10)? "selected":null)">10</option>

@@ -86,5 +86,6 @@ namespace ParatabLib.Controllers
             else
                 Session["LoginUser"] = null;
         }
+
     }
 }
