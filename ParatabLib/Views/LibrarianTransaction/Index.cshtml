@@ -12,9 +12,7 @@
         @TempData["ErrorNoti"]
     </div>
 }
-<ul class="admin-panel">
-    <li><a href="/LibrarianTransaction/Transaction">Do Transaction</a></li>
-</ul><br />
+    <a class="account-btt" href="/LibrarianTransaction/Transaction">Do Transaction</a>
 <h2>Borrow tracking</h2>
 @if (Model != null){
     count = (Model.GetCurrentPage() - 1) * int.Parse(TempData["pageSize"].ToString());
@@ -29,9 +27,9 @@
     @foreach (var record in Model.GetList())
     {
         <tr>
-            <td>
+            <th>
             @(++count)
-            </td>
+            </th>
             <td>
                 @record.GetBorrowBook().BookName
             </td>

@@ -5,10 +5,12 @@
 <h1>@Html.DisplayFor(model => model.Title)</h1>
 @if (Session["LoginUser"] != null)
 {
-    if(Session["LoginUser"].ToString().Substring(0, 2) == "A_"){
-    <a class="norm" href="/NewsManager/EditNews/@Model.NewsID">แก้ไข</a><text>|</text>
-    <a class="norm" href="/NewsManager/DeleteNews/@Model.NewsID">ลบ</a>
-}
+    if (Session["LoginUser"].ToString().Substring(0, 2) == "A_")
+    {<span class="act-link">
+        <a class="norm" href="/NewsManager/EditNews/@Model.NewsID">แก้ไข</a> |
+        <a class="norm" href="/NewsManager/DeleteNews/@Model.NewsID">ลบ</a>
+    </span>
+    }
 }
 
 <div class="news-area">

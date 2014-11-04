@@ -113,7 +113,10 @@ namespace ParatabLib.Controllers
                     libRepo.LibrarianRepo.Remove(target);
                     libRepo.Save();
                     AuthenticateController.RemoveUser(target.UserName);
-                    TempData["SuccessNoti"] = "Delete librarian " + target.UserName + " successfully.";
+                    if (target.UserName != HttpContext.User.Identity.Name.Substring(2))
+                    {
+                        TempData["SuccessNoti"] = "Delete librarian " + target.UserName + " successfully.";
+                    }
                     return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

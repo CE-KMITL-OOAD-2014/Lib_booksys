@@ -193,6 +193,7 @@
 </p>
 <div class="show-code">
     {"BookID":3,<br />
+    "CallNumber":"ETC-FL1-2871",<br />
     "BookName":"Computer Science Illuminated",<br />
     "Author":"Thomas H. Cormen",<br />
     "Detail":"Some detail",<br />
@@ -204,15 +205,16 @@
     Array of Book object in JSON format.
 </p>
 <div class="show-code">
-    [{"BookID":3,"BookName":"Computer Science Illuminated","Author":"Thomas H. Cormen","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
-    {"BookID":4,"BookName":"you love me","Author":"Taweechai","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
-    {"BookID":5,"BookName":"love love","Author":"sawan","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
-    {"BookID":6,"BookName":"Fundamental of Thailaws","Author":"Prasitsak Sirijarupat","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
-    {"BookID":7,"BookName":"Calculus:Single Variable","Author":"Deborah Hughes-Hallett","Detail":null,"Year":null,"Publisher":null,"BookStatus":0}]
+    [{"BookID":3,"CallNumber":"COM-FL1-0002","BookName":"Computer Science Illuminated","Author":"Thomas H. Cormen","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":4,"CallNumber":"COM-FL1-0003","BookName":"you love me","Author":"Taweechai","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":5,"CallNumber":"COM-FL1-0004","BookName":"love love","Author":"sawan","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":6,"CallNumber":"ETC-FL1-0001","BookName":"Fundamental of Thailaws","Author":"Prasitsak Sirijarupat","Detail":null,"Year":null,"Publisher":null,"BookStatus":0},<br />
+    {"BookID":7,"CallNumber":"SOC-FL1-0112","BookName":"Calculus:Single Variable","Author":"Deborah Hughes-Hallett","Detail":null,"Year":null,"Publisher":null,"BookStatus":0}]
 </div>
 <h2>Properties of Book object</h2>
 <div class="show-obj-detail">
     <b>BookID:</b>Display book's ID.<br />
+    <b>Call number:</b>Display book's call number which related to kind of book and order number.<br />
     <b>BookName:</b>Display book name.<br />
     <b>Author:</b>Display book's author.Default will be null If it is not defined.<br />
     <b>Publisher:</b>Display book's publisher.Default will be null If it is not defined.<br />

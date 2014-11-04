@@ -190,13 +190,24 @@ form.book-search input,form.book-search select,form.book-search label{
 form.book-search input[type="submit"]{
     font-size:x-large;
     border:none;
-    background-color:#FFFF00
 }
 
-form.book-search input[type="submit"]:hover{
-    cursor:pointer;
-    background-color:#808000
+input[type="submit"].style-blue{
+    background-color:#3399FF
 }
+
+input[type="submit"].style-blue:hover{
+    background-color:#1F5C99
+}
+
+input[type="submit"].style-orange{
+    background-color:#FF4719
+}
+
+input[type="submit"].style-orange:hover{
+    background-color:#992B0F
+}
+
 /*--------------------------*/
 form.news-form{
     font-family:Single;
@@ -748,6 +759,15 @@ div.result-display{
     font-family:Single;
     font-size:x-large;
     color:gray;
+}
+
+textarea{
+    resize:none;
+}
+
+span.act-link{
+    font-family:Single;
+    font-size:x-large
 }
 @font-face{
     font-family:Single;
