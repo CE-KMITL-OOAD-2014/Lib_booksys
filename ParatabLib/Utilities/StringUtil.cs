@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace ParatabLib.Utilities
 {
+    //This class is Utility it is use anywhere anytime that want to implement some specific work pattern.
     public class StringUtil
     {
         //Reimplementation of String.Contains to prevent null check.
@@ -14,6 +15,10 @@ namespace ParatabLib.Utilities
             return str1.Contains(str2);
         }
 
+        /* This method is use to check that preferred string is all Ascii character
+         * This method will return true if preferred string contain only
+         * alphabet,numberic,-,_(Underscore) otherwise return false.
+         */ 
         public static bool IsAsciiCharacter(string str)
         {
             for (int i = 0; i < str.Length; i++)

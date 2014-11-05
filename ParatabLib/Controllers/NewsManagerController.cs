@@ -9,10 +9,14 @@ using ParatabLib.DataAccess;
 using ParatabLib.ViewModels;
 namespace ParatabLib.Controllers
 {
+    //This class use to handle news management unit
     public class NewsManagerController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
 
+        /* This method use to call index page of news management with
+         * parameterized of page and pageSize for paging news list then return result to user.
+         */ 
         [Authorize]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
@@ -36,12 +40,16 @@ namespace ParatabLib.Controllers
             }
         }
         
+        //This method use to call Add news page then return result to user.
         [Authorize]
         public ActionResult AddNews()
         {
             return View();
         }
 
+        /* This class use to submit detail of news that want to add by passing newsToAdd as news
+         * simply add it to database then notify success result to user.
+         */ 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,7 +66,10 @@ namespace ParatabLib.Controllers
             return View(newsToAdd);
         }
 
-
+        /* This method use to call edit news page for desired news base on id parameter.
+         * Find desired news in database if it exists return edit news page with desired news data,
+         * otherwise notify user to input correct NewsID.
+         */ 
         [Authorize]
         public ActionResult EditNews([DefaultValue(0)]int id)
         {
@@ -70,6 +81,9 @@ namespace ParatabLib.Controllers
 
         }
 
+        /* This method use to submit edited news data on HTTPPOST by passing newsToEdit as News
+         * Then update it to related news record via libRepo object,finally notify success result.
+         */ 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -85,6 +99,11 @@ namespace ParatabLib.Controllers
             return View(newsToEdit);
         }
 
+        /* This method use to call delete news confirmation page for desired news base on id.
+         * Find news base on id and check that desired news is exists or not,
+         * if yes return delete news confirmation page with desired news data,otherwise
+         * notify user to input correct NewsID.
+         */ 
         [Authorize]
         public ActionResult DeleteNews(int id)
         {
@@ -95,6 +114,9 @@ namespace ParatabLib.Controllers
             return RedirectToAction("Index");
         }
 
+        /* This method use to submit delete news confirmation data by passing newsToDelete as News.
+         * Simply find desired news and remove it via libRepo object then notify user for success result.
+         */ 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -106,6 +128,12 @@ namespace ParatabLib.Controllers
                 return RedirectToAction("Index");
         }
 
+        /* [Override method]
+         * This method use to check that whether current user for current session is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.Moreover check that current user is librarian if not redirect user to
+         * account index page.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
                 if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
@@ -124,6 +152,11 @@ namespace ParatabLib.Controllers
                 }
         }
 
+        /* [Override method]
+         * This method use to handle exception that may occur in system
+         * for some specific exception Redirect user to another page and pretend that no error occur
+         * for another exception throw it and use HTTP error 500 page to handle instead.
+         */
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;

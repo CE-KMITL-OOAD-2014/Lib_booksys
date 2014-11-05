@@ -9,9 +9,15 @@ using ParatabLib.DataAccess;
 using ParatabLib.ViewModels;
 namespace ParatabLib.Controllers
 {
+    //This class use to handle member list management.
     public class MemberListManagerController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
+        
+        /* This method use to call index page of member list management with
+         * parameterized of page and pageSize for paging member list then
+         * return result as page to user.
+         */ 
         [Authorize]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
@@ -35,6 +41,10 @@ namespace ParatabLib.Controllers
             }
         }
 
+        /* This method use to get member detail base on id parameter
+         * find and check whether there is member with desired id exists or not.
+         * If yes return member detail in page,otherwise notify user to input correct member ID.
+         */
         [Authorize]
         public ActionResult View([DefaultValue(0)]int id)
         {
@@ -48,6 +58,11 @@ namespace ParatabLib.Controllers
             }
         }
 
+        /* This method use to call confirmation delete member page for desired member
+         * check the existence of desire member base on id parameter.
+         * If yes return confirmation delete member page with desired member,
+         * otherwise notify user to input correct member ID.
+         */ 
         [Authorize]
         public ActionResult Delete([DefaultValue(0)]int id)
         {
@@ -61,7 +76,9 @@ namespace ParatabLib.Controllers
             }
         }
 
-
+        /* This method use to submit delete confirmation and remove member
+         * instruction is in sub comment..
+         */
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -69,7 +86,7 @@ namespace ParatabLib.Controllers
         {
             if (ModelState.IsValid)
             {
-                //1.Check whether member has remain book if yes do not delete.
+                //1.Check whether member has remain book if yes do not delete and notify user that cannot delete.
                 //2.Delete related borrowlist.
                 List<BorrowEntry> BorrowListToDelete = libRepo.BorrowEntryRepo.ListWhere(entry => entry.UserID == target.UserID);
                 if (BorrowListToDelete.Count != 0)
@@ -106,6 +123,12 @@ namespace ParatabLib.Controllers
             return RedirectToAction("Index");
         }
 
+        /* [Override method]
+         * This method use to check that whether current user for current session is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.Moreover check that current user is librarian if not redirect user to
+         * account index page.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
                 if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
@@ -124,6 +147,11 @@ namespace ParatabLib.Controllers
                 }
         }
 
+        /* [Override method]
+         * This method use to handle exception that may occur in system
+         * for some specific exception Redirect user to another page and pretend that no error occur
+         * for another exception throw it and use HTTP error 500 page to handle instead.
+         */
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;
