@@ -6,9 +6,13 @@ using System.Web.Mvc;
 
 namespace ParatabLib.Controllers
 {
+    //This class use to handle library's configuration
     public class ConfigurationController : Controller
     {
+        //This static properties keep fine value that will be use in static method
         private static int fine;
+        
+        //Both below static methods use to set or get fine value. 
         public static void setFine(int value)
         {
             fine = value;
@@ -19,6 +23,9 @@ namespace ParatabLib.Controllers
             return fine;
         }
 
+        /*This method use to call index configuration page and return it to current user
+         * include current fine value setting.
+         */ 
         [Authorize]
         public ActionResult Index()
         {
@@ -26,6 +33,10 @@ namespace ParatabLib.Controllers
             return View();
         }
 
+        /*This method use to call EditFine page and return it to current user
+         * include current fine value setting and set TempData["Operation"] 
+         * as Edit to tell View to show edit page too.
+         */ 
         [Authorize]
         public ActionResult EditFine()
         {
@@ -34,6 +45,10 @@ namespace ParatabLib.Controllers
             return View("Index");
         }
 
+        /* This method use to submit edit data on HTTPPOST by passing newfine as string,
+         * convert this string to integer and update static properties then save configuration to file.
+         * finally return result whether it success or not(in case of string parameter is not numeric).
+         */ 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -53,6 +68,12 @@ namespace ParatabLib.Controllers
             }
         }
 
+        /* [Override method]
+         * This method use to check that whether current user for current session is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.Moreover check that current user is librarian if not redirect user to
+         * account index page.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
                 if(AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2)))
@@ -71,6 +92,11 @@ namespace ParatabLib.Controllers
                 }
         }
 
+        /* [Override method]
+         * This method use to handle exception that may occur in system
+         * for some specific exception Redirect user to another page and pretend that no error occur
+         * for another exception throw it and use HTTP error 500 page to handle instead.
+         */
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;

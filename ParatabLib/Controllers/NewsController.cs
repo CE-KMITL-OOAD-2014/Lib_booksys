@@ -8,9 +8,12 @@ using ParatabLib.Models;
 using ParatabLib.ViewModels;
 namespace ParatabLib.Controllers
 {
+    //This class use to handle news viewing action
     public class NewsController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
+        
+        //This method use to view news detail by passing id of news that want to see as integer. 
         public ActionResult View(int id)
         {
             News newstoview = libRepo.NewsRepo.Find(id);
@@ -20,6 +23,9 @@ namespace ParatabLib.Controllers
             return RedirectToAction("ViewAll");
         }
 
+        /* This method use to show all news in library
+         * by passing page and pageSize as parameter for paging list.
+         */
         public ActionResult ViewAll(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
@@ -42,6 +48,12 @@ namespace ParatabLib.Controllers
             }
         }
 
+
+        /* [Override method]
+         * This method use to check that whether current user is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (HttpContext.User.Identity.IsAuthenticated)

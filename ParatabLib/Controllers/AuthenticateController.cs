@@ -12,13 +12,34 @@ using ParatabLib.ViewModels;
 using ParatabLib.Utilities;
 namespace ParatabLib.Controllers
 {
+    //This class use to handle about authorization/registration and account recovery
     public class AuthenticateController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
+
+        /* This static AuthorizedList properties use to keep current user that in exist in database
+         * purpose of this static properties is to use for session management and check that
+         * current user is exist or not.If current user is deleted while login if implementation
+         * must check at database it could not be useful so use this static properties instead
+         * to increase performance
+         */
+
         static List<string> AuthorizedList = new List<string>();
+
+        /*
+         * Static LoginRoute proerties use for set redirect to define page when session of
+         * current user is invalid.
+         */
         static RedirectToRouteResult LoginRoute = new RedirectToRouteResult("",
             new System.Web.Routing.RouteValueDictionary(new Dictionary<string, object>() { 
             { "action", "Login" }, { "controller", "Authenticate" } }), false);
+        
+        /*
+         * 3 Method below related-to AuthorizedList properties
+         * [1.]AddUser use to add new user to list.
+         * [2.]RemoveUser use to remove user to list.
+         * [3.]IsUserValid use to check that current user is exist in list.
+         */
         public static void AddUser(string userName){
             AuthorizedList.Add(userName);
         }
@@ -33,12 +54,16 @@ namespace ParatabLib.Controllers
             return AuthorizedList.Where(wantedUser => wantedUser == userName).SingleOrDefault() != null;
         }
 
-
+        //This method use to call Login page and return it to user.
         public ActionResult Login()
         {
             return View();
         }
-        
+
+        /* This method use submit login data on HTTPPOST by passing submitData as LoginForm
+         * check username data and password that match in database
+         * create session for user and redirect user to account index page.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginForm submitData)
@@ -70,6 +95,10 @@ namespace ParatabLib.Controllers
             }
         
 
+        /* This method use to log out from system
+         * by use FormsAuthentication.SignOut() to clear cookie with clear session
+         * and redirect user to Homepage.
+         */
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -77,11 +106,18 @@ namespace ParatabLib.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //This method use to call register page and return it to user.
         public ActionResult Register()
         {
             return View();
         }
 
+
+         /* This method use submit register data on HTTPPOST by passing submitData as RegisterEditor
+          * check username character that contain only ascii or not(Exclude special character)
+          * check the exist of username and e-mail,encrypt password and add user to database
+          * finally notify user to login for first time use.
+          */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterEditor submitData)
@@ -133,12 +169,17 @@ namespace ParatabLib.Controllers
                 return View(submitData);
         }
 
+        //This method use to call ForgotPassword page and return it to user.
         public ActionResult ForgotPassword()
         {
                 return View();
         }
 
-
+        /* This method use to submit email data on HTTPPOST by passing email as string
+         * then check existence of email in database and send resetpassword email to
+         * target email by use MailMessage to set mail data and SmtpClient as object to command
+         * smtp server to send mail.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ForgotPassword(string email)
@@ -178,6 +219,10 @@ namespace ParatabLib.Controllers
             }
         }
 
+        /* This method use to call resetPassword page by passing token via querystring
+         * check token that is valid or not if yes return desired page,otherwise redirect
+         * user to another page.
+         */
         [HttpGet]
         public ActionResult ResetPassword(string token)
         {
@@ -197,6 +242,11 @@ namespace ParatabLib.Controllers
                 }
         }
 
+        /* This method use to submit resetPassword data on HTTPPOST by passing username and 
+         * pwdToChange as PasswordChanger,check existence of user to reset to prevent hack
+         * check match of password and update database with new encrpypt password
+         * finally notify user for success result.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(string userName,PasswordChanger pwdToChange)
@@ -251,6 +301,12 @@ namespace ParatabLib.Controllers
             }
         }
 
+        /* [Override method]
+         * This method use to check that whether current user is already logged in or not
+         * If yes check the existence of user whether current user is exist
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.If that user is not login return normal desired page.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Request.HttpMethod == "GET")
@@ -302,7 +358,13 @@ namespace ParatabLib.Controllers
             }
 
         }
-        
+
+        /* 
+         * This static method sue to handle invalid session for delete user of fake user
+         * by clear session and related cookie then redirect user to page that set in
+         * static properties LoginRoute.The ActionExecutingContext parameter is pass by reference
+         * so any change in this method will result in caller.
+         */
         public static void OnInvalidSession(ref ActionExecutingContext action)
         {
             FormsAuthentication.SignOut(); 
@@ -311,6 +373,11 @@ namespace ParatabLib.Controllers
             action.Result = LoginRoute;
         }
 
+        /* [Override method]
+         * This method use to handle exception that may occur in system
+         * for some specific exception Redirect user to another page and pretend that no error occur
+         * for another exception throw it and use HTTP error 500 page to handle instead.
+         */
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;

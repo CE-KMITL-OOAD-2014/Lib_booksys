@@ -10,10 +10,15 @@ using ParatabLib.DataAccess;
 using ParatabLib.ViewModels;
 namespace ParatabLib.Controllers
 {
+    //This class use to handle about personnal account management
     public class AccountController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
 
+        /*This method use to call Index page for this class and return it to user.
+         * for member user check that current user have overdue borrow book or not
+         * if yes,set notify data and return it to user.
+        */
         [Authorize]
         public ActionResult Index()
         {
@@ -33,12 +38,18 @@ namespace ParatabLib.Controllers
             return View(CurrentLoginUser);
         }
 
+
+        //This method use to call ChangePassword page for this class and return it to user.
         [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
+        /* This method use to submit changepassword value on HTTPPOST by passing pwdToChange as PasswordChanger 
+         * then update password in database via libraryRepository
+         * and finally return result to user by setting appropiate TempData value.
+         */
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -77,6 +88,7 @@ namespace ParatabLib.Controllers
             return View();
         }
 
+        //This method use to call edit account page for current user session and return it to user.
         [Authorize]
         public ActionResult EditAccount()
         {
@@ -89,6 +101,10 @@ namespace ParatabLib.Controllers
             return View(editor);
         }
 
+        /* This method use to submit edit account data on HTTPPOST by passing editor as AccountEditor
+         * then update name&email in database via libraryRepository
+         * then return result to user by setting appropiate TempData value.
+         */
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -125,16 +141,25 @@ namespace ParatabLib.Controllers
             return View(editor);
         }
 
+        //This method use to call LibrarianPortal for librarian user
         [Authorize]
         public ActionResult LibrarianPortal()
         {
             return View();
         }
 
+        /* [Override method]
+         * This method use to check that whether current user is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
                 if (AuthenticateController.IsUserValid(HttpContext.User.Identity.Name.Substring(2))){
                     Session["LoginUser"] = HttpContext.User.Identity.Name;
+
+                    /*Since method LibrarianPortal can access by librarian user only
+                    check that current user is librarian or not*/
                     if (filterContext.ActionDescriptor.ActionName == "LibrarianPortal")
                     {
                         if (HttpContext.User.Identity.Name.ToString().Substring(0, 2) != "A_")
@@ -150,6 +175,11 @@ namespace ParatabLib.Controllers
                 }
         }
 
+        /*[Override method]
+         * This method use to handle exception that may occur in system
+         * for some specific exception Redirect user to another page and pretend that no error occur
+         * for another exception throw it and use HTTP error 500 page to handle instead.
+        */
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;

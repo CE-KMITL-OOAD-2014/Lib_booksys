@@ -9,6 +9,9 @@ using System.ComponentModel;
 using System.Data.Entity;
 namespace ParatabLib.Controllers
 {
+    /* Basicly,this class use to view book detail by call View method
+     * (pass id for book that want to see as integer).
+     */
     public class BookController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
@@ -17,6 +20,11 @@ namespace ParatabLib.Controllers
             return View(libRepo.BookRepo.Find(id));
         }
 
+        /* [Override method]
+         * This method use to check that whether current user is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (HttpContext.User.Identity.IsAuthenticated)

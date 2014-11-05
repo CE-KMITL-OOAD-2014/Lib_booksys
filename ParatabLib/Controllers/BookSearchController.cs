@@ -10,10 +10,14 @@ using ParatabLib.Utilities;
 using System.Diagnostics;
 namespace ParatabLib.Controllers
 {
+    //This class use to handle book search unit
     public class BookSearchController : Controller
     {
         LibraryRepository libRepo;
 
+        /* Both of constructors use to set libRepo properties whether to use default(instantiate new)
+         * or via parameter.
+         */ 
         public BookSearchController()
         {
             libRepo = new LibraryRepository();
@@ -24,16 +28,28 @@ namespace ParatabLib.Controllers
             this.libRepo = libRepo;
         }
 
+        //This method use to call index search page and return it to user.
         public ActionResult Index()
         {
             return View();
         }
 
+        /* This method use to submit search data in basic mode which passing keyword and searchType as string
+         * parameterized of page and pageSize to paging list for search result.
+         * Check type of searching by compare searchType with desired flow,
+         * special case for year properties since year is integer but keyword is passing as string]
+         * it must be parse(convert) from string to integer if exception from this occur notify user to input
+         * correct numeric string.Finally show result as paged search result list to user(in normal case).
+         * Moreover if result is not null show find time(from Timer object) in seconds.
+         */ 
         [HttpPost]
         public ActionResult Basic(string keyword, string searchType,int page = 1,int pageSize = 10)
         {
+            //Start timer
             Stopwatch Timer = new Stopwatch();
             Timer.Start();
+            
+            //Memorized search parameter to return to search page.
             TempData["Keyword"] = keyword;
             ViewBag.SearchType = searchType;
             List<Book> bookList;
@@ -84,12 +100,17 @@ namespace ParatabLib.Controllers
                 TempData["ErrorNoti"] = "Something was error.";
                 return View("Index");
             }
+            //Stop timer
             Timer.Stop();
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
             switch (pglist.Categorized())
             {
+                /* if result is not empty or null set FindTime in TempData by use 
+                 * ElapsedMilliseconds divide by 1000.0
+                 * this will result in double value.
+                 */
                 case PageListResult.Ok: {
                     TempData["TotalResult"] = bookList.Count;
                     TempData["FindTime"] = Timer.ElapsedMilliseconds /1000.0;
@@ -108,16 +129,29 @@ namespace ParatabLib.Controllers
             }
         }
 
+        /* This method use to submit search data in advance mode which passing all book properties in one Book object
+         * parameterized of page and pageSize to paging list for search result.
+         * Check that user is input year data or not if yes include year data in searching
+         * otherwise exclude year data and find.
+         * Special case for year properties since year is integer but data passing as string]
+         * Modelstate.Isvalid will check that year data is in correct format or not.If not notify user to input
+         * correct numeric string.Finally show result as paged search result list to user(in normal case).
+         * Moreover if result is not null show find time(from Timer object) in seconds.
+         */
         [HttpPost]
         public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year,CallNumber")]Book bookToSearch,int page = 1,int pageSize = 10)
         {
             ModelState.Remove("BookName");
             ModelState.Remove("CallNumber");
+
+            //Memorize search parameter to return to search page.
             TempData["BookName"] = bookToSearch.BookName;
             TempData["Author"] = bookToSearch.Author;
             TempData["Publisher"] = bookToSearch.Publisher;
             TempData["Year"] = bookToSearch.Year;
             TempData["Callno"] = bookToSearch.CallNumber;
+            
+            //Start timer
             Stopwatch Timer = new Stopwatch();
             Timer.Start();
             if (ModelState.IsValid)
@@ -143,6 +177,8 @@ namespace ParatabLib.Controllers
                     (StringUtil.IsContains(target.Author, bookToSearch.Author)) && 
                     (StringUtil.IsContains(target.Publisher, bookToSearch.Publisher))).ToList();
                 }
+
+                //Stop timer
                 Timer.Stop();
                 TempData["AdvanceSearch"] = "Advance";
                 TempData["pageSize"] = pageSize;
@@ -151,6 +187,10 @@ namespace ParatabLib.Controllers
                 switch (pglist.Categorized())
                 {
                     case PageListResult.Ok: {
+                        /* if result is not empty or null set FindTime in TempData by use 
+                         * ElapsedMilliseconds divide by 1000.0
+                         * this will result in double value.
+                         */
                         TempData["TotalResult"] = bookList.Count;
                         TempData["FindTime"] = Timer.ElapsedMilliseconds / 1000.0;
                         return View("Index", pglist); 
@@ -172,20 +212,32 @@ namespace ParatabLib.Controllers
             return View("Index");
         }
 
-
+        /* This method use to find book in QuickSearch mode by passing bookName as string
+         * with parameterized of page and pageSize that use for paging search list result.
+         * quicksearch is search related book base on bookName parameter,finally return result
+         * to user.
+         */
         [HttpPost]
         public ActionResult QuickSearch(string bookName,int page = 1,int pageSize = 10)
         {
             TempData["quicksearchkey"] = bookName;
             Stopwatch Timer = new Stopwatch();
+            
+            //Start timer
             Timer.Start();
             List<Book> bookList = libRepo.BookRepo.ListWhere(target => target.BookName.Contains(bookName));
+
+            //Stop timer
             Timer.Stop();
             TempData["pageSize"] = pageSize;
             TempData["page"] = page;
             PageList<Book> pglist = new PageList<Book>(bookList, page, pageSize);
             switch (pglist.Categorized())
             {
+                /* if result is not empty or null set FindTime in TempData by use 
+                 * ElapsedMilliseconds divide by 1000.0
+                 * this will result in double value.
+                 */
                 case PageListResult.Ok: {
                     TempData["TotalResult"] = bookList.Count;
                     TempData["FindTime"] = Timer.ElapsedMilliseconds / 1000.0; 
@@ -204,6 +256,12 @@ namespace ParatabLib.Controllers
             }
         }
 
+
+        /* [Override method]
+         * This method use to check that whether current user for current session is exist in system or not.
+         * If not,call and pass by reference of current HTTPrequest in AuthenticateController.OnInvalidSession
+         * to set appropiate page result.
+         */
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
                 if (HttpContext.User.Identity.IsAuthenticated)

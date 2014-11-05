@@ -7,11 +7,17 @@ using ParatabLib.Models;
 using ParatabLib.DataAccess;
 namespace ParatabLib.Controllers
 {
+    /* This class use for daily up-to-date database for RequestEntry.
+     * if entry has expired that request should be deleted and update
+     * status of related book to available.To prevent anonymous user from
+     * hack use querystring as secret password for calling method in this class.
+     */
+
     public class BackgroundController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
 
-        //Use for daily up-to-date database for RequestEntry first.
+        
         public ActionResult UpdateDatabase(string secretPass)
         {
             if (secretPass == "Dream1357")

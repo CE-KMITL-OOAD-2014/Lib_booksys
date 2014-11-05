@@ -10,10 +10,14 @@ using Newtonsoft.Json.Linq;
 using ParatabLib.Utilities;
 namespace ParatabLib.Controllers
 {
+    //This class is all about handle book search API
     public class BookQueryController : ApiController
     {
         LibraryRepository LibRepo = new LibraryRepository();
-        // GET api/<controller>
+        
+        /* Handle method of /api/BookQuery
+         * Find all book in database and return booklist as result in HTTPresponse 
+         */ 
         public IEnumerable<Book> GetBookQuery()
         {
             return LibRepo.BookRepo.List().Select(
@@ -29,6 +33,10 @@ namespace ParatabLib.Controllers
                         });
        }
 
+        /* Handle method of /api/BookQuery?name={name}
+         * this method use to find related-book by querystring name
+         * and return result as HTTPresponse whether it found or not.
+         */
         public IHttpActionResult GetBookByName(string name)
         {
             if (name == null)
@@ -53,6 +61,10 @@ namespace ParatabLib.Controllers
                 return NotFound();
         }
 
+        /* Handle method of /api/BookQuery?author={author}
+         * this method use to find related-book by querystring author
+         * and return result as HTTPresponse whether it found or not.
+         */
         public IHttpActionResult GetBookByAuthor(string author)
         {
             if (author == null)
@@ -78,6 +90,10 @@ namespace ParatabLib.Controllers
                 return NotFound();
         }
 
+        /* Handle method of /api/BookQuery?publisher={publisher}
+         * this method use to find related-book by querystring publisher
+         * and return result as HTTPresponse whether it found or not.
+         */
         public IHttpActionResult GetBookByPublisher(string publisher)
         {
             if (publisher == null)
@@ -103,7 +119,12 @@ namespace ParatabLib.Controllers
                 return NotFound();
         }
 
-
+        /* Handle method of /api/BookQuery?year={year}
+         * this method use to find related-book by querystring year
+         * since year is integer so if querystring is not numeric (e.g. 234Ab56) then it will pass null value instead
+         * then this will result in notfound otherwise return normal find result as HTTPresponse 
+         * whether it found or not.
+         */
         public IHttpActionResult GetBookByYear(int? year)
         {
             if (year == null)
@@ -129,10 +150,10 @@ namespace ParatabLib.Controllers
                 return NotFound();
         }
 
-
-
-
-        //Get book by ID to view Detail.
+        /* Handle method of /api/BookQuery/id
+         * this method use to get individual book data by id
+         * and return result as HTTPresponse whether it found or not.
+         */
         public IHttpActionResult GetBookById(int id)
         {
             Book target = (from book in LibRepo.BookRepo.List()
@@ -152,6 +173,10 @@ namespace ParatabLib.Controllers
             return NotFound();
         }
 
+        /* Handle method of /api/BookQuery?callno={callno}
+         * this method use to get related-book data by call number 
+         * and return result as HTTPresponse whether it found or not.
+         */
         public IHttpActionResult GetBookByCallNumber(string callno)
         {
             if (callno == null)
@@ -178,14 +203,22 @@ namespace ParatabLib.Controllers
                 return NotFound();
         }
 
+        /* Handle method of /api/BookQuery (HTTPPOST)
+         * this method use to get related-book data by target data as JSON object
+         * in this object it contain data of specifed book that user want to find.
+         * Finally return result as HTTPresponse whether it found or not.
+         */
         public IHttpActionResult PostBook([FromBody]JObject target)
         {
             Book bookToFind = new Book();
+            //Recall individual data on JSON object by use indexing of target parameter
             bookToFind.BookName = target["BookName"].ToString();
             bookToFind.Author = target["Author"].ToString();
             bookToFind.Publisher = target["Publisher"].ToString();
             bookToFind.CallNumber = target["CallNumber"].ToString().ToLower();
             IEnumerable<Book> list;
+
+            //If year is not specfied find book exclude year data since year is numeric type
             if (target["Year"].ToString() == "")
             {
                 list = from book in LibRepo.BookRepo.List()
@@ -207,6 +240,11 @@ namespace ParatabLib.Controllers
             {
                 try
                 {
+                /* If year is specfied find book include year data
+                 * if error occured while parse string to integer return error result(not found)
+                 * otherwise return find result as HTTPresponse.
+                 */
+                  
                 bookToFind.Year = int.Parse(target["Year"].ToString());
                 list = from book in LibRepo.BookRepo.List()
                        where StringUtil.IsContains(book.Author, bookToFind.Author) && book.BookName.Contains(bookToFind.BookName) &&
