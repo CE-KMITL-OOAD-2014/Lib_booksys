@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ParatabLib.DataAccess;
 namespace ParatabLib.Models
 {
+    //This class is representation of RequestEntry
     public class RequestEntry
     {
 
@@ -25,6 +25,10 @@ namespace ParatabLib.Models
         [Column(TypeName="date")]
         public DateTime? ExpireDate { get { return _ExpireDate; } set { _ExpireDate = value; } }
 
+        /* 4 below methods use to receive request book and request user data of RequestEntry object.
+         * via LibraryRepository object which can pass by reference or not pass parameter 
+         * but instantiate in these method.
+         */
         public Book GetRequestBook()
         {
             LibraryRepository libRepo = new LibraryRepository();

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using ParatabLib.DataAccess;
 namespace ParatabLib.Models
 {
+    //Enumeration of Book Status
     public enum Status
     {
         Available,Borrowed,Reserved,Lost
     }
+    
+    //This class is representation of Book 
     public class Book
     {
         private int _BookID;
@@ -48,6 +50,10 @@ namespace ParatabLib.Models
         [Column("Status")]
         public Status BookStatus { get { return _BookStatus; } set { _BookStatus = value; } }
 
+        /* 4 below methods use to receive related borrow/request entry of book
+         * via LibraryRepository object which can pass by reference or not pass parameter 
+         * but instantiate in these method.
+         */
         public List<BorrowEntry> GetRelatedBorrowEntry()
         {
             LibraryRepository libRepo = new LibraryRepository();

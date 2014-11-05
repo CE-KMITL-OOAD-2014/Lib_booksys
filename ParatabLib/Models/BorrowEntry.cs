@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using ParatabLib.DataAccess;
 namespace ParatabLib.Models
 {
+    //This class is representation of BorrowEntry
     public class BorrowEntry
     {
         private int _ID;
@@ -37,6 +37,10 @@ namespace ParatabLib.Models
         [DefaultValue(0)]
         public short RenewCount { get { return _RenewCount; } set { _RenewCount = value; } }
 
+        /* 4 below methods use to receive related borrowBook and borrower
+         * via LibraryRepository object which can pass by reference or not pass parameter 
+         * but instantiate in these method.
+         */
         public Book GetBorrowBook()
         {
             LibraryRepository libRepo = new LibraryRepository();

@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 namespace ParatabLib.ViewModels
 {
+    //This class use for set and receive password data in changePassword of account management module.
     public class PasswordChanger
     {
         [Required(ErrorMessage="old password is required.")]

@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 namespace ParatabLib.ViewModels
 {
+    //This class use to set and receive account edit data in account management module
     public class AccountEditor
     {
             

@@ -5,7 +5,11 @@ using System.Web;
 using ParatabLib.Models;
 namespace ParatabLib.DataAccess
 {
-    public class LibraryRepository:IRepository
+    /* Repository pattern implementation is here
+     * by use same DatabaseContext Object ro synchronized data and update together
+     */ 
+
+    public class LibraryRepository
     {
         private LibraryContext context;
         private IGenericRepository<Book> bookRepository;
@@ -84,7 +88,8 @@ namespace ParatabLib.DataAccess
                     return librarianRepository;
             }
         }
-
+        
+        //This method use to save add/update/delete data by call context.SaveChanges() to operate in database.
         public void Save()
         {
             context.SaveChanges();

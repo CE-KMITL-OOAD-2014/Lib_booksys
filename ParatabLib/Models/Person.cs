@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace ParatabLib.Models
 {
+    //This class is abstract class of Person
     public abstract class Person
     {
         private string _UserName;
@@ -34,6 +34,8 @@ namespace ParatabLib.Models
         private int _UserID;
         [Key]
         public int UserID { get { return _UserID; } set { _UserID = value; } }
+        
+        //In general Identify method must return type of that object.
         public abstract string Identify();
     }
 }

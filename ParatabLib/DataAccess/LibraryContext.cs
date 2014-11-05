@@ -6,6 +6,7 @@ using System.Data.Entity;
 using ParatabLib.Models;
 namespace ParatabLib.DataAccess
 {
+    //This class is use for database connection purpose.
         public class LibraryContext : DbContext
         {
             public virtual DbSet<Librarian> Librarians { get; set; }

@@ -5,6 +5,7 @@ using System.Web;
 using ParatabLib.Models;
 namespace ParatabLib.ViewModels
 {
+    //This class use to set and receive Top10 data of borrower and book
     public class TopTenViewer
     {
         List<Member> TopMember = new List<Member>();

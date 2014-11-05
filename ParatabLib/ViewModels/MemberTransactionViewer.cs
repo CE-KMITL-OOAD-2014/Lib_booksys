@@ -5,6 +5,7 @@ using System.Web;
 using ParatabLib.Models;
 namespace ParatabLib.ViewModels
 {
+    //This class use to keep borrowentry list and request entry list in one object.
     public class MemberTransactionViewer
     {
         private List<BorrowEntry> BorrowEntryViews = new List<BorrowEntry>();

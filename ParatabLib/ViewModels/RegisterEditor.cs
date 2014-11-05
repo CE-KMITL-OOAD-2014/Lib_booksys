@@ -6,6 +6,7 @@ using ParatabLib.Models;
 using System.ComponentModel.DataAnnotations;
 namespace ParatabLib.ViewModels
 {
+    //This class use to set or receive registerEditor data in authenticate module
     public class RegisterEditor
     {
         private string _UserName;
