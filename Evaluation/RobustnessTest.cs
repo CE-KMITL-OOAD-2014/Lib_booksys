@@ -5,6 +5,7 @@ using System.Threading;
 using System.Collections.Generic;
 namespace RobustnessTest
 {
+    //This is code of trivial application for robustness evalution
     class RobustnessTest
     {
         public static void Main(string[] args){
@@ -18,8 +19,14 @@ namespace RobustnessTest
             WebResponse response;
             DateTime d;
             string str;
+        
+            //Loop for 1000 times
             for (int i = 1; i <= 1000;i++)
             {
+                /* use try-catch approach to send HTTPrequest to target and waiting for response in define time
+                 * if response is not come in time,TimeoutException occur then count for what happen in failcount
+                 * by one,otherwise send another request by create new everytime whether it receive response or not.
+                 */ 
                 try
                 {
                     d = DateTime.Now;
@@ -41,6 +48,8 @@ namespace RobustnessTest
             str = "Fail time:" + failcount;
             Console.WriteLine(str);
             File.AppendAllLines("Robusttest.txt", new List<string> { str });
+            
+            //Calculate downrate by failcount/totalexperimenttime * 100
             str = "Down rate:" + ((failcount / 1000) * 100) + " percent.";
             File.AppendAllLines("Robusttest.txt", new List<string> {str});
             Console.WriteLine(str);

@@ -16,11 +16,17 @@ using LibraryTester.MockClass;
 using ParatabLib.ViewModels;
 namespace LibraryTester
 {
+    //This class contain unit test for MemberTransaction
     [TestClass]
     public class MemberTransactionTest
     {
         private Mock<LibraryRepository> libRepo;
         private MemberTransactionController controller;
+
+        /* this method use to instantiate controller to imply that current user log in
+         * is from username parameter and pass libRepo to instantiate controller to use
+         * preferred LibraryRepository object.
+         */ 
         public void InitialController(string username,LibraryRepository libRepo)
         {
             controller = new MemberTransactionController(libRepo);
@@ -32,16 +38,24 @@ namespace LibraryTester
             controller.Session["LoginUser"] = username;
         }
 
+        /* This method use to instantiate test data
+         * by create several mock object and setup mock to use desired data
+         * this unit test is related in many of domain class type
+         * detail description is in method.
+         */ 
         [TestInitialize]
         public void InitialRepository()
         {
+            //Instantiate Mock of LibraryContext
             Mock<LibraryContext> context = new Mock<LibraryContext>();
 
+            //Instantiate Mock of 4 Database set type:Member,Book,BorrowEntry,RequestEntry
             Mock<DbSet<Member>> memberlist = new Mock<DbSet<Member>>();
             Mock<DbSet<Book>> booklist = new Mock<DbSet<Book>>();
             Mock<DbSet<BorrowEntry>> borrowlist = new Mock<DbSet<BorrowEntry>>();
             Mock<DbSet<RequestEntry>> reqlist = new Mock<DbSet<RequestEntry>>();
 
+            //Instantiate list of Member and convert it to compatiable with IQueryable 
             IQueryable<Member> mlist = new List<Member>{
             new Member{UserID = 1,
                 UserName = "paratab",
@@ -65,6 +79,7 @@ namespace LibraryTester
             }
                 .AsQueryable();
 
+            //Instantiate list of Book and convert it to compatiable with IQueryable 
             IQueryable<Book> blist = new List<Book> {
             new Book{BookID = 1,
                 CallNumber = "COM-FL1-9870",
@@ -116,6 +131,7 @@ namespace LibraryTester
             }
             }.AsQueryable();
 
+            //Instantiate list of BorrowEntry and convert it to compatiable with IQueryable 
             IQueryable<BorrowEntry> brlist = new List<BorrowEntry> { 
             new BorrowEntry{
             ID = 1,
@@ -173,7 +189,7 @@ namespace LibraryTester
             }
             }.AsQueryable();
 
-
+            //Instantiate list of RequestEntry and convert it to compatiable with IQueryable 
             IQueryable<RequestEntry> rqlist = new List<RequestEntry> { 
             new RequestEntry{
                 BookID = 2,
@@ -189,66 +205,93 @@ namespace LibraryTester
             }
             }.AsQueryable();
 
+            //Set mock of Database set<Member> to have desired value
             memberlist.As<IQueryable<Member>>().Setup(db => db.Expression).Returns(mlist.Expression);
             memberlist.As<IQueryable<Member>>().Setup(db => db.Provider).Returns(mlist.Provider);
             memberlist.As<IQueryable<Member>>().Setup(db => db.ElementType).Returns(mlist.ElementType);
             memberlist.As<IQueryable<Member>>().Setup(db => db.GetEnumerator()).Returns(mlist.GetEnumerator());
+
+            /* Set mock of Database set<Member> to return desired value from Find() method
+             * because of Find() method must be connect to real database set object but in unittest
+             * this object is not real so we must implement it to return to desired value.
+             */ 
             memberlist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => mlist.Where(target => target.UserID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
-
+            //Set mock of Database set<Book> to have desired value
             booklist.As<IQueryable<Book>>().Setup(db => db.Expression).Returns(blist.Expression);
             booklist.As<IQueryable<Book>>().Setup(db => db.Provider).Returns(blist.Provider);
             booklist.As<IQueryable<Book>>().Setup(db => db.ElementType).Returns(blist.ElementType);
             booklist.As<IQueryable<Book>>().Setup(db => db.GetEnumerator()).Returns(blist.GetEnumerator());
+
+            /* Set mock of Database set<Book> to return desired value from Find() method
+             * because of Find() method must be connect to real database set object but in unittest
+             * this object is not real so we must implement it to return to desired value.
+             */ 
             booklist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => blist.Where(target => target.BookID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
-
+            //Set mock of Database set<BorrowEntry> to have desired value
             borrowlist.As<IQueryable<BorrowEntry>>().Setup(db => db.Expression).Returns(brlist.Expression);
             borrowlist.As<IQueryable<BorrowEntry>>().Setup(db => db.Provider).Returns(brlist.Provider);
             borrowlist.As<IQueryable<BorrowEntry>>().Setup(db => db.ElementType).Returns(brlist.ElementType);
             borrowlist.As<IQueryable<BorrowEntry>>().Setup(db => db.GetEnumerator()).Returns(brlist.GetEnumerator());
+
+            /* Set mock of Database set<BorrowEntry> to return desired value from Find() method
+             * because of Find() method must be connect to real database set object but in unittest
+             * this object is not real so we must implement it to return to desired value.
+             */ 
             borrowlist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => brlist.Where(target => target.ID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
-
+            //Set mock of Database set<RequestEntry> to have desired value
             reqlist.As<IQueryable<RequestEntry>>().Setup(db => db.Expression).Returns(rqlist.Expression);
             reqlist.As<IQueryable<RequestEntry>>().Setup(db => db.Provider).Returns(rqlist.Provider);
             reqlist.As<IQueryable<RequestEntry>>().Setup(db => db.ElementType).Returns(rqlist.ElementType);
             reqlist.As<IQueryable<RequestEntry>>().Setup(db => db.GetEnumerator()).Returns(rqlist.GetEnumerator());
+
+            /* Set mock of Database set<RequestEntry> to return desired value from Find() method
+             * because of Find() method must be connect to real database set object but in unittest
+             * this object is not real so we must implement it to return to desired value.
+             */ 
             reqlist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => rqlist.Where(target => target.BookID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
+            //Set context's properties to return desire value for each.
             context.Setup(c => c.Books).Returns(booklist.Object);
             context.Setup(c => c.Members).Returns(memberlist.Object);
             context.Setup(c => c.RequestList).Returns(reqlist.Object);
             context.Setup(c => c.BorrowList).Returns(borrowlist.Object);
 
+            //Instantiate mock of IGenericRepository of 4 types
             Mock<IGenericRepository<Book>> localbooklist = new Mock<IGenericRepository<Book>>();
             Mock<IGenericRepository<Member>> localmemberlist = new Mock<IGenericRepository<Member>>();
             Mock<IGenericRepository<BorrowEntry>> localbrlist = new Mock<IGenericRepository<BorrowEntry>>();
             Mock<IGenericRepository<RequestEntry>> localreqlist = new Mock<IGenericRepository<RequestEntry>>();
-            
 
+            //Set mock of IGenericRepository<Book> to have return desired value for each method call 
             localbooklist.Setup(l => l.List()).Returns(context.Object.Books.ToList());
             localbooklist.Setup(l => l.ListWhere(It.IsAny<Func<Book, bool>>())).
             Returns<Func<Book, bool>>(condition => localbooklist.Object.List().Where(condition).ToList());
             localbooklist.Setup(l => l.Find(It.IsAny<int>())).Returns<int>(id => context.Object.Books.Find(id));
-            
+
+            //Set mock of IGenericRepository<Member> to have return desired value for each method call 
             localmemberlist.Setup(l => l.List()).Returns(context.Object.Members.ToList());
             localmemberlist.Setup(l => l.ListWhere(It.IsAny<Func<Member, bool>>())).
             Returns<Func<Member, bool>>(condition => localmemberlist.Object.List().Where(condition).ToList());
             localmemberlist.Setup(l => l.Find(It.IsAny<int>())).Returns<int>(id => context.Object.Members.Find(id));
 
+            //Set mock of IGenericRepository<BorrowEntry> to have return desired value for each method call 
             localbrlist.Setup(l => l.List()).Returns(context.Object.BorrowList.ToList());
             localbrlist.Setup(l => l.ListWhere(It.IsAny<Func<BorrowEntry, bool>>())).
             Returns<Func<BorrowEntry, bool>>(condition => localbrlist.Object.List().Where(condition).ToList());
             localbrlist.Setup(l => l.Find(It.IsAny<int>())).Returns<int>(id => context.Object.BorrowList.Find(id));
 
+            //Set mock of IGenericRepository<RequestEntry> to have return desired value for each method call 
             localreqlist.Setup(l => l.List()).Returns(context.Object.RequestList.ToList());
             localreqlist.Setup(l => l.ListWhere(It.IsAny<Func<RequestEntry, bool>>())).
             Returns<Func<RequestEntry, bool>>(condition => localreqlist.Object.List().Where(condition).ToList());
             localreqlist.Setup(l => l.Find(It.IsAny<int>())).Returns<int>(id => context.Object.RequestList.Find(id));
 
-            //Assert.AreEqual(0, localbooklist.Object.ListWhere(target => target.Author.Contains("a")).Count);
-            //Assert.AreEqual(0, localbooklist.Object.ListWhere(target => target.BookID ==5).Count);
+            /* The final set is instantiate mock of LibraryRepository with passing context object
+             * then set 4 of LibraryRepository's properties to return desired value
+             */ 
 
             libRepo = new Mock<LibraryRepository>(context.Object);
             libRepo.Setup(l => l.BookRepo).Returns(localbooklist.Object);
@@ -258,6 +301,9 @@ namespace LibraryTester
 
         }
 
+        /* The 1ST - 3RD test is test browing index of MemberTransaction module
+         * to check that each member have desired current borrow books/request book.
+         */ 
         [TestMethod]
         public void TestBrowseIndexAction1()
         {
@@ -288,7 +334,7 @@ namespace LibraryTester
             Assert.AreEqual(0, (result.Model as MemberTransactionViewer).GetRequestEntryViews().Count);
         }
 
-
+        //4TH - 7TH test is test renew action in 4 scenarios.
         [TestMethod]
         public void TestRenewAction1()
         {
@@ -328,6 +374,7 @@ namespace LibraryTester
             Assert.AreEqual("Your renew of book ID.6 is exceed maximum!", controller.TempData["ErrorNoti"]);
         }
 
+        //8TH - 9TH test is test renew on HTTPPOST-simulated action in 2 scenarios.
         [TestMethod]
         public void TestRenewPostAction1()
         {
@@ -350,6 +397,7 @@ namespace LibraryTester
             Assert.AreEqual("Renew successful!", controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
 
+        //10TH test is test request action browsing page simply check that whether in browse to correct page.
         [TestMethod]
         public void TestRequestAction()
         {
@@ -358,6 +406,7 @@ namespace LibraryTester
             Assert.IsNotNull(result);
         }
 
+        //11TH - 16TH test is test request book on HTTPPOST-simulated action in 6 scenarios.
         [TestMethod]
         public void TestRequestPostAction1()
         {
@@ -419,6 +468,7 @@ namespace LibraryTester
             Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
 
+        //17TH - 19TH test is test cancel request browing action in 3 scenarios.
         [TestMethod]
         public void TestCancelRequestAction1()
         {
@@ -449,6 +499,7 @@ namespace LibraryTester
             Assert.AreEqual(2, (result.Model as RequestEntry).BookID);
         }
 
+        //20TH - 21ST test is test cancel request browing on HTTPPOST-simulated action in 2 scenarios.
         [TestMethod]
         public void TestCancelRequestPostAction1()
         {
@@ -469,7 +520,7 @@ namespace LibraryTester
             Assert.AreEqual("Something went wrong,please try again.", controller.ControllerContext.Controller.TempData["ErrorNoti"]);
         }
 
-
+        //22ND-23RD test is test browsing borrow history page for 2 scenarios.
         [TestMethod]
         public void TestBrowseBorrowHistoryAction1()
         {

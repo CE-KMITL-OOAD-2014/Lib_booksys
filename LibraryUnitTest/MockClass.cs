@@ -7,9 +7,10 @@ using System.Web;
 using System.Security.Principal;
 namespace LibraryTester.MockClass
 {
-    //MockHttpContext use for unit test
-    //By implement Identity of user and MockHttpSession as Session
-    //Implement to prevent NotImplementException
+    /* MockHttpContext use for unit test
+     * By implement Identity of user and MockHttpSession as Session
+     * Implement to prevent NotImplementException
+     */ 
     public class MockHttpContext : HttpContextBase
     {
 

@@ -17,12 +17,17 @@ using ParatabLib.ViewModels;
 
 namespace LibraryTester
 {
+    // This class contain unit test for Book search class.
     [TestClass]
     public class BookSearchTest
     {
         private Mock<LibraryRepository> libRepo;
         private BookSearchController controller;
 
+        /* this method use to instantiate controller to imply that current user log in
+         * is from username parameter and pass libRepo to instantiate controller to use
+         * preferred LibraryRepository object.
+         */ 
         public void InitialController(string username, LibraryRepository libRepo)
         {
             controller = new BookSearchController(libRepo);
@@ -34,13 +39,21 @@ namespace LibraryTester
             controller.Session["LoginUser"] = username;
         }
 
+        /* This method use to instantiate test data,
+         * all of test in this unit test want these data.
+         * The work of this method is instantiate test data with several
+         * book data (about 30 books) and try to use these data from other test method.
+         */ 
         [TestInitialize]
         public void InitialRepository()
         {
+            //Instantiate Mock of LibraryContext
             Mock<LibraryContext> context = new Mock<LibraryContext>();
 
+            //Instantiate Mock of Database set
             Mock<DbSet<Book>> booklist = new Mock<DbSet<Book>>();
 
+            //Create list of book size 30 and convert it to compatible with IQueryable.
             IQueryable<Book> blist = new List<Book> { 
             new Book{BookID = 1,
                 CallNumber = "COM-FL1-9870",
@@ -284,26 +297,42 @@ namespace LibraryTester
             }
             }.AsQueryable();
 
+            //Set mock of Database set<Book> to have desired value
             booklist.As<IQueryable<Book>>().Setup(c => c.Expression).Returns(blist.Expression);
             booklist.As<IQueryable<Book>>().Setup(c => c.Provider).Returns(blist.Provider);
             booklist.As<IQueryable<Book>>().Setup(c => c.ElementType).Returns(blist.ElementType);
             booklist.As<IQueryable<Book>>().Setup(c => c.GetEnumerator()).Returns(blist.GetEnumerator());
+            
+            /* Set mock of Database set<Book> to return desired value from Find() method
+             * because of Find() method must be connect to real database set object but in unittest
+             * this object is not real so we must implement it to return to desired value.
+             */ 
             booklist.Setup(c => c.Find(It.IsAny<object[]>())).Returns<object[]>(
                 id => blist.Where(target => target.BookID == int.Parse(id[0].ToString())).SingleOrDefault());
 
+            //Set Mock of LibraryContext to return value of Books via booklist.Object
             context.Setup(c => c.Books).Returns(booklist.Object);
 
+            //Instantiate Mock of IGenericRepository<Book>
             Mock<IGenericRepository<Book>> localbooklist = new Mock<IGenericRepository<Book>>();
 
+            /* Set mock of IGenericRepository<Book> object to return Desired value from 
+             * List() and ListWhere() method.
+             */ 
             localbooklist.Setup(l => l.List()).Returns(context.Object.Books.ToList());
             localbooklist.Setup(l => l.ListWhere(It.IsAny<Func<Book, bool>>())).Returns<Func<Book, bool>>
                 (condition => localbooklist.Object.List().Where(condition).ToList());
             localbooklist.Setup(l => l.Find(It.IsAny<int>())).Returns<int>(id => context.Object.Books.Find(id));
 
+            /* Instantiate new Mock of LibraryRepository and set libraryContext propeties by passing context.Object
+             * then set BookRepo properties to use localbooklist object.
+             */ 
             libRepo = new Mock<LibraryRepository>(context.Object);
             libRepo.Setup(l => l.BookRepo).Returns(localbooklist.Object);
         }
 
+        //the rest of code is test method
+        //First test is test browing index page of Book search.
         [TestMethod]
         public void TestBrowseIndexAction()
         {
@@ -312,6 +341,7 @@ namespace LibraryTester
             Assert.IsNotNull(result);
         }
 
+        //2ND - 5TH test is test quick search action in 4 scenarios.
         [TestMethod]
         public void TestQuickSearchAction1()
         {
@@ -356,6 +386,7 @@ namespace LibraryTester
             Assert.AreEqual("Invalid list view parameter please refresh this page to try again.", result.TempData["ErrorNoti"]);
         }
 
+        //6TH - 17TH test is test Basic search action in 12 scenarios.
         [TestMethod]
         public void TestBasicSearchAction1()
         {
@@ -411,7 +442,6 @@ namespace LibraryTester
         }
 
 
-        //Test with other type of search
         [TestMethod]
         public void TestBasicSearchAction6()
         {
@@ -498,7 +528,7 @@ namespace LibraryTester
             Assert.IsNull(result.TempData["ErrorNoti"]);
         }
 
-
+        //18TH - 23RD test is test Advance search action in 6 scenarios.
         [TestMethod]
         public void TestAdvanceSearchAction1()
         {
