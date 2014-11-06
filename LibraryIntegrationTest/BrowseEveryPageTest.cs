@@ -8,16 +8,25 @@ using MvcContrib.TestHelper;
 using SpecsFor.Mvc;
 namespace LibraryIntegrationTest
 {
+    //This class is integration test of BrowseEverypage test for each type of user.
     [TestClass]
     public class BrowseEveryPageTest
     {
         private static MvcWebApp app;
+
+        /* MvcWebApp use to instantiate web browse object that will open in PC and user can use
+         * any method/properties to control browse(Ex.Find element of DOM).
+         */ 
+
         [ClassInitialize]
         public static void InitApp(TestContext testContext)
         {
             app = new MvcWebApp();
         }
 
+        /* This method is test scenario for general user
+         * no authentication browse every page directly! Finally check result for each browsing
+         */ 
 
         [TestMethod]
         public void GeneralUserBrowsing()
@@ -25,6 +34,11 @@ namespace LibraryIntegrationTest
             BrowseEveryPage();
         }
 
+        /* The second one is test scenario for member user
+         * by browse to login page and login as member user
+         * then try to work and test like general user and check result.
+         * If user travel all page,sign out suddenly.
+         */ 
         [TestMethod]
         public void MemberBrowsing()
         {
@@ -37,6 +51,11 @@ namespace LibraryIntegrationTest
             UserSignout();
         }
 
+        /* The second one is test scenario for librarian user
+         * by browse to login page and login as librarian user
+         * then try to work and test like general user and check result.
+         * If user travel all page,sign out suddenly.
+         */ 
         [TestMethod]
         public void GeneralLibrarianBrowsing()
         {
@@ -48,6 +67,9 @@ namespace LibraryIntegrationTest
             UserSignout();
         }
 
+        /* This method include all page that user probably to browsing
+         * by call each method user and browseing to desired page(or rediect to another page)
+         */ 
         private void BrowseEveryPage()
         {
             HomeIndex();
@@ -91,7 +113,14 @@ namespace LibraryIntegrationTest
             BrowseNews();
             BrowseAllNews();
         }
-        private void IsRedirectToRightPathForMember<Controller>(System.Linq.Expressions.Expression<Func<Controller,System.Web.Mvc.ActionResult>>action) 
+
+        /* This method use to check that for member user is application work properly
+         * when member browsing to "only-member-access" page and check that if
+         * librarian or general user browse to those page,the appliation redirect those user
+         * to index or login.
+         */ 
+        private void IsRedirectToRightPathForMember<Controller>(System.Linq.Expressions.
+            Expression<Func<Controller,System.Web.Mvc.ActionResult>>action) 
             where Controller : System.Web.Mvc.Controller
         {
             IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
@@ -103,6 +132,11 @@ namespace LibraryIntegrationTest
                 app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
         }
 
+        /* This method use to check that for librarian user is application work properly
+         * when librarian browsing to "only-librarian-access" page and check that if
+         * member or general user browse to those page,the appliation redirect those user
+         * to index or login.
+         */
         private void IsRedirectToRightPathForLibrarian<Controller>(System.Linq.Expressions.Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
                         where Controller : System.Web.Mvc.Controller
         {
@@ -115,7 +149,11 @@ namespace LibraryIntegrationTest
                 app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
         }
 
-
+        /* This method use to check that for authenticated user is application work properly
+         * when user browsing to "only-authorized user" page and check that if
+         * general user browse to those page,the appliation redirect those user
+         * to login.
+         */
         private void IsRedirectToRightPathForBoth<Controller>(System.Linq.Expressions.Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
         where Controller : System.Web.Mvc.Controller
         {
@@ -126,7 +164,11 @@ namespace LibraryIntegrationTest
                 app.Route.ShouldMapTo<AuthenticateController>(c => c.Login());
         }
 
-
+        /* This method use to check that for general user is application work properly
+         * when general user browsing to "only-anonymous user" page and check that if
+         * authorized user browse to those page,the appliation redirect those user
+         * to another page.
+         */
         private void IsRedirectToRightPathForGenUser<Controller>(System.Linq.Expressions.Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
                 where Controller : System.Web.Mvc.Controller
         {
@@ -137,6 +179,7 @@ namespace LibraryIntegrationTest
                 app.Route.ShouldMapTo<Controller>(action);
         }
 
+        //The rest of integration test code is implementation of browsing and checks for each page.
         private void HomeIndex()
         {
            app.NavigateTo<HomeController>(c => c.Index());
@@ -357,6 +400,7 @@ namespace LibraryIntegrationTest
             app.Route.ShouldMapTo<HomeController>(c => c.Index());
         }
 
+        //The below method use to test search but not it main purpose...
         private void QuickSearch()
         {
             app.NavigateTo<HomeController>(c => c.Index());
