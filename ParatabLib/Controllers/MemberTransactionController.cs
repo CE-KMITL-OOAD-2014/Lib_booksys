@@ -48,11 +48,13 @@ namespace ParatabLib.Controllers
         /* This method use to call renew confirmation page for desired borrowentry(which contain borrow book data)
          * Find desired borrowentry base on id parameter if it exists return renew confirmation page,
          * If it not exists notify user that "Invalid renew book id."
-         * Special case for this method1:If current wanted-to renew book is not match in borrow data
+         * Special case for this method1:If current wanted-to renew book user is not match in borrow data
          * notify user that "Invalid renew operation."
          * Special case for this method2:If current wanted-to renew book's renew count is equal 3
          * notify user that cannot renew due to renew count is exceed maximum.
-         */ 
+         * Special case for this method3:If current wanted-to renew book's renew is overdue
+         * notify user that cannot renew this book due to borrow overdue.
+         */
         [Authorize]
         public ActionResult Renew(int id)
         {
@@ -67,6 +69,12 @@ namespace ParatabLib.Controllers
             if (renewentry.GetBorrower(ref libRepo).UserName != Session["LoginUser"].ToString().Substring(2))
             {
                 TempData["ErrorNoti"] = "Invalid renew operation.";
+                return RedirectToAction("Index");
+            }
+            
+            if (renewentry.DueDate.Date < DateTime.Now.Date)
+            {
+                TempData["ErrorNoti"] = "Cannot renew this book due to borrow overdue.";
                 return RedirectToAction("Index");
             }
 
@@ -90,7 +98,7 @@ namespace ParatabLib.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID && target.ExpireDate == null) != null)
+                if (libRepo.RequestEntryRepo.Find(entry.BookID) != null)
                 {
                     TempData["ErrorNoti"] = "This book is ON HOLD.";
                 }
@@ -144,22 +152,20 @@ namespace ParatabLib.Controllers
                 }
 
                 //Check that desired book is already requested or not.
-                if (libRepo.RequestEntryRepo.List().LastOrDefault(target => target.BookID == booktorequest.BookID
-                                && target.ExpireDate == null) != null || booktorequest.BookStatus == Status.Reserved)
+                if (booktorequest.GetRelatedRequestEntry(ref libRepo) != null)
                 {
                     TempData["ErrorNoti"] = "This book is already requested.";
                     return View();
                 }
 
-                //Improve this code
                 /* Check that current request user is same as current borrower's desired book
                  * if this check is not add request entry to mark that desired is requested.
                  */
                 Member request_member = libRepo.MemberRepo.ListWhere(target => target.UserName ==
                                                 HttpContext.User.Identity.Name.ToString().Substring(2)).Single();
 
-                if (libRepo.BorrowEntryRepo.List().LastOrDefault(target => target.BookID == entry.BookID &&
-                                                        target.GetBorrower(ref libRepo) == request_member && target.ReturnDate == null) != null)
+                if (booktorequest.GetRelatedBorrowEntry(ref libRepo).
+                    LastOrDefault(target => target.BookID == entry.BookID).GetBorrower(ref libRepo) == request_member)
                 {
                     TempData["ErrorNoti"] = "Can't request your current borrowed book.";
                     return View();
@@ -230,7 +236,7 @@ namespace ParatabLib.Controllers
                         TempData["ErrorNoti"] = "This request book is already cancelled.";
                         return RedirectToAction("Index");
                     }
-                    else if (entryToCancel.GetRequestUser().UserName != Session["LoginUser"].ToString().Substring(2))
+                    else if (entryToCancel.GetRequestUser(ref libRepo).UserName != Session["LoginUser"].ToString().Substring(2))
                     {
                         TempData["ErrorNoti"] = "Something went wrong.";
                         return RedirectToAction("Index");

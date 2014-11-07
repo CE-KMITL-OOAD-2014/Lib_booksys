@@ -128,6 +128,14 @@ namespace LibraryTester
                 Publisher = " 	Bloomsbury Publishing",
                 Year = 2006,
                 BookStatus = Status.Borrowed,
+            },
+            new Book{BookID = 7,
+                CallNumber = "SOC-FL5-0001",
+                BookName = "The road of Prayooth",
+                Author = "Siri Janphacharawan",
+                Publisher = "BKK publisher",
+                Year = 2014,
+                BookStatus = Status.Borrowed,
             }
             }.AsQueryable();
 
@@ -138,7 +146,7 @@ namespace LibraryTester
             BookID = 1,
             UserID = 2,
             BorrowDate = new DateTime(2014,10,20,0,0,0),
-            DueDate = new DateTime(2014,10,27,0,0,0),
+            DueDate = new DateTime(2099,10,27,0,0,0),
             RenewCount = 0,
             ReturnDate = null
             },
@@ -165,7 +173,7 @@ namespace LibraryTester
             BookID = 3,
             UserID = 2,
             BorrowDate = new DateTime(2014,10,20,0,0,0),
-            DueDate = new DateTime(2014,10,27,0,0,0),
+            DueDate = new DateTime(2099,10,27,0,0,0),
             RenewCount = 0,
             ReturnDate = null
             },
@@ -186,7 +194,16 @@ namespace LibraryTester
             DueDate = new DateTime(2014,12,27,0,0,0),
             RenewCount = 3,
             ReturnDate = null
-            }
+            },
+            new BorrowEntry{
+            ID = 7,
+            BookID = 7,
+            UserID = 3,
+            BorrowDate = new DateTime(2014,10,31,0,0,0),
+            DueDate = new DateTime(2014,11,7,0,0,0),
+            RenewCount = 0,
+            ReturnDate = null
+            },
             }.AsQueryable();
 
             //Instantiate list of RequestEntry and convert it to compatiable with IQueryable 
@@ -334,7 +351,7 @@ namespace LibraryTester
             Assert.AreEqual(0, (result.Model as MemberTransactionViewer).GetRequestEntryViews().Count);
         }
 
-        //4TH - 7TH test is test renew action in 4 scenarios.
+        //4TH - 8TH test is test renew action in 4 scenarios.
         [TestMethod]
         public void TestRenewAction1()
         {
@@ -374,7 +391,15 @@ namespace LibraryTester
             Assert.AreEqual("Your renew of book ID.6 is exceed maximum!", controller.TempData["ErrorNoti"]);
         }
 
-        //8TH - 9TH test is test renew on HTTPPOST-simulated action in 2 scenarios.
+        [TestMethod]
+        public void TestRenewAction5(){
+             InitialController("M_baybaybay", libRepo.Object);
+             RedirectToRouteResult result = controller.Renew(7) as RedirectToRouteResult;
+             Assert.AreEqual("Index", result.RouteValues["action"]);
+             Assert.AreEqual("Cannot renew this book due to borrow overdue.", controller.TempData["ErrorNoti"]);
+        }
+
+        //9TH - 10TH test is test renew on HTTPPOST-simulated action in 2 scenarios.
         [TestMethod]
         public void TestRenewPostAction1()
         {
@@ -397,7 +422,7 @@ namespace LibraryTester
             Assert.AreEqual("Renew successful!", controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
 
-        //10TH test is test request action browsing page simply check that whether in browse to correct page.
+        //11TH test is test request action browsing page simply check that whether in browse to correct page.
         [TestMethod]
         public void TestRequestAction()
         {
@@ -406,7 +431,7 @@ namespace LibraryTester
             Assert.IsNotNull(result);
         }
 
-        //11TH - 16TH test is test request book on HTTPPOST-simulated action in 6 scenarios.
+        //12TH - 17TH test is test request book on HTTPPOST-simulated action in 6 scenarios.
         [TestMethod]
         public void TestRequestPostAction1()
         {
@@ -468,7 +493,7 @@ namespace LibraryTester
             Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
 
-        //17TH - 19TH test is test cancel request browing action in 3 scenarios.
+        //18TH - 20TH test is test cancel request browing action in 3 scenarios.
         [TestMethod]
         public void TestCancelRequestAction1()
         {
@@ -499,7 +524,7 @@ namespace LibraryTester
             Assert.AreEqual(2, (result.Model as RequestEntry).BookID);
         }
 
-        //20TH - 21ST test is test cancel request browing on HTTPPOST-simulated action in 2 scenarios.
+        //21TH - 22ST test is test cancel request browing on HTTPPOST-simulated action in 2 scenarios.
         [TestMethod]
         public void TestCancelRequestPostAction1()
         {
@@ -520,7 +545,7 @@ namespace LibraryTester
             Assert.AreEqual("Something went wrong.", controller.ControllerContext.Controller.TempData["ErrorNoti"]);
         }
 
-        //22ND-23RD test is test browsing borrow history page for 2 scenarios.
+        //23ND-24RD test is test browsing borrow history page for 2 scenarios.
         [TestMethod]
         public void TestBrowseBorrowHistoryAction1()
         {
