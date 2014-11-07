@@ -186,6 +186,13 @@ namespace ParatabLib.Controllers
             {
                 filterContext.Result = RedirectToAction("Index", "Account");
             }
+            else if ((filterContext.Exception.GetType().Name ==
+                    typeof(System.Data.Entity.Infrastructure.DbUpdateConcurrencyException).Name)
+                    && filterContext.RouteData.Values["action"].ToString() == "Delete")
+            {
+                TempData["ErrorNoti"] = "The librarian that you want to delete is already deleted.";
+                filterContext.Result = RedirectToAction("Index");
+            }
             else
             {
                 throw filterContext.Exception;

@@ -207,7 +207,8 @@ namespace ParatabLib.Controllers
         /* This method use to submit cancelRequest confirmation of desired entry on HTTPPOST
          * First of all,check that the data that passed in view before user confirmation occured is changed,
          * if yes,notify user that "Something went wrong,please try again."
-         * if no check status of request book that is it Requested if yes change it to Available
+         * if no check current cancelling's user whether is match to request user or not,
+         * next check status of request book that is it Requested if yes change it to Available
          * then remove desire entry from database with notify of success result.
          */ 
         [Authorize]
@@ -220,15 +221,27 @@ namespace ParatabLib.Controllers
                     Book bookToCheck = libRepo.BookRepo.Find(entry.BookID);
                     if (bookToCheck == null)
                     {
-                        TempData["ErrorNoti"] = "Something went wrong,please try again.";
+                        TempData["ErrorNoti"] = "Something went wrong.";
                         return RedirectToAction("Index");
                     }
+                    RequestEntry entryToCancel = libRepo.RequestEntryRepo.Find(entry.BookID);
+                    if (entryToCancel == null)
+                    {
+                        TempData["ErrorNoti"] = "This request book is already cancelled.";
+                        return RedirectToAction("Index");
+                    }
+                    else if (entryToCancel.GetRequestUser().UserName != Session["LoginUser"].ToString().Substring(2))
+                    {
+                        TempData["ErrorNoti"] = "Something went wrong.";
+                        return RedirectToAction("Index");
+                    }
+
                     if (bookToCheck.BookStatus == Status.Reserved)
                     {
                             bookToCheck.BookStatus = Status.Available;
                             libRepo.BookRepo.Update(bookToCheck);
                     }
-                    libRepo.RequestEntryRepo.Remove(entry);
+                    libRepo.RequestEntryRepo.Remove(entryToCancel);
                     libRepo.Save();
                     TempData["SuccessNoti"] = "Cancel request successfully.";
                     return RedirectToAction("Index");

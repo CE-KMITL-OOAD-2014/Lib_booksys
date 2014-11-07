@@ -122,9 +122,10 @@ namespace ParatabLib.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteNews(News newsToDelete)
         {
+                
                 libRepo.NewsRepo.Remove(newsToDelete);
-                TempData["SuccessNoti"] = "Delete news successfully.";
                 libRepo.Save();
+                TempData["SuccessNoti"] = "Delete news successfully.";
                 return RedirectToAction("Index");
         }
 
@@ -163,6 +164,13 @@ namespace ParatabLib.Controllers
             if (filterContext.Exception.GetType().Name == typeof(HttpAntiForgeryException).Name)
             {
                 filterContext.Result = RedirectToAction("Index", "Account");
+            }
+            else if ((filterContext.Exception.GetType().Name == 
+                typeof(System.Data.Entity.Infrastructure.DbUpdateConcurrencyException).Name)
+                && filterContext.RouteData.Values["action"].ToString() == "DeleteNews")
+            {
+                TempData["ErrorNoti"] = "The news that you want to delete is already deleted.";
+                filterContext.Result = RedirectToAction("Index");
             }
             else
             {

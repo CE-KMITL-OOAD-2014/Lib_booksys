@@ -199,15 +199,20 @@ namespace ParatabLib.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteBook(Book bookToDelete)
         {
-                TempData["SuccessNoti"] = "Delete " + bookToDelete.BookName + " successfully.";
                 List<BorrowEntry> removeBorrowEntry = libRepo.BorrowEntryRepo.ListWhere(target => target.BookID == bookToDelete.BookID).ToList();
                 Book bookToDel = libRepo.BookRepo.Find(bookToDelete.BookID);
+                if (bookToDel == null)
+                {
+                    TempData["ErrorNoti"] = "The book that you want to delete is already deleted.";
+                    return RedirectToAction("Index");
+                }
                 RequestEntry entryToCheck = bookToDel.GetRelatedRequestEntry(ref libRepo);
                 if (entryToCheck != null)
                     libRepo.RequestEntryRepo.Remove(entryToCheck);
                 libRepo.BorrowEntryRepo.Remove(removeBorrowEntry);
                 libRepo.BookRepo.Remove(bookToDel);
                 libRepo.Save();
+                TempData["SuccessNoti"] = "Delete " + bookToDelete.BookName + " successfully.";
                 return RedirectToAction("Index");
         }
 
