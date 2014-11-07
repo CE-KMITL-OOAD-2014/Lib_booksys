@@ -197,6 +197,7 @@ input[type="submit"].style-blue{
 }
 
 input[type="submit"].style-blue:hover{
+    cursor:pointer;
     background-color:#1F5C99
 }
 
@@ -205,6 +206,7 @@ input[type="submit"].style-orange{
 }
 
 input[type="submit"].style-orange:hover{
+    cursor:pointer;
     background-color:#992B0F
 }
 
@@ -635,6 +637,32 @@ p.account-detail{
     text-indent:0
 }
 
+div.book-detail{
+    font-family:Single;
+    font-size:x-large;
+    padding:5px;
+    background-color:#CCFF99;
+    border:1px solid gray;
+    margin-bottom:15px;
+}
+
+div.acc-mem-detail{
+    font-family:Single;
+    font-size:x-large;
+    padding:5px;
+    background-color:#CCCCCC;
+    border:1px solid gray;
+    margin-bottom:15px;
+}
+
+div.acc-lib-detail{
+    font-family:Single;
+    font-size:x-large;
+    padding:5px;
+    background-color:#FFB280;
+    border:1px solid gray;
+    margin-bottom:15px;
+}
 p.book-detail{
     font-family:Single;
     font-size:x-large;
