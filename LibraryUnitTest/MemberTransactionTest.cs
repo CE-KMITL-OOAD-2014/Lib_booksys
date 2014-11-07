@@ -517,7 +517,7 @@ namespace LibraryTester
             RedirectToRouteResult result = controller.CancelRequest(new RequestEntry { BookID = 222 }) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
-            Assert.AreEqual("Something went wrong,please try again.", controller.ControllerContext.Controller.TempData["ErrorNoti"]);
+            Assert.AreEqual("Something went wrong.", controller.ControllerContext.Controller.TempData["ErrorNoti"]);
         }
 
         //22ND-23RD test is test browsing borrow history page for 2 scenarios.

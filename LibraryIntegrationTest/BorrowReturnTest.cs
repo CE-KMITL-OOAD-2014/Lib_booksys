@@ -61,11 +61,11 @@ namespace LibraryIntegrationTest
             app.Route.ShouldMapTo<LibrarianTransactionController>(c => c.Transaction());
             
             /* Wow we reach to the one of main test of this integration test
-             * test borrow book for member#23/borrow book 37 and check notify result
+             * test borrow book for member#23/borrow book 35 and check notify result
              */ 
             app.Browser.FindElement(By.Name("UserID")).SendKeys("23");
             app.Browser.FindElement(By.CssSelector("input[type=\"submit\"][value=\"Check\"]")).Submit();
-            app.Browser.FindElement(By.Name("BookID")).SendKeys("37");
+            app.Browser.FindElement(By.Name("BookID")).SendKeys("35");
             app.Browser.FindElement(By.CssSelector("input[type=\"submit\"][value=\"Submit\"]")).Submit();
             Assert.AreEqual(true, app.Browser.FindElement(By.ClassName("noti-green")).Text.Contains("Borrow for member"));
 

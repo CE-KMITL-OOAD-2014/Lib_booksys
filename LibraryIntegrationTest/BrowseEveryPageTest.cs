@@ -384,14 +384,14 @@ namespace LibraryIntegrationTest
 
         private void NewsMntEditNews()
         {
-            app.NavigateTo<NewsManagerController>(c => c.EditNews(10));
-            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.EditNews(10));
+            app.NavigateTo<NewsManagerController>(c => c.EditNews(11));
+            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.EditNews(11));
         }
 
         private void NewsMntDeleteNews()
         {
-            app.NavigateTo<NewsManagerController>(c => c.DeleteNews(10));
-            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.DeleteNews(10));
+            app.NavigateTo<NewsManagerController>(c => c.DeleteNews(11));
+            IsRedirectToRightPathForLibrarian<NewsManagerController>(c => c.DeleteNews(11));
         }
 
         private void BackToHome()
