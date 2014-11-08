@@ -4,9 +4,9 @@
 @model ParatabLib.Models.Member
 <h2>Detail of @Model.Identify()</h2>
 <div class="acc-mem-detail">
-    <b>UserID:</b>@Model.UserID<br />
-    <b>Username:</b>@Model.UserName<br />
-    <b>Name:</b>@Model.Name<br />
-    <b>Email:</b>@Html.DisplayTextFor(model => model.Email)
+    <b>UserID: </b>@Model.UserID<br />
+    <b>Username: </b>@Model.UserName<br />
+    <b>Name: </b>@Model.Name<br />
+    <b>Email: </b>@Html.DisplayTextFor(model => model.Email)
 </div>
 <a class="account-btt" href="/MemberListManager/">Back</a>

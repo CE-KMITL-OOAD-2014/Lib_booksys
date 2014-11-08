@@ -46,7 +46,54 @@ namespace ParatabLib.Controllers
         }
 
         /* This method use to call renew confirmation page for desired borrowentry(which contain borrow book data)
-         * Find desired borrowentry base on id parameter if it exists return renew confirmation page,
+         * call renewStrategy to return result from this request whether renew confirmation page or error with
+         * redirection.
+         */
+        [Authorize]
+        public ActionResult Renew(int id)
+        {
+            return RenewStrategy(ref id);
+        }
+
+
+        /* This method use to submit renew confirmation,do firstly check in renewStrangy to prevent hacks from 
+         * multi-HTTPPOST then check that whether that book is already requested,
+         * if yes notify user that "This book is ON HOLD." otherwise update duedate by 7 days,count renew time by 1
+         * and save it to database,finally notify success result.
+         */ 
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Renew(BorrowEntry entry)
+        {
+            if (ModelState.IsValid)
+            {
+                int id = entry.ID;
+                ActionResult result = RenewStrategy(ref id);
+                if ((result as ViewResult) != null)
+                {
+                    BorrowEntry entryToRenew = (result as ViewResult).Model as BorrowEntry;
+                    if (libRepo.RequestEntryRepo.Find(entryToRenew.BookID) != null)
+                    {
+                        TempData["ErrorNoti"] = "This book is ON HOLD.";
+                    }
+                    else
+                    {
+                        entryToRenew.DueDate = DateTime.Now.Date.AddDays(7);
+                        entryToRenew.RenewCount++;
+                        libRepo.BorrowEntryRepo.Update(entryToRenew);
+                        libRepo.Save();
+                        TempData["SuccessNoti"] = "Renew successful!";
+                    }
+                }
+                else
+                    return result;
+            }
+            return RedirectToAction("Index");
+        }
+
+        /* This method is strategy for renew action by passing by reference of renew's id 
+         * Find desired borrowentry base on id parameter if it exists or not,
          * If it not exists notify user that "Invalid renew book id."
          * Special case for this method1:If current wanted-to renew book user is not match in borrow data
          * notify user that "Invalid renew operation."
@@ -54,12 +101,10 @@ namespace ParatabLib.Controllers
          * notify user that cannot renew due to renew count is exceed maximum.
          * Special case for this method3:If current wanted-to renew book's renew is overdue
          * notify user that cannot renew this book due to borrow overdue.
-         */
-        [Authorize]
-        public ActionResult Renew(int id)
+         */ 
+        private ActionResult RenewStrategy(ref int id)
         {
-            BorrowEntry renewentry = libRepo.BorrowEntryRepo.ListWhere(target => target.ID == id &&
-                                        target.ReturnDate == null).SingleOrDefault();
+            BorrowEntry renewentry = libRepo.BorrowEntryRepo.Find(id);
             if (renewentry == null)
             {
                 TempData["ErrorNoti"] = "Invalid renew book id.";
@@ -71,7 +116,7 @@ namespace ParatabLib.Controllers
                 TempData["ErrorNoti"] = "Invalid renew operation.";
                 return RedirectToAction("Index");
             }
-            
+
             if (renewentry.DueDate.Date < DateTime.Now.Date)
             {
                 TempData["ErrorNoti"] = "Cannot renew this book due to borrow overdue.";
@@ -85,35 +130,6 @@ namespace ParatabLib.Controllers
             }
             return View(renewentry);
         }
-
-
-        /* This method use to submit renew confirmation,simply check that whether that book is already requested,
-         * if yes notify user that "This book is ON HOLD." otherwise update duedate by 7 days,count renew time by 1
-         * and save it to database,finally notify success result.
-         */ 
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult Renew(BorrowEntry entry)
-        {
-            if (ModelState.IsValid)
-            {
-                if (libRepo.RequestEntryRepo.Find(entry.BookID) != null)
-                {
-                    TempData["ErrorNoti"] = "This book is ON HOLD.";
-                }
-                else
-                {
-                    entry.DueDate = DateTime.Now.Date.AddDays(7);
-                    entry.RenewCount++;
-                    libRepo.BorrowEntryRepo.Update(entry);
-                    libRepo.Save();
-                    TempData["SuccessNoti"] = "Renew successful!";
-                }
-            }
-            return RedirectToAction("Index");
-        }
-
         //This method simply call request page and return it to user.
         [Authorize]
         public ActionResult Request()
@@ -128,7 +144,7 @@ namespace ParatabLib.Controllers
          * check that current request user is same as current borrower's desired book
          * if last check is not add request entry to mark that desired is requested.
          * Finally notify user for success result.
-         */ 
+         */
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

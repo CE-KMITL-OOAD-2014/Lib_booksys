@@ -27,21 +27,21 @@ else if (TempData["SuccessNoti"] != null)
 @if (Model.Identify().StartsWith("Member")) { 
 <div class="acc-mem-detail">
     <u><b>Your profile</b></u><br />
-    <b>User ID:</b>@Html.DisplayFor(model => model.UserID)<br />
-    <b>User name:</b>@Html.DisplayFor(model => model.UserName)<br />
-    <b>Name:</b>@Html.DisplayFor(model => model.Name)<br />
-    <b>Email:</b>@Html.DisplayTextFor(model => model.Email)<br />
-    <b>Password:</b>    ********
+    <b>User ID: </b>@Html.DisplayFor(model => model.UserID)<br />
+    <b>Username: </b>@Html.DisplayFor(model => model.UserName)<br />
+    <b>Name: </b>@Html.DisplayFor(model => model.Name)<br />
+    <b>Email: </b>@Html.DisplayTextFor(model => model.Email)<br />
+    <b>Password: </b>********
 </div>
 }
 else{
     <div class="acc-lib-detail">
         <u><b>Your profile</b></u><br />
-        <b>User ID:</b>@Html.DisplayFor(model => model.UserID)<br />
-        <b>User name:</b>@Html.DisplayFor(model => model.UserName)<br />
-        <b>Name:</b>@Html.DisplayFor(model => model.Name)<br />
-        <b>Email:</b>@Html.DisplayTextFor(model => model.Email)<br />
-        <b>Password:</b>********
+        <b>User ID: </b>@Html.DisplayFor(model => model.UserID)<br />
+        <b>Username: </b>@Html.DisplayFor(model => model.UserName)<br />
+        <b>Name: </b>@Html.DisplayFor(model => model.Name)<br />
+        <b>Email: </b>@Html.DisplayTextFor(model => model.Email)<br />
+        <b>Password: </b>********
 </div>
 }
 @if (Session["LoginUser"].ToString().Substring(0,2) == "M_")
