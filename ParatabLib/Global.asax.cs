@@ -29,6 +29,17 @@ namespace ParatabLib
             foreach (Librarian librarian in libRepo.LibrarianRepo.List())
                 Controllers.AuthenticateController.AddUser(librarian.UserName);
 
+            //Set latestNews that will be load in HomePage
+            List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
+            if (newsList.Count != 0)
+            {
+                if (newsList.Count >= 10)
+                    newsList = newsList.GetRange(0, 10);
+                else
+                    newsList = newsList.GetRange(0, newsList.Count);
+                Controllers.NewsController.setLatestNews(newsList);
+            }
+
             /* Load configuration of fine penalty from file if it is not exist create new file and set it
              * to default value(5) otherwise load value from file and set it to ConfigurationController's static properties
              * via setFine method.

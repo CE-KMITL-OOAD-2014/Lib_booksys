@@ -15,6 +15,8 @@ namespace ParatabLib.Controllers
     public class BookController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
+
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult View([DefaultValue(0)]int id)
         {
             return View(libRepo.BookRepo.Find(id));

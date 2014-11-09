@@ -55,6 +55,7 @@ namespace ParatabLib.Controllers
         }
 
         //This method use to call Login page and return it to user.
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Login()
         {
             return View();
@@ -107,6 +108,7 @@ namespace ParatabLib.Controllers
         }
 
         //This method use to call register page and return it to user.
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Register()
         {
             return View();
@@ -170,6 +172,7 @@ namespace ParatabLib.Controllers
         }
 
         //This method use to call ForgotPassword page and return it to user.
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult ForgotPassword()
         {
                 return View();

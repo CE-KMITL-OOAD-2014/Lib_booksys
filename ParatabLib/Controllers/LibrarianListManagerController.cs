@@ -20,6 +20,7 @@ namespace ParatabLib.Controllers
          * parameterized page and pageSize for paging librarian list,finally return it to user.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
@@ -44,6 +45,7 @@ namespace ParatabLib.Controllers
 
         //This method use to call add librarian page and return it to user.
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult AddLibrarian()
         {
             return View();
@@ -94,6 +96,7 @@ namespace ParatabLib.Controllers
          * otherwise notify user to input correct librarian id.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult View([DefaultValue(0)]int id)
         {
                 Librarian target = libRepo.LibrarianRepo.Find(id);
@@ -108,6 +111,7 @@ namespace ParatabLib.Controllers
          * otherwise notify user to input correct librarian id.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Delete([DefaultValue(0)]int id)
         {
             Librarian target = libRepo.LibrarianRepo.Find(id);

@@ -15,10 +15,11 @@ namespace ParatabLib.Controllers
         
         /* This method use to call Homepage of this website,
          * include news data to display in page and sort data by date.
-         */ 
+         */
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index()
         {
-            return View(libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime));
+            return View(NewsController.getLatestNews());
         }
 
         //This method use to call about page and return it to user.
@@ -43,7 +44,8 @@ namespace ParatabLib.Controllers
         /* This method use to call TopTen page and return it to user,
          * by find the first ten member and book that has max number of
          * borrowentry and sort list then parameterized to viewModel via TopTenViewer object.
-         */ 
+         */
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult TopTen()
         {
             TopTenViewer viewer = new TopTenViewer();

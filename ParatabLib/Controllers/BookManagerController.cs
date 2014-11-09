@@ -19,6 +19,7 @@ namespace ParatabLib.Controllers
          * page and pageSize parameterized for paging list.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
@@ -44,6 +45,7 @@ namespace ParatabLib.Controllers
 
         // This method use to call add book page and return it to user.
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult AddBook()
         {
             return View();
@@ -83,12 +85,13 @@ namespace ParatabLib.Controllers
          * notify user to specify correct book id and return to index page.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult EditBook([DefaultValue(0)]int id)
         {
             Book booktoedit = libRepo.BookRepo.Find(id);
             if (booktoedit != null)
                 return View(booktoedit);
-            TempData["ErrorNoti"] = "Please specify correct newsID.";
+            TempData["ErrorNoti"] = "Please specify correct bookID.";
             return RedirectToAction("Index");
         }
 
@@ -171,12 +174,13 @@ namespace ParatabLib.Controllers
          * redirect user to index page and notify user to specify correct data.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult DeleteBook([DefaultValue(0)]int id)
         {
             Book booktodelete = libRepo.BookRepo.Find(id);
             if (booktodelete != null)
                 return View(booktodelete);
-            TempData["ErrorNoti"] = "Please specify correct newsID.";
+            TempData["ErrorNoti"] = "Please specify correct bookID.";
             return RedirectToAction("Index");
 
         }

@@ -19,6 +19,7 @@ namespace ParatabLib.Controllers
          * return result as page to user.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
@@ -46,6 +47,7 @@ namespace ParatabLib.Controllers
          * If yes return member detail in page,otherwise notify user to input correct member ID.
          */
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult View([DefaultValue(0)]int id)
         {
             Member target = libRepo.MemberRepo.Find(id);
@@ -64,6 +66,7 @@ namespace ParatabLib.Controllers
          * otherwise notify user to input correct member ID.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Delete([DefaultValue(0)]int id)
         {
             Member target = libRepo.MemberRepo.Find(id);

@@ -18,6 +18,7 @@ namespace ParatabLib.Controllers
          * parameterized of page and pageSize for paging news list then return result to user.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
@@ -42,6 +43,7 @@ namespace ParatabLib.Controllers
         
         //This method use to call Add news page then return result to user.
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult AddNews()
         {
             return View();
@@ -61,6 +63,7 @@ namespace ParatabLib.Controllers
                 libRepo.NewsRepo.Add(newsToAdd);
                 libRepo.Save();
                 TempData["SuccessNoti"] = "Add news successfully.";
+                UpdateLatestNews();
                 return RedirectToAction("Index");
             }
             return View(newsToAdd);
@@ -71,6 +74,7 @@ namespace ParatabLib.Controllers
          * otherwise notify user to input correct NewsID.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult EditNews([DefaultValue(0)]int id)
         {
             News newsToEdit = libRepo.NewsRepo.Find(id);
@@ -94,6 +98,7 @@ namespace ParatabLib.Controllers
                 libRepo.NewsRepo.Update(newsToEdit);
                 libRepo.Save();
                 TempData["SuccessNoti"] = "Edit news successfully.";
+                UpdateLatestNews();
                 return RedirectToAction("Index");
             }
             return View(newsToEdit);
@@ -105,6 +110,7 @@ namespace ParatabLib.Controllers
          * notify user to input correct NewsID.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult DeleteNews(int id)
         {
             News newsToDelete = libRepo.NewsRepo.Find(id);
@@ -126,7 +132,25 @@ namespace ParatabLib.Controllers
                 libRepo.NewsRepo.Remove(newsToDelete);
                 libRepo.Save();
                 TempData["SuccessNoti"] = "Delete news successfully.";
+                UpdateLatestNews();
                 return RedirectToAction("Index");
+        }
+
+        //This method use to update latest news from which happen from add/edit/delete news
+        private void UpdateLatestNews()
+        {
+            List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
+            if (newsList.Count != 0)
+            {
+                if (newsList.Count >= 10)
+                    newsList = newsList.GetRange(0, 10);
+                else
+                    newsList = newsList.GetRange(0, newsList.Count);
+                lock (typeof(List<News>))
+                {
+                    Controllers.NewsController.setLatestNews(newsList);
+                }
+            }
         }
 
         /* [Override method]

@@ -12,8 +12,20 @@ namespace ParatabLib.Controllers
     public class NewsController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
-        
-        //This method use to view news detail by passing id of news that want to see as integer. 
+        private static volatile List<News> latestNews;
+
+        public static void setLatestNews(List<News> list)
+        {
+            latestNews = list;
+        }
+
+        public static List<News> getLatestNews()
+        {
+            return latestNews;
+        }
+
+        //This method use to view news detail by passing id of news that want to see as integer.
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult View(int id)
         {
             News newstoview = libRepo.NewsRepo.Find(id);
@@ -26,6 +38,7 @@ namespace ParatabLib.Controllers
         /* This method use to show all news in library
          * by passing page and pageSize as parameter for paging list.
          */
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult ViewAll(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
