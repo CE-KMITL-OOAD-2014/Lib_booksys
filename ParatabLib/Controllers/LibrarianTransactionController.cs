@@ -223,6 +223,7 @@ namespace ParatabLib.Controllers
          * return result to user.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index(int page = 1,int pageSize = 10)
         {
             TempData["pageSize"] = pageSize;
@@ -320,7 +321,6 @@ namespace ParatabLib.Controllers
                     return;
                 }
         }
-
         /* [Override method]
          * This method use to handle exception that may occur in system
          * for some specific exception Redirect user to another page and pretend that no error occur

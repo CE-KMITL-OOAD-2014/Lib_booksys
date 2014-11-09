@@ -3,7 +3,7 @@
 }
 @model IEnumerable<ParatabLib.Models.News>
 <h1>Welcome to online library book system</h1>
-<p class="real-paragraph">ยินดีต้อนรับสู่ Web application อันน่าตื่นตาตื่นใจ คุณจะได้พบกับความสามารถของระบบห้องสมุดออนไลน์ที่สามารถช่วยจัดการปัญหาทุกอย่างที่เกิดขึ้นได้</p>
+<div class="home-welcome">ยินดีต้อนรับสู่ Web application อันน่าตื่นตาตื่นใจ คุณจะได้พบกับความสามารถของระบบห้องสมุดออนไลน์ที่สามารถช่วยจัดการปัญหาทุกอย่างที่เกิดขึ้นได้</div>
 <h1>News</h1>
 <table class="news-list">
     @foreach (var news in Model)
@@ -18,4 +18,22 @@
         <td class="right-col"><a class="norm" href="/News/ViewAll">ดูทั้งหมด</a></td>
     </tr>
 </table>
+<h1>Our services</h1>
+<div class="home-services">
+    <ul class="home-services">
+        <li>ระบบฐานข้อมูลหนังสือออนไลน์</li>
+        <li>ระบบการจองหนังสือ</li>
+        <li>ระบบต่ออายุการยืมหนังสือ</li>
+        <li>ดูประวัติการยืมย้อนหลัง</li>
+        <li>ระบบแจ้งเตือนหนังสือที่ยืมเกินกำหนด</li>
+        <li>ระบบสืบค้นและเรียกดูข้อมูลหนังสือผ่านทาง API ดูตัวอย่างการใช้งาน <a class="norm" href="/Home/LibraryApi" target="_blank">CLICK</a></li>
+    </ul>
+</div>
+<h1>Office time</h1>
+<div class="home-office">
+    <b>จันทร์-ศุกร์:</b>07.30-21.00น.<br />
+    <b>เสาร์-อาทิตย์ และ วันหยุดนักขัตฤกษ์:</b>08.30-16.30น.<br />
+    **หากมีการเปลี่ยนแปลงจะแจ้งให้ทราบในหน้าข่าวสาร
+</div>
+
 

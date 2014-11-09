@@ -237,6 +237,7 @@ table.news-list{
     margin:15px 0 15px 0;
     padding:5px;
     border:1px solid #808080;
+    background-color:#FFFF9E;
     border-top-left-radius:15px;
     border-top-right-radius:15px;
     border-bottom-left-radius:15px;
@@ -244,7 +245,7 @@ table.news-list{
 }
 
 table.news-list tr:hover{
-    background-color:#FFFF75;
+    background-color:#E6E600;
 }
 
 table.news-list td.right-col{
@@ -663,10 +664,56 @@ div.acc-lib-detail{
     border:1px solid gray;
     margin-bottom:15px;
 }
-p.book-detail{
+
+div.home-welcome{
+    padding:10px;
+    text-indent:50px;
+    border:1px solid #568042;
     font-family:Single;
     font-size:x-large;
-    text-indent:0
+    background-color:#ADFF85;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+}
+
+div.home-office{
+    padding:10px;
+    border:1px solid #563D45;
+    font-family:Single;
+    font-size:x-large;
+    background-color:#D699AD;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+    margin-bottom:15px;
+}
+div.home-services{
+    padding:10px;
+    border:1px solid #5F4266;
+    font-family:Single;
+    font-size:x-large;
+    background-color:#EEA6FF;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+    margin-bottom:15px;
+}
+
+div.contact-dev{
+    padding:10px;
+    border:1px solid #660000;
+    background-color:#F0CCCC;
+    font-family:Single;
+    font-size:x-large;
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+    margin-bottom:15px;
 }
 
 p.post-time{
@@ -796,6 +843,10 @@ textarea{
 span.act-link{
     font-family:Single;
     font-size:x-large
+}
+
+ul.home-services{
+    list-style-type:square;
 }
 @font-face{
     font-family:Single;

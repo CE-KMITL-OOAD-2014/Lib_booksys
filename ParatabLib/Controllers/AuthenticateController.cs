@@ -227,6 +227,7 @@ namespace ParatabLib.Controllers
          * user to another page.
          */
         [HttpGet]
+        [OutputCache(Duration=0,NoStore=true)]
         public ActionResult ResetPassword(string token)
         {
                 Person userToRecover = libRepo.MemberRepo.ListWhere(target => target.Password == token).SingleOrDefault();

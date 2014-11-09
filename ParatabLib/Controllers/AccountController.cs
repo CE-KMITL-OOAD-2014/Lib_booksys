@@ -90,6 +90,7 @@ namespace ParatabLib.Controllers
 
         //This method use to call edit account page for current user session and return it to user.
         [Authorize]
+        [OutputCache(Duration=0,NoStore=true)]
         public ActionResult EditAccount()
         {
             Person target = libRepo.LibrarianRepo.ListWhere(librarian => librarian.UserName == HttpContext.User.Identity.Name.ToString().Substring(2)).SingleOrDefault();

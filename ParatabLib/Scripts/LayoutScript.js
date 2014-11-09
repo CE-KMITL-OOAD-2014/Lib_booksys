@@ -47,7 +47,12 @@ $(document).ready(function () {
             $("img.back-to-top-btt").fadeOut();
     });
     $("img.back-to-top-btt").click(function () {
-        $("html").animate({ scrollTop: 0 }, "500", "easeOutExpo");
+        if($.browser.mozilla || $.browser.msie|| $.browser.opera)
+            $("html").animate({ scrollTop: 0 }, "500", "easeOutExpo");
+        else if($.browser.webkit)
+            $("body").animate({ scrollTop: 0 }, "500", "easeOutExpo");
+        else
+            $("html").animate({ scrollTop: 0 }, "500", "easeOutExpo");
     });
     $("select.autosubmit").change(function () {
         $(this).parent().submit();

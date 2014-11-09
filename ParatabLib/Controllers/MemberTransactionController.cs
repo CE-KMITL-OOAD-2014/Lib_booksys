@@ -33,6 +33,7 @@ namespace ParatabLib.Controllers
          * with borrow/request data in MemberTransactionViewer object.
          */ 
         [Authorize]
+        [OutputCache(Duration=0,NoStore=true)]
         public ActionResult Index()
         {
                 MemberTransactionViewer viewer = new MemberTransactionViewer();
@@ -50,6 +51,7 @@ namespace ParatabLib.Controllers
          * redirection.
          */
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Renew(int id)
         {
             return RenewStrategy(ref id);
@@ -132,6 +134,7 @@ namespace ParatabLib.Controllers
         }
         //This method simply call request page and return it to user.
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Request()
         {
             return View();
@@ -209,6 +212,7 @@ namespace ParatabLib.Controllers
          * if last check is not passed,notify that "Can't cancel other member's book request."
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult CancelRequest(int id)
         {
             RequestEntry wantedEntry = libRepo.RequestEntryRepo.Find(id);
@@ -277,6 +281,7 @@ namespace ParatabLib.Controllers
          * result to user.
          */ 
         [Authorize]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult BorrowHistory(int page = 1,int pageSize = 10)
         {
             string username;
