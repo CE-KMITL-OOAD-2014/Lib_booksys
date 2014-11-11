@@ -182,9 +182,9 @@ namespace ParatabLib.Controllers
                  */
                 Member request_member = libRepo.MemberRepo.ListWhere(target => target.UserName ==
                                                 HttpContext.User.Identity.Name.ToString().Substring(2)).Single();
-
                 if (booktorequest.GetRelatedBorrowEntry(ref libRepo).
-                    LastOrDefault(target => target.BookID == entry.BookID).GetBorrower(ref libRepo) == request_member)
+                    LastOrDefault(target => target.BookID == entry.BookID).GetBorrower(ref libRepo)
+                    .UserName == request_member.UserName)
                 {
                     TempData["ErrorNoti"] = "Can't request your current borrowed book.";
                     return View();

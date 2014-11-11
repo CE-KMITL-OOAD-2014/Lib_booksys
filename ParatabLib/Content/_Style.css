@@ -668,10 +668,9 @@ div.acc-lib-detail{
 div.home-welcome{
     padding:10px;
     text-indent:50px;
-    border:1px solid #568042;
+    border:1px solid black;
     font-family:Single;
     font-size:x-large;
-    background-color:#ADFF85;
     border-top-left-radius:15px;
     border-top-right-radius:15px;
     border-bottom-left-radius:15px;
