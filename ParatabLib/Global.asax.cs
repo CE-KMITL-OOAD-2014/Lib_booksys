@@ -33,8 +33,8 @@ namespace ParatabLib
             List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
             if (newsList.Count != 0)
             {
-                if (newsList.Count >= 10)
-                    newsList = newsList.GetRange(0, 10);
+                if (newsList.Count >= 7)
+                    newsList = newsList.GetRange(0, 7);
                 else
                     newsList = newsList.GetRange(0, newsList.Count);
                 Controllers.NewsController.setLatestNews(newsList);

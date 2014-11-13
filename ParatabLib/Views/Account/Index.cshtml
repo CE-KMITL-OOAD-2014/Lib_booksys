@@ -25,7 +25,7 @@ else if (TempData["SuccessNoti"] != null)
     </div>
 }
 @if (Model.Identify().StartsWith("Member")) { 
-<div class="acc-mem-detail">
+<div class="acc-mem-detail round-border">
     <u><b>Your profile</b></u><br />
     <b>User ID: </b>@Html.DisplayFor(model => model.UserID)<br />
     <b>Username: </b>@Html.DisplayFor(model => model.UserName)<br />
@@ -35,7 +35,7 @@ else if (TempData["SuccessNoti"] != null)
 </div>
 }
 else{
-    <div class="acc-lib-detail">
+    <div class="acc-lib-detail round-border">
         <u><b>Your profile</b></u><br />
         <b>User ID: </b>@Html.DisplayFor(model => model.UserID)<br />
         <b>Username: </b>@Html.DisplayFor(model => model.UserName)<br />

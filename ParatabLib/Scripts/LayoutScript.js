@@ -63,5 +63,8 @@ $(document).ready(function () {
     $("button.show-code").click(function () {
         $(this).next().toggle();
     });
+    $("img.nav-btt").click(function () {
+        $(this).parent().submit();
+    });
     $("span.show-code").hide();
 });

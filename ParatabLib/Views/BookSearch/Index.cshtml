@@ -14,16 +14,17 @@
 <form class="book-search" action="/BookSearch/Basic" method="post">
     @Html.AntiForgeryToken()
     <fieldset>
-    <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@TempData["Keyword"]"/><br />
-    <label>Search by</label><select size="1" name="SearchType">
-    <option value="" selected="@((ViewBag.SearchType=="")?"selected":null)">Select...</option>
-    <option value="Callno" selected="@((ViewBag.SearchType=="Callno")?"selected":null)">Call No.</option>
-    <option value="BookName" selected="@((ViewBag.SearchType=="BookName")?"selected":null)">Book name</option>
-    <option value="Author" selected="@((ViewBag.SearchType=="Author")?"selected":null)">Author</option>
-    <option value="Publisher" selected="@((ViewBag.SearchType=="Publisher")?"selected":null)">Publisher</option>
-    <option value="Year" selected="@((ViewBag.SearchType=="Year")?"selected":null)">Year</option>
-</select><br />
-    <input type="submit" class="style-blue" value="Search" /></fieldset>
+        <label>Keyword</label><input type="text" placeholder="Keyword" name="Keyword" value="@TempData["Keyword"]" /><br />
+        <label>Search by</label><select size="1" name="SearchType">
+            <option value="" selected="@((ViewBag.SearchType=="")?"selected":null)">Select...</option>
+            <option value="Callno" selected="@((ViewBag.SearchType=="Callno")?"selected":null)">Call No.</option>
+            <option value="BookName" selected="@((ViewBag.SearchType=="BookName")?"selected":null)">Book name</option>
+            <option value="Author" selected="@((ViewBag.SearchType=="Author")?"selected":null)">Author</option>
+            <option value="Publisher" selected="@((ViewBag.SearchType=="Publisher")?"selected":null)">Publisher</option>
+            <option value="Year" selected="@((ViewBag.SearchType=="Year")?"selected":null)">Year</option>
+        </select><br />
+        <input type="submit" class="style-blue" value="Search" />
+    </fieldset>
 </form>
 @if (Model != null && TempData["AdvanceSearch"]!="Advance")
 {
@@ -50,7 +51,29 @@
                 <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png"/></a></td>
             </tr>
         }
-        <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+        <caption>
+            @if (Model.GetCurrentPage() != 1) {
+            <form action="/BookSearch/Basic/" method="post" style="display:inline">
+                <img class="nav-btt" src="~/Content/prev-btt.png" alt="previous"/>
+                @Html.AntiForgeryToken()
+                <input type="hidden" value="@(Model.GetCurrentPage()-1)" name="page" />
+                <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+                <input type="hidden" name="Keyword" value="@TempData["Keyword"]" />
+                <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />
+            </form>
+            }
+            <b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b>
+            @if (Model.GetCurrentPage() != Model.GetPageSize()) { 
+            <form action="/BookSearch/Basic/" method="post" style="display:inline">
+                <img class="nav-btt" src="~/Content/next-btt.png" alt="next" />
+                @Html.AntiForgeryToken()
+                <input type="hidden" value="@(Model.GetCurrentPage()+1)" name="page" />
+                <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+                <input type="hidden" name="Keyword" value="@TempData["Keyword"]" />
+                <input type="hidden" name="SearchType" value="@ViewBag.SearchType" />
+            </form>
+            }
+        </caption>
     </table>
     <form class="page-portal" action="/BookSearch/Basic/" method="post">
         @Html.AntiForgeryToken()
@@ -118,7 +141,35 @@
                     <td><a href="/Book/View/@item.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
                 </tr>
             }
-            <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+            <caption>
+                @if (Model.GetCurrentPage() != 1) {
+                <form action="/BookSearch/Advance/" method="post" style="display:inline">
+                    <img class="nav-btt" src="~/Content/prev-btt.png" alt="previous" />
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" value="@(Model.GetCurrentPage()-1)" name="page" />
+                    <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+                    <input type="hidden" name="CallNumber" value="@TempData["Callno"]" />
+                    <input type="hidden" name="BookName" value="@TempData["BookName"]" />
+                    <input type="hidden" name="Author" value="@TempData["Author"]" />
+                    <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
+                    <input type="hidden" name="Year" value="@TempData["Year"]" />
+                </form>
+                }
+                <b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b>
+                @if (Model.GetCurrentPage() != Model.GetPageSize()) {
+                <form action="/BookSearch/Advance/" method="post" style="display:inline">
+                    <img class="nav-btt" src="~/Content/next-btt.png" alt="next" />
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" value="@(Model.GetCurrentPage()+1)" name="page" />
+                    <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+                    <input type="hidden" name="CallNumber" value="@TempData["Callno"]" />
+                    <input type="hidden" name="BookName" value="@TempData["BookName"]" />
+                    <input type="hidden" name="Author" value="@TempData["Author"]" />
+                    <input type="hidden" name="Publisher" value="@TempData["Publisher"]" />
+                    <input type="hidden" name="Year" value="@TempData["Year"]" />
+                </form>
+                }
+            </caption>
         </table>
     
         <form class="page-portal" action="/BookSearch/Advance/" method="post">

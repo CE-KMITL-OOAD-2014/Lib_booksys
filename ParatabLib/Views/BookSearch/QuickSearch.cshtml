@@ -37,7 +37,29 @@ else
             <td><a href="/Book/View/@book.BookID"><img class="view-btt" src="/Content/view-gray-btt.png" /></a></td>
         </tr>
     }
-    <caption><b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b></caption>
+    <caption>
+        @if (Model.GetCurrentPage() != 1)
+        {
+            <form action="/BookSearch/QuickSearch/" method="post" style="display:inline">
+                <img class="nav-btt" src="~/Content/prev-btt.png" alt="previous" />
+                @Html.AntiForgeryToken()
+                <input type="hidden" value="@(Model.GetCurrentPage()-1)" name="page" />
+                <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+                <input type="hidden" value="@TempData["quicksearchkey"]" name="bookName" />
+            </form>
+        }
+        <b>Page @Model.GetCurrentPage() of @Model.GetPageSize()</b>
+        @if (Model.GetCurrentPage() != Model.GetPageSize())
+        {
+            <form action="/BookSearch/QuickSearch/" method="post" style="display:inline">
+                <img class="nav-btt" src="~/Content/next-btt.png" alt="next" />
+                @Html.AntiForgeryToken()
+                <input type="hidden" value="@(Model.GetCurrentPage()+1)" name="page" />
+                <input type="hidden" value="@TempData["pageSize"]" name="pageSize" />
+                <input type="hidden" value="@TempData["quicksearchkey"]" name="bookName" />
+            </form>
+        }
+    </caption>
 </table>
     <form class="page-portal" action="/BookSearch/QuickSearch/" method="post">
     <label>Jump to page:</label>

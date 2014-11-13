@@ -115,6 +115,17 @@ img.close-btt{
 img.close-btt:hover{
     cursor:pointer;
 }
+
+img.nav-btt{
+    vertical-align:middle
+}
+img.nav-btt:hover{
+    cursor:pointer
+}
+
+form.nav-btt input[type="submit"]{
+    background-image:url('/Content/prev-btt.png')
+}
 /*---account form---*/
 form.account-form{
     font-family:Single;
@@ -230,6 +241,11 @@ form.page-portal{
 }
 
 /*--------------------------*/
+div.block{
+    max-width:450px;
+    vertical-align:text-top;
+    display:inline-block;
+}
 table.news-list{
     font-family:Single;
     font-size:x-large;
@@ -237,11 +253,16 @@ table.news-list{
     margin:15px 0 15px 0;
     padding:5px;
     border:1px solid #808080;
-    background-color:#FFFF9E;
+    background-color:#FFFFC5;
     border-top-left-radius:15px;
     border-top-right-radius:15px;
     border-bottom-left-radius:15px;
     border-bottom-right-radius:15px;
+}
+
+table.home-newslist{
+    max-width:450px;
+    display:block;
 }
 
 table.news-list tr:hover{
@@ -249,10 +270,14 @@ table.news-list tr:hover{
 }
 
 table.news-list td.right-col{
-
     text-align:right
 }
-
+table.news-list td.daypost{
+    width:10%
+}
+table.news-list td.topic{
+    width:90%
+}
 a.news-link:link{
     display:block;
     text-decoration:none;
@@ -266,6 +291,7 @@ a.news-link:hover{
 a.news-link:visited{
     color:black;
 }
+
 
 /*--------------------------*/
 
@@ -668,13 +694,8 @@ div.acc-lib-detail{
 div.home-welcome{
     padding:10px;
     text-indent:50px;
-    border:1px solid black;
     font-family:Single;
     font-size:x-large;
-    border-top-left-radius:15px;
-    border-top-right-radius:15px;
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
 }
 
 div.home-office{
@@ -683,10 +704,6 @@ div.home-office{
     font-family:Single;
     font-size:x-large;
     background-color:#D699AD;
-    border-top-left-radius:15px;
-    border-top-right-radius:15px;
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
     margin-bottom:15px;
 }
 div.home-services{
@@ -695,10 +712,6 @@ div.home-services{
     font-family:Single;
     font-size:x-large;
     background-color:#EEA6FF;
-    border-top-left-radius:15px;
-    border-top-right-radius:15px;
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
     margin-bottom:15px;
 }
 
@@ -708,13 +721,14 @@ div.contact-dev{
     background-color:#F0CCCC;
     font-family:Single;
     font-size:x-large;
+    margin-bottom:15px;
+}
+div.round-border{
     border-top-left-radius:15px;
     border-top-right-radius:15px;
     border-bottom-left-radius:15px;
     border-bottom-right-radius:15px;
-    margin-bottom:15px;
 }
-
 p.post-time{
     margin:0;
     padding:0;
