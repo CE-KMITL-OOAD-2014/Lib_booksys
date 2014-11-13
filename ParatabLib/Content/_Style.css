@@ -241,11 +241,6 @@ form.page-portal{
 }
 
 /*--------------------------*/
-div.block{
-    max-width:450px;
-    vertical-align:text-top;
-    display:inline-block;
-}
 table.news-list{
     font-family:Single;
     font-size:x-large;
@@ -260,16 +255,13 @@ table.news-list{
     border-bottom-right-radius:15px;
 }
 
-table.home-newslist{
-    max-width:450px;
-    display:block;
-}
 
 table.news-list tr:hover{
     background-color:#E6E600;
 }
 
 table.news-list td.right-col{
+    width:960px;
     text-align:right
 }
 table.news-list td.daypost{
@@ -860,6 +852,11 @@ span.act-link{
 
 ul.home-services{
     list-style-type:square;
+}
+
+td.callno{
+    min-width:100px;
+    max-width:120px;
 }
 @font-face{
     font-family:Single;

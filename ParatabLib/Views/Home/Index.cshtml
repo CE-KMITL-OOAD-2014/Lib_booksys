@@ -5,9 +5,9 @@
 <h1>Welcome to online library book system</h1>
 <div class="home-welcome round-border">ยินดีต้อนรับสู่ Web application อันน่าตื่นตาตื่นใจ คุณจะได้พบกับความสามารถของระบบห้องสมุดออนไลน์ที่สามารถช่วยจัดการปัญหาทุกอย่างที่เกิดขึ้นได้</div>
 
-<div class="block">
+
     <h1>News</h1>
-    <table class="home-newslist news-list">
+    <table class="news-list">
         @foreach (var news in Model)
         {
             <tr>
@@ -20,9 +20,7 @@
             <td class="right-col"><a class="norm" href="/News/ViewAll">ดูทั้งหมด</a></td>
         </tr>
     </table>
-</div>
 
-<div class="block">
     <h1>Our services</h1>
     <div class="home-services round-border">
         <ul class="home-services">
@@ -34,7 +32,6 @@
             <li>ระบบสืบค้นและเรียกดูข้อมูลหนังสือผ่านทาง API ดูตัวอย่างการใช้งาน <a class="norm" href="/Home/LibraryApi" target="_blank">CLICK</a></li>
         </ul>
     </div>
-</div>
 
 
 <h1>Office time</h1>
