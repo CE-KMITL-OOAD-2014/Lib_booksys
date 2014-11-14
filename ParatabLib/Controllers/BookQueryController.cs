@@ -8,9 +8,11 @@ using ParatabLib.Models;
 using ParatabLib.DataAccess;
 using Newtonsoft.Json.Linq;
 using ParatabLib.Utilities;
+using System.Web.Http.Cors;
 namespace ParatabLib.Controllers
 {
     //This class is all about handle book search API
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class BookQueryController : ApiController
     {
         LibraryRepository LibRepo = new LibraryRepository();
@@ -217,7 +219,6 @@ namespace ParatabLib.Controllers
             bookToFind.Publisher = target["Publisher"].ToString();
             bookToFind.CallNumber = target["CallNumber"].ToString().ToLower();
             IEnumerable<Book> list;
-
             //If year is not specfied find book exclude year data since year is numeric type
             if (target["Year"].ToString() == "")
             {

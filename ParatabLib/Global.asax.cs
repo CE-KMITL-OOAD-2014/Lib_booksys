@@ -31,14 +31,11 @@ namespace ParatabLib
 
             //Set latestNews that will be load in HomePage
             List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
-            if (newsList.Count != 0)
-            {
                 if (newsList.Count >= 7)
                     newsList = newsList.GetRange(0, 7);
                 else
                     newsList = newsList.GetRange(0, newsList.Count);
                 Controllers.NewsController.setLatestNews(newsList);
-            }
 
             /* Load configuration of fine penalty from file if it is not exist create new file and set it
              * to default value(5) otherwise load value from file and set it to ConfigurationController's static properties

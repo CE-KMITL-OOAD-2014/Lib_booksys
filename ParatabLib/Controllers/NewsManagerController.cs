@@ -140,8 +140,6 @@ namespace ParatabLib.Controllers
         private void UpdateLatestNews()
         {
             List<News> newsList = libRepo.NewsRepo.List().OrderByDescending(news => news.PostTime).ToList();
-            if (newsList.Count != 0)
-            {
                 if (newsList.Count >= 7)
                     newsList = newsList.GetRange(0, 7);
                 else
@@ -150,7 +148,6 @@ namespace ParatabLib.Controllers
                 {
                     Controllers.NewsController.setLatestNews(newsList);
                 }
-            }
         }
 
         /* [Override method]

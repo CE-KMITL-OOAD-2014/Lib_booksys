@@ -29,7 +29,7 @@ function getAllBook() {
 
 function getBookByName(name) {
     var received_data;
-    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?name=" + name).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?name=" + name).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -39,7 +39,7 @@ function getBookByName(name) {
 
 function getBookByAuthor(author) {
     var received_data;
-    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?author=" + author).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?author=" + author).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -49,7 +49,7 @@ function getBookByAuthor(author) {
 
 function getBookByPublisher(publisher) {
     var received_data;
-    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?publisher=" + publisher).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?publisher=" + publisher).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -59,7 +59,7 @@ function getBookByPublisher(publisher) {
 
 function getBookByYear(year) {
     var received_data;
-    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?year=" + year).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?year=" + year).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -69,7 +69,7 @@ function getBookByYear(year) {
 
 function getBookByCallNo(callno) {
     var received_data;
-    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery/?callno=" + callno).done(function (data) {
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?callno=" + callno).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -80,7 +80,6 @@ function getBookByCallNo(callno) {
 
 function getBookByAllProperties(callno,name,author,publisher,year) {
     var received_data;
-
     var target = new Object();
     target.BookName = name;
     target.Author = author;

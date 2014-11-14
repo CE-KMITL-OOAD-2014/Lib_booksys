@@ -13,8 +13,9 @@
     </div>
 }
     <a class="account-btt" href="/LibrarianTransaction/Transaction">Do Transaction</a>
-<h2>Borrow tracking</h2>
-@if (Model != null){
+@if (Model != null)
+{
+    <h2>Borrow tracking</h2>
     count = (Model.GetCurrentPage() - 1) * int.Parse(TempData["pageSize"].ToString());
     <table class="list">
     <tr>
