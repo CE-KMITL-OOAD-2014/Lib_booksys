@@ -11,6 +11,7 @@ using ParatabLib.ViewModels;
 namespace ParatabLib.Controllers
 {
     //This class use to handle about personnal account management
+    [RequireHttps]
     public class AccountController : Controller
     {
         LibraryRepository libRepo = new LibraryRepository();
