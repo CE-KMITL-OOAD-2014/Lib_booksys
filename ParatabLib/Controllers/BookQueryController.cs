@@ -36,13 +36,15 @@ namespace ParatabLib.Controllers
        }
 
         /* Handle method of /api/BookQuery?name={name}
-         * this method use to find related-book by querystring name
+         * this method use to find related-book by querystring name as uri encode
+         * first of all decode querystring,find it in database
          * and return result as HTTPresponse whether it found or not.
          */
         public IHttpActionResult GetBookByName(string name)
         {
             if (name == null)
                 return NotFound();
+            name = System.Web.HttpUtility.UrlDecode(name);
             var target = from book in LibRepo.BookRepo.List()
                           where book.BookName.Contains(name)
                           select new Book(){
@@ -64,13 +66,15 @@ namespace ParatabLib.Controllers
         }
 
         /* Handle method of /api/BookQuery?author={author}
-         * this method use to find related-book by querystring author
+         * this method use to find related-book by querystring author as uri encode
+         * first of all decode querystring,find it in database
          * and return result as HTTPresponse whether it found or not.
          */
         public IHttpActionResult GetBookByAuthor(string author)
         {
             if (author == null)
                 return NotFound();
+            author = System.Web.HttpUtility.UrlDecode(author);
             var target = from book in LibRepo.BookRepo.List()
                          where StringUtil.IsContains(book.Author, author)
                          select new Book
@@ -93,13 +97,15 @@ namespace ParatabLib.Controllers
         }
 
         /* Handle method of /api/BookQuery?publisher={publisher}
-         * this method use to find related-book by querystring publisher
+         * this method use to find related-book by querystring publisher as uri encode
+         * first of all decode querystring,find it in database
          * and return result as HTTPresponse whether it found or not.
          */
         public IHttpActionResult GetBookByPublisher(string publisher)
         {
             if (publisher == null)
                 return NotFound();
+            publisher = System.Web.HttpUtility.UrlDecode(publisher);
             var target = from book in LibRepo.BookRepo.List()
                          where StringUtil.IsContains(book.Publisher, publisher)
                          select new Book

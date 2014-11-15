@@ -16,7 +16,7 @@ namespace LibraryIntegrationTest
 
         /* MvcWebApp use to instantiate web browse object that will open in PC and user can use
          * any method/properties to control browse(Ex.Find element of DOM).
-         */ 
+         */
         [ClassInitialize]
         public static void InitialTest(TestContext testContext)
         {
@@ -24,12 +24,12 @@ namespace LibraryIntegrationTest
         }
 
         //The integration test start by browing to homepage and check that whether it browse to correct page... 
-        [TestMethod]
-        public void NavigateToHome()
-        {
-            app.NavigateTo<HomeController>(c => c.Index());
-            app.Route.ShouldMapTo<HomeController>(c => c.Index());
-        }
+        /* [TestMethod]
+         public void NavigateToHome()
+         {
+             app.NavigateTo<HomeController>(c => c.Index());
+             app.Route.ShouldMapTo<HomeController>(c => c.Index());
+         }*/
 
         //The second step is login as librarian and do the transaction in one try....
         [TestMethod]
@@ -44,25 +44,25 @@ namespace LibraryIntegrationTest
             // -------------------- 
             /* If librarian is login success next step is go to librarian portal.
              * Browse to librarianPortal page and check that is it browse to correct page.
-             */ 
+             */
             app.Browser.FindElement(By.CssSelector("body a[href=\"/Account/LibrarianPortal\"]")).Click();
             app.Route.ShouldMapTo<AccountController>(c => c.LibrarianPortal());
 
             /* If last test is success,next step is go to LibrarianTransaction index page.
              * Browse to that page and check that is it browse to correct page.
-             */ 
+             */
             app.Browser.FindElement(By.CssSelector("body a[href=\"/LibrarianTransaction/\"]")).Click();
             app.Route.ShouldMapTo<LibrarianTransactionController>();
 
             /* If last test is success,next step is go to Transaction page.
              * Browse to that page and check that is it browse to correct page.
-             */ 
+             */
             app.Browser.FindElement(By.CssSelector("body a[href=\"/LibrarianTransaction/Transaction\"]")).Click();
             app.Route.ShouldMapTo<LibrarianTransactionController>(c => c.Transaction());
-            
+
             /* Wow we reach to the one of main test of this integration test
              * test borrow book for member#23/borrow book 35 and check notify result
-             */ 
+             */
             app.Browser.FindElement(By.Name("UserID")).SendKeys("23");
             app.Browser.FindElement(By.CssSelector("input[type=\"submit\"][value=\"Check\"]")).Submit();
             app.Browser.FindElement(By.Name("BookID")).SendKeys("35");

@@ -16,7 +16,7 @@ namespace LibraryIntegrationTest
 
         /* MvcWebApp use to instantiate web browse object that will open in PC and user can use
          * any method/properties to control browse(Ex.Find element of DOM).
-         */ 
+         */
 
         [ClassInitialize]
         public static void InitApp(TestContext testContext)
@@ -26,7 +26,7 @@ namespace LibraryIntegrationTest
 
         /* This method is test scenario for general user
          * no authentication browse every page directly! Finally check result for each browsing
-         */ 
+         */
 
         [TestMethod]
         public void GeneralUserBrowsing()
@@ -38,7 +38,7 @@ namespace LibraryIntegrationTest
          * by browse to login page and login as member user
          * then try to work and test like general user and check result.
          * If user travel all page,sign out suddenly.
-         */ 
+         */
         [TestMethod]
         public void MemberBrowsing()
         {
@@ -55,7 +55,7 @@ namespace LibraryIntegrationTest
          * by browse to login page and login as librarian user
          * then try to work and test like general user and check result.
          * If user travel all page,sign out suddenly.
-         */ 
+         */
         [TestMethod]
         public void GeneralLibrarianBrowsing()
         {
@@ -69,7 +69,7 @@ namespace LibraryIntegrationTest
 
         /* This method include all page that user probably to browsing
          * by call each method user and browseing to desired page(or rediect to another page)
-         */ 
+         */
         private void BrowseEveryPage()
         {
             HomeIndex();
@@ -118,9 +118,9 @@ namespace LibraryIntegrationTest
          * when member browsing to "only-member-access" page and check that if
          * librarian or general user browse to those page,the appliation redirect those user
          * to index or login.
-         */ 
+         */
         private void IsRedirectToRightPathForMember<Controller>(System.Linq.Expressions.
-            Expression<Func<Controller,System.Web.Mvc.ActionResult>>action) 
+            Expression<Func<Controller, System.Web.Mvc.ActionResult>> action)
             where Controller : System.Web.Mvc.Controller
         {
             IWebElement userfield = app.Browser.FindElement(By.ClassName("reg-login-linkzone"));
@@ -182,8 +182,8 @@ namespace LibraryIntegrationTest
         //The rest of integration test code is implementation of browsing and checks for each page.
         private void HomeIndex()
         {
-           app.NavigateTo<HomeController>(c => c.Index());
-           app.Route.ShouldMapTo<HomeController>(c => c.Index());
+            app.NavigateTo<HomeController>(c => c.Index());
+            app.Route.ShouldMapTo<HomeController>(c => c.Index());
         }
 
         private void HomeTopTen()
@@ -209,7 +209,7 @@ namespace LibraryIntegrationTest
             app.NavigateTo<HomeController>(c => c.ChangeLog());
             app.Route.ShouldMapTo<HomeController>(c => c.ChangeLog());
         }
-        
+
         private void HomeLibraryApi()
         {
             app.NavigateTo<HomeController>(c => c.LibraryApi());
@@ -276,14 +276,14 @@ namespace LibraryIntegrationTest
 
         private void BookMntEditBook()
         {
-            app.NavigateTo<BookManagerController>(c => c.EditBook(33));
-            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.EditBook(33));
+            app.NavigateTo<BookManagerController>(c => c.EditBook(216));
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.EditBook(216));
         }
 
         private void BookMntDeleteBook()
         {
-            app.NavigateTo<BookManagerController>(c => c.DeleteBook(33));
-            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.DeleteBook(33));
+            app.NavigateTo<BookManagerController>(c => c.DeleteBook(216));
+            IsRedirectToRightPathForLibrarian<BookManagerController>(c => c.DeleteBook(216));
         }
 
         private void LibrarianListIndex()
@@ -345,11 +345,11 @@ namespace LibraryIntegrationTest
             app.NavigateTo<MemberTransactionController>(c => c.Index());
             IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Index());
         }
-
+        //----------------------------------------------
         private void MemberTransactionRenew()
         {
-            app.NavigateTo<MemberTransactionController>(c => c.Renew(30));
-            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Index());
+            app.NavigateTo<MemberTransactionController>(c => c.Renew(125));
+            IsRedirectToRightPathForMember<MemberTransactionController>(c => c.Renew(125));
         }
 
         private void MemberTransactionRequest()
@@ -434,7 +434,7 @@ namespace LibraryIntegrationTest
         {
             app.NavigateTo<HomeController>(c => c.Index());
             IReadOnlyCollection<IWebElement> newslink = app.Browser.FindElements(By.ClassName("news-link"));
-            IEnumerator<IWebElement> it = newslink.GetEnumerator(); 
+            IEnumerator<IWebElement> it = newslink.GetEnumerator();
             it.MoveNext();
             it.Current.Click();
             app.Route.ShouldMapTo<NewsController>();
@@ -443,7 +443,7 @@ namespace LibraryIntegrationTest
         private void BrowseAllNews()
         {
             app.NavigateTo<HomeController>(c => c.Index());
-            app.Browser.FindElement(By.CssSelector("a[href=\"/News/ViewAll\"]")).Click();
+            app.NavigateTo<NewsController>(c => c.ViewAll(1, 10));
             app.Route.ShouldMapTo<NewsController>();
         }
     }

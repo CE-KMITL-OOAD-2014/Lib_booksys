@@ -29,7 +29,8 @@ function getAllBook() {
 
 function getBookByName(name) {
     var received_data;
-    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?name=" + name).done(function (data) {
+    name = encodeURI(name);
+    $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?name="+name).done(function (data) {
         received_data = data;
     }).fail(function () {
         received_data = null;
@@ -39,6 +40,7 @@ function getBookByName(name) {
 
 function getBookByAuthor(author) {
     var received_data;
+    author = encodeURI(author);
     $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?author=" + author).done(function (data) {
         received_data = data;
     }).fail(function () {
@@ -49,6 +51,7 @@ function getBookByAuthor(author) {
 
 function getBookByPublisher(publisher) {
     var received_data;
+    publisher = encodeURI(publisher);
     $.getJSON("http://paratabplus.cloudapp.net/api/BookQuery?publisher=" + publisher).done(function (data) {
         received_data = data;
     }).fail(function () {
