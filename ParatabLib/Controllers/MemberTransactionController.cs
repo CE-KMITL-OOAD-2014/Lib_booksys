@@ -47,7 +47,7 @@ namespace ParatabLib.Controllers
         }
 
         /* This method use to call renew confirmation page for desired borrowentry(which contain borrow book data)
-         * call renewStrategy to return result from this request whether renew confirmation page or error with
+         * call renewStrategy to return result from this request whether it return renew confirmation page or error with
          * redirection.
          */
         [Authorize]
@@ -103,7 +103,9 @@ namespace ParatabLib.Controllers
          * notify user that cannot renew due to renew count is exceed maximum.
          * Special case for this method3:If current wanted-to renew book's renew is overdue
          * notify user that cannot renew this book due to borrow overdue.
-         */ 
+         * Special case for this method4:If current wanted-to renew book's renew is just renewed or too fast to renew
+         * notify user that too fast to renew this book.
+         */
         private ActionResult RenewStrategy(ref int id)
         {
             BorrowEntry renewentry = libRepo.BorrowEntryRepo.Find(id);
@@ -130,6 +132,13 @@ namespace ParatabLib.Controllers
                 TempData["ErrorNoti"] = "Your renew of book ID." + renewentry.GetBorrowBook(ref libRepo).BookID + " is exceed maximum!";
                 return RedirectToAction("Index");
             }
+
+            if (renewentry.DueDate.Date.Subtract(DateTime.Now.Date).Days > 6)
+            {
+                TempData["ErrorNoti"] = "Too fast to renew this book.";
+                return RedirectToAction("Index");
+            }
+
             return View(renewentry);
         }
         //This method simply call request page and return it to user.

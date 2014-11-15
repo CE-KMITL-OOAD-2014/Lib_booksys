@@ -26,14 +26,14 @@ namespace LibraryTester
         /* this method use to instantiate controller to imply that current user log in
          * is from username parameter and pass libRepo to instantiate controller to use
          * preferred LibraryRepository object.
-         */ 
-        public void InitialController(string username,LibraryRepository libRepo)
+         */
+        public void InitialController(string username, LibraryRepository libRepo)
         {
             controller = new MemberTransactionController(libRepo);
             controller.ControllerContext = new ControllerContext()
             {
                 Controller = controller,
-                RequestContext = new RequestContext(new MockHttpContext(username),new RouteData())
+                RequestContext = new RequestContext(new MockHttpContext(username), new RouteData())
             };
             controller.Session["LoginUser"] = username;
         }
@@ -42,7 +42,7 @@ namespace LibraryTester
          * by create several mock object and setup mock to use desired data
          * this unit test is related in many of domain class type
          * detail description is in method.
-         */ 
+         */
         [TestInitialize]
         public void InitialRepository()
         {
@@ -75,7 +75,11 @@ namespace LibraryTester
             },
             new Member{UserID = 5,
                 UserName = "tomza2014",
-                Name = "Purmpol Kurung"}
+                Name = "Purmpol Kurung"
+            },
+            new Member{UserID = 6,
+                UserName = "bayInwza2014",
+                Name = "Worawit2 Saetan"}
             }
                 .AsQueryable();
 
@@ -136,6 +140,14 @@ namespace LibraryTester
                 Publisher = "BKK publisher",
                 Year = 2014,
                 BookStatus = Status.Borrowed,
+            },
+            new Book{BookID = 8,
+                CallNumber = "SOC-FL5-0002",
+                BookName = "Socology education",
+                Author = "Watchara Siriyingyong",
+                Publisher = "BKK publisher",
+                Year = 2014,
+                BookStatus = Status.Borrowed,
             }
             }.AsQueryable();
 
@@ -146,7 +158,7 @@ namespace LibraryTester
             BookID = 1,
             UserID = 2,
             BorrowDate = new DateTime(2014,10,20,0,0,0),
-            DueDate = new DateTime(2099,10,27,0,0,0),
+            DueDate = new DateTime(2014,11,21,0,0,0),
             RenewCount = 0,
             ReturnDate = null
             },
@@ -173,7 +185,7 @@ namespace LibraryTester
             BookID = 3,
             UserID = 2,
             BorrowDate = new DateTime(2014,10,20,0,0,0),
-            DueDate = new DateTime(2099,10,27,0,0,0),
+            DueDate = new DateTime(2014,11,21,0,0,0),
             RenewCount = 0,
             ReturnDate = null
             },
@@ -204,6 +216,15 @@ namespace LibraryTester
             RenewCount = 0,
             ReturnDate = null
             },
+            new BorrowEntry{
+            ID = 8,
+            BookID = 8,
+            UserID = 4,
+            BorrowDate = new DateTime(2014,10,31,0,0,0),
+            DueDate = new DateTime(2014,12,31,0,0,0),
+            RenewCount = 0,
+            ReturnDate = null
+            }
             }.AsQueryable();
 
             //Instantiate list of RequestEntry and convert it to compatiable with IQueryable 
@@ -231,7 +252,7 @@ namespace LibraryTester
             /* Set mock of Database set<Member> to return desired value from Find() method
              * because of Find() method must be connect to real database set object but in unittest
              * this object is not real so we must implement it to return to desired value.
-             */ 
+             */
             memberlist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => mlist.Where(target => target.UserID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
             //Set mock of Database set<Book> to have desired value
@@ -243,7 +264,7 @@ namespace LibraryTester
             /* Set mock of Database set<Book> to return desired value from Find() method
              * because of Find() method must be connect to real database set object but in unittest
              * this object is not real so we must implement it to return to desired value.
-             */ 
+             */
             booklist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => blist.Where(target => target.BookID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
             //Set mock of Database set<BorrowEntry> to have desired value
@@ -255,7 +276,7 @@ namespace LibraryTester
             /* Set mock of Database set<BorrowEntry> to return desired value from Find() method
              * because of Find() method must be connect to real database set object but in unittest
              * this object is not real so we must implement it to return to desired value.
-             */ 
+             */
             borrowlist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => brlist.Where(target => target.ID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
             //Set mock of Database set<RequestEntry> to have desired value
@@ -267,7 +288,7 @@ namespace LibraryTester
             /* Set mock of Database set<RequestEntry> to return desired value from Find() method
              * because of Find() method must be connect to real database set object but in unittest
              * this object is not real so we must implement it to return to desired value.
-             */ 
+             */
             reqlist.Setup(db => db.Find(It.IsAny<object[]>())).Returns<object[]>(id => rqlist.Where(target => target.BookID == (int.Parse(id[0].ToString()))).SingleOrDefault());
 
             //Set context's properties to return desire value for each.
@@ -277,10 +298,10 @@ namespace LibraryTester
             context.Setup(c => c.BorrowList).Returns(borrowlist.Object);
 
             //Instantiate mock of IGenericRepository of 4 types
-            Mock<IGenericRepository<Book>> localbooklist = new Mock<IGenericRepository<Book>>();
-            Mock<IGenericRepository<Member>> localmemberlist = new Mock<IGenericRepository<Member>>();
-            Mock<IGenericRepository<BorrowEntry>> localbrlist = new Mock<IGenericRepository<BorrowEntry>>();
-            Mock<IGenericRepository<RequestEntry>> localreqlist = new Mock<IGenericRepository<RequestEntry>>();
+            Mock<LocalRepository<Book>> localbooklist = new Mock<LocalRepository<Book>>(context.Object);
+            Mock<LocalRepository<Member>> localmemberlist = new Mock<LocalRepository<Member>>(context.Object);
+            Mock<LocalRepository<BorrowEntry>> localbrlist = new Mock<LocalRepository<BorrowEntry>>(context.Object);
+            Mock<LocalRepository<RequestEntry>> localreqlist = new Mock<LocalRepository<RequestEntry>>(context.Object);
 
             //Set mock of IGenericRepository<Book> to have return desired value for each method call 
             localbooklist.Setup(l => l.List()).Returns(context.Object.Books.ToList());
@@ -308,7 +329,7 @@ namespace LibraryTester
 
             /* The final set is instantiate mock of LibraryRepository with passing context object
              * then set 4 of LibraryRepository's properties to return desired value
-             */ 
+             */
 
             libRepo = new Mock<LibraryRepository>(context.Object);
             libRepo.Setup(l => l.BookRepo).Returns(localbooklist.Object);
@@ -320,7 +341,7 @@ namespace LibraryTester
 
         /* The 1ST - 3RD test is test browing index of MemberTransaction module
          * to check that each member have desired current borrow books/request book.
-         */ 
+         */
         [TestMethod]
         public void TestBrowseIndexAction1()
         {
@@ -351,14 +372,14 @@ namespace LibraryTester
             Assert.AreEqual(0, (result.Model as MemberTransactionViewer).GetRequestEntryViews().Count);
         }
 
-        //4TH - 8TH test is test renew action in 4 scenarios.
+        //4TH - 9TH test is test renew action in 4 scenarios.
         [TestMethod]
         public void TestRenewAction1()
         {
             InitialController("M_ce51benz", libRepo.Object);
             ViewResult result = controller.Renew(1) as ViewResult;
             Assert.IsNotNull(result.Model as BorrowEntry);
-            Assert.AreEqual(1,(result.Model as BorrowEntry).ID);
+            Assert.AreEqual(1, (result.Model as BorrowEntry).ID);
             Assert.AreEqual(1, (result.Model as BorrowEntry).BookID);
             Assert.AreEqual(2, (result.Model as BorrowEntry).UserID);
             Assert.IsNull(result.TempData["ErrorNoti"]);
@@ -388,18 +409,28 @@ namespace LibraryTester
             InitialController("M_tomza2014", libRepo.Object);
             RedirectToRouteResult result = controller.Renew(6) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
-            Assert.AreEqual("Your renew of book ID.6 is exceed maximum!", controller.TempData["ErrorNoti"]);
+            Assert.AreEqual("Your renew of book ID.6 is exceed maximum!",
+                controller.TempData["ErrorNoti"]);
         }
 
         [TestMethod]
-        public void TestRenewAction5(){
-             InitialController("M_baybaybay", libRepo.Object);
-             RedirectToRouteResult result = controller.Renew(7) as RedirectToRouteResult;
-             Assert.AreEqual("Index", result.RouteValues["action"]);
-             Assert.AreEqual("Cannot renew this book due to borrow overdue.", controller.TempData["ErrorNoti"]);
+        public void TestRenewAction5()
+        {
+            InitialController("M_baybaybay", libRepo.Object);
+            RedirectToRouteResult result = controller.Renew(7) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Cannot renew this book due to borrow overdue.", controller.TempData["ErrorNoti"]);
         }
 
-        //9TH - 10TH test is test renew on HTTPPOST-simulated action in 2 scenarios.
+        [TestMethod]
+        public void TestRenewAction6()
+        {
+            InitialController("M_fonniz", libRepo.Object);
+            RedirectToRouteResult result = controller.Renew(8) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Too fast to renew this book.", controller.TempData["ErrorNoti"]);
+        }
+        //10TH - 11TH test is test renew on HTTPPOST-simulated action in 2 scenarios.
         [TestMethod]
         public void TestRenewPostAction1()
         {
@@ -408,7 +439,7 @@ namespace LibraryTester
                 (target => target.ID == 1).Single()) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
-            Assert.AreEqual("This book is ON HOLD.",controller.ControllerContext.Controller.TempData["ErrorNoti"]);
+            Assert.AreEqual("This book is ON HOLD.", controller.ControllerContext.Controller.TempData["ErrorNoti"]);
         }
 
         [TestMethod]
@@ -422,7 +453,7 @@ namespace LibraryTester
             Assert.AreEqual("Renew successful!", controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
 
-        //11TH test is test request action browsing page simply check that whether in browse to correct page.
+        //12TH test is test request action browsing page simply check that whether in browse to correct page.
         [TestMethod]
         public void TestRequestAction()
         {
@@ -431,15 +462,16 @@ namespace LibraryTester
             Assert.IsNotNull(result);
         }
 
-        //12TH - 17TH test is test request book on HTTPPOST-simulated action in 6 scenarios.
+        //13TH - 18TH test is test request book on HTTPPOST-simulated action in 6 scenarios.
         [TestMethod]
         public void TestRequestPostAction1()
         {
             InitialController("M_baybaybay", libRepo.Object);
-            RequestEntry postReq = new RequestEntry { BookID = 3};
+            RequestEntry postReq = new RequestEntry { BookID = 3 };
             RedirectToRouteResult result = controller.Request(postReq) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
-            Assert.AreEqual("Request book successfully.", controller.ControllerContext.Controller.TempData["SuccessNoti"]);
+            Assert.AreEqual("Request book successfully.", controller.
+                ControllerContext.Controller.TempData["SuccessNoti"]);
             Assert.IsNull(controller.ControllerContext.Controller.TempData["ErrorNoti"]);
         }
 
@@ -489,17 +521,19 @@ namespace LibraryTester
             InitialController("M_paratab", libRepo.Object);
             RequestEntry postReq = new RequestEntry { BookID = 4 };
             ViewResult result = controller.Request(postReq) as ViewResult;
-            Assert.AreEqual("Can't request this book due to it is Available.", result.TempData["ErrorNoti"]);
-            Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
+            Assert.AreEqual("Can't request this book due to it is Available.",
+                result.TempData["ErrorNoti"]);
+            Assert.IsNull(controller.ControllerContext.Controller.
+                TempData["SuccessNoti"]);
         }
 
-        //18TH - 20TH test is test cancel request browing action in 3 scenarios.
+        //19TH - 21ST test is test cancel request browing action in 3 scenarios.
         [TestMethod]
         public void TestCancelRequestAction1()
         {
             InitialController("M_paratab", libRepo.Object);
             RedirectToRouteResult result = controller.CancelRequest(100) as RedirectToRouteResult;
-            Assert.AreEqual("No cancel request with prefered id exists.", 
+            Assert.AreEqual("No cancel request with prefered id exists.",
                 controller.ControllerContext.Controller.TempData["ErrorNoti"]);
             Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
@@ -524,13 +558,13 @@ namespace LibraryTester
             Assert.AreEqual(2, (result.Model as RequestEntry).BookID);
         }
 
-        //21TH - 22ST test is test cancel request browing on HTTPPOST-simulated action in 2 scenarios.
+        //22ND - 23RD test is test cancel request browing on HTTPPOST-simulated action in 2 scenarios.
         [TestMethod]
         public void TestCancelRequestPostAction1()
         {
             InitialController("M_tomza2014", libRepo.Object);
             RedirectToRouteResult result = controller.CancelRequest(new RequestEntry { BookID = 2 }) as RedirectToRouteResult;
-            Assert.AreEqual("Index",result.RouteValues["action"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.IsNull(controller.ControllerContext.Controller.TempData["ErrorNoti"]);
             Assert.AreEqual("Cancel request successfully.", controller.ControllerContext.Controller.TempData["SuccessNoti"]);
         }
@@ -539,13 +573,14 @@ namespace LibraryTester
         public void TestCancelRequestPostAction2()
         {
             InitialController("M_tomza2014", libRepo.Object);
-            RedirectToRouteResult result = controller.CancelRequest(new RequestEntry { BookID = 222 }) as RedirectToRouteResult;
+            RedirectToRouteResult result = controller.CancelRequest
+                (new RequestEntry { BookID = 222 }) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.IsNull(controller.ControllerContext.Controller.TempData["SuccessNoti"]);
             Assert.AreEqual("Something went wrong.", controller.ControllerContext.Controller.TempData["ErrorNoti"]);
         }
 
-        //23ND-24RD test is test browsing borrow history page for 2 scenarios.
+        //24TH-25TH test is test browsing borrow history page for 2 scenarios.
         [TestMethod]
         public void TestBrowseBorrowHistoryAction1()
         {
@@ -558,7 +593,7 @@ namespace LibraryTester
         [TestMethod]
         public void TestBrowseBorrowHistoryAction2()
         {
-            InitialController("M_fonniz", libRepo.Object);
+            InitialController("M_bayInwza2014", libRepo.Object);
             ViewResult result = controller.BorrowHistory(1, 10) as ViewResult;
             Assert.IsNull(result.Model as PageList<BorrowEntry>);
             Assert.AreEqual("No borrow history to show.Please do transaction to see your history.",
