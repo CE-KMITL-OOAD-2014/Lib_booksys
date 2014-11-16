@@ -43,7 +43,6 @@ namespace ParatabLib.Controllers
          * Moreover if result is not null show find time(from Timer object) in seconds.
          */ 
         [HttpPost]
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Basic(string keyword, string searchType,int page = 1,int pageSize = 10)
         {
             //Start timer
@@ -140,7 +139,6 @@ namespace ParatabLib.Controllers
          * Moreover if result is not null show find time(from Timer object) in seconds.
          */
         [HttpPost]
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Advance([Bind(Include = "BookName,Author,Publisher,Year,CallNumber")]Book bookToSearch,int page = 1,int pageSize = 10)
         {
             ModelState.Remove("BookName");
@@ -220,7 +218,6 @@ namespace ParatabLib.Controllers
          * to user.
          */
         [HttpPost]
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult QuickSearch(string bookName,int page = 1,int pageSize = 10)
         {
             TempData["quicksearchkey"] = bookName;

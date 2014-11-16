@@ -22,17 +22,18 @@ namespace ParatabLib.Controllers
          */
         private MemberTransactionViewer Check(BorrowEntry entry)
         {
-            if (libRepo.MemberRepo.Find(entry.UserID) == null)
+            Member m;
+            if ((m = libRepo.MemberRepo.Find(entry.UserID)) == null)
             {
                 TempData["ErrorNoti"] = "No member that id's exists.";
                 return null;
             }
-
             MemberTransactionViewer viewer = new MemberTransactionViewer();
             viewer.SetBorrowEntryViews(libRepo.BorrowEntryRepo.ListWhere(targetEntry => targetEntry.UserID == entry.UserID
                 && targetEntry.ReturnDate == null));
 
             viewer.SetRequestEntryViews(libRepo.RequestEntryRepo.ListWhere(targetentry => targetentry.UserID == entry.UserID));
+            viewer.Name = m.Name;
             return viewer;
         }
 

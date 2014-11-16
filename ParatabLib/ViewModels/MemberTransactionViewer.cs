@@ -8,6 +8,7 @@ namespace ParatabLib.ViewModels
     //This class use to keep borrowentry list and request entry list in one object.
     public class MemberTransactionViewer
     {
+        private string _Name;
         private List<BorrowEntry> BorrowEntryViews = new List<BorrowEntry>();
         private List<RequestEntry> RequestEntryViews = new List<RequestEntry>();
 
@@ -38,6 +39,18 @@ namespace ParatabLib.ViewModels
         public List<RequestEntry> GetRequestEntryViews()
         {
             return this.RequestEntryViews;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                _Name = value;
+            }
         }
     }
 }

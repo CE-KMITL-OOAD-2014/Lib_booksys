@@ -36,6 +36,7 @@ else if (TempData["WarnNoti"] != null)
 </form>
 
 @if (Model != null) { 
+<h2 style="text-decoration:none">[Member : @(Model.Name)]</h2>
 <h2>Current borrow list</h2>
    if (Model.GetBorrowEntryViews().Count != 0) { 
 <table class="res-list">
