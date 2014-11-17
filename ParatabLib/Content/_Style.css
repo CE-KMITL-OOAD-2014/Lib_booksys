@@ -3,7 +3,6 @@ body{
     margin:0;
     padding:0;
     background-image:url(/Content/asphalt.jpg);
-
 }
 
 div#nav{
@@ -54,7 +53,12 @@ form.search-bar input{
 }
 
 form.search-bar input[type="text"]{
-    width:140px  
+    width:140px;
+    font-size:0.75em
+}
+
+form.search-bar input[type="submit"]{
+    font-size:0.75em 
 }
 
 div#content{
@@ -551,9 +555,11 @@ img.paratab{
 img.menu-btt{
     cursor:pointer;
     margin-left:5px;
+    float:left;
 }
 
 div.menu-slider{
+    clear:both;
     font-family:CalibriFont,Calibri;
     color:white;
     margin:0;
